@@ -21,11 +21,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.RegisterActivity"></activity>
-        <activity android:name=".activity.FriendsHandlerActivity"
+        <activity
+            android:name=".activity.FriendsHandlerActivity"
             android:parentActivityName=".activity.MainActivity">
 
         </activity>
-        <activity android:name=".activity.ImagesActivity"
+        <activity
+            android:name=".activity.ImagesActivity"
             android:parentActivityName=".activity.MainActivity"></activity>
         <activity android:name=".activity.FullImageActivity"></activity>
         <activity android:name=".activity.CommentActivity"></activity>

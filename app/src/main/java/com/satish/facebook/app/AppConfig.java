@@ -16,7 +16,8 @@ public class AppConfig {
     //public static String URL_USER_POSTS = URL+"friend/user_posts?id=104";
     public static String URL_FEED_CREATE =URL+ "feed/create";
     public static String URL_USER_PROFILE = URL+"friend/profile";
-    public static String URL_POST_COMMENTS=URL+"post/comments";
+    public static String URL_COMMENTS=URL+"post/comments";
+    public static String URL_POST_COMMENTS=URL+"comment/create";
 
     // Number of columns of Grid View
     public static final int NUM_OF_COLUMNS = 3;

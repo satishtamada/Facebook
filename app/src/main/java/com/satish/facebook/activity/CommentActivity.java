@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,13 +20,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.satish.facebook.R;
 import com.satish.facebook.adapters.CommentAdapter;
 import com.satish.facebook.app.AppConfig;
 import com.satish.facebook.app.AppController;
+import com.satish.facebook.helper.SQLiteHandler;
 import com.satish.facebook.models.Comments;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Timestamp;
@@ -49,42 +53,59 @@ public class CommentActivity extends AppCompatActivity {
     private Button btnComment;
     private ImageView noCommentIcon;
     private TextView lblNoComments;
+    int post_id;
+    private SQLiteHandler db;
     Timestamp timestamp;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment_layout);
         listView = (ListView) findViewById(R.id.comment_list_view);
-        btnComment= (Button) findViewById(R.id.btn_comment_post);
-        txtComment= (EditText) findViewById(R.id.txt_comment);
-        noCommentIcon= (ImageView) findViewById(R.id.no_comments);
-        lblNoComments= (TextView) findViewById(R.id.lbl_no_comments);
+        btnComment = (Button) findViewById(R.id.btn_comment_post);
+        txtComment = (EditText) findViewById(R.id.txt_comment);
+        noCommentIcon = (ImageView) findViewById(R.id.no_comments);
+        lblNoComments = (TextView) findViewById(R.id.lbl_no_comments);
         commetArrayList = new ArrayList<>();
+        db = new SQLiteHandler(this);
         commentAdapter = new CommentAdapter(commetArrayList, this);
         listView.setAdapter(commentAdapter);
 
-
-        Intent i=getIntent();
+        Intent i = getIntent();
         //post id
-        int post_id=i.getIntExtra("post_id",0);
+        post_id = i.getIntExtra("post_id", 0);
+
         txtComment.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 btnComment.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_right_arrow_select));
-                if (s.length()==0)
+                if (s.length() == 0)
                     btnComment.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_right_arrow));
+            }
+        });
+        btnComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String, String> user = db.getUserDetails();
+                String comment = txtComment.getText().toString();
+                String userId = user.get("uid");
+                String postId = Integer.toString(post_id);
+                commentPost(comment, userId, postId);
+                txtComment.setText("");
+                commentAdapter.notifyDataSetChanged();
             }
         });
         pDialog = new ProgressDialog(this);
         pDialog.setMessage("Loading...");
         pDialog.show();
-        String url = AppConfig.URL_POST_COMMENTS;
+        String url = AppConfig.URL_COMMENTS;
         url += "?post_id=" + post_id;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null,
@@ -96,7 +117,7 @@ public class CommentActivity extends AppCompatActivity {
 
                         try {
                             boolean error = response.getBoolean("success");
-                            if(error) {
+                            if (error) {
                                 Log.d(TAG, "hello");
                                 JSONArray jsonArray = response.getJSONArray("comments");
 
@@ -125,9 +146,8 @@ public class CommentActivity extends AppCompatActivity {
                                     comment.setCreated_at(timestamp);
                                     commetArrayList.add(comment);
                                 }
-                            }
-                            else{
-                                Toast.makeText(getApplicationContext(),"no comments ",Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "no comments ", Toast.LENGTH_LONG).show();
                                 noCommentIcon.setImageResource(R.drawable.ic_no_comments);
                                 lblNoComments.setText("No Comments Yet");
                             }
@@ -154,7 +174,7 @@ public class CommentActivity extends AppCompatActivity {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
                 // params.put("tag", "register");
-              //  params.put("post_id", "341");
+                //  params.put("post_id", "341");
                 return params;
             }
 
@@ -163,6 +183,59 @@ public class CommentActivity extends AppCompatActivity {
 // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag);
     }
+    private void commentPost(final String comment, final String userId, final String postId) {
+        String tag_string_req = "comment_post";
+        showDialog();
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_POST_COMMENTS, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Comment Response: " + response.toString());
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("success");
+                    if (error) {
+                        hideDialog();
+                    } else {
+                        JSONObject errorObj = jObj.getJSONObject("error");
+                        String errorMsg = errorObj.getString("message");
+                        Toast.makeText(getApplicationContext(),errorMsg, Toast.LENGTH_LONG).show();
+                        hideDialog();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Registration Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
+
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to comment_post url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("user1_id", userId);
+                params.put("post_id", postId);
+                params.put("comment", comment);
+                return params;
+            }
+
+        };
+
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+    }
+
     private String toTitleCase(String name) {
         StringBuilder titleCase = new StringBuilder();
         boolean nextTitleCase = true;
@@ -180,5 +253,13 @@ public class CommentActivity extends AppCompatActivity {
 
         return titleCase.toString();
     }
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
 
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+    }
 }
