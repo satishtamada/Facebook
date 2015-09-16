@@ -7,7 +7,7 @@ import java.util.List;
  * Created by satish on 6/8/15.
  */
 public class AppConfig {
-    public static String URL="http://192.168.0.102:8080/facebook_rest/rest/";
+    public static String URL="http://192.168.0.106:8080/facebook_rest/rest/";
     public static String URL_REGISTER = URL+"user/register";
     public static String URL_LOGIN = URL+"user/login";
     public static String URL_FIND_FRIEND = URL+"friend/find_friend";

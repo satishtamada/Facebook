@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/lbl_comments_on"
         android:divider="@null" />
-
+    <!--if no comments available then it display-->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,26 +40,25 @@
             android:layout_height="wrap_content"
             android:textStyle="bold" />
     </LinearLayout>
-
+    <!--comment text field button -->
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:background="@drawable/bg_comment_like_layout"
         android:orientation="horizontal"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="1dp"
-        android:weightSum="4">
+        android:paddingTop="1dp">
 
         <EditText
             android:id="@+id/txt_comment"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:background="#ffffff"
             android:hint="@string/txt_comment_hint"
-            android:paddingTop="10dp" />
+            android:layout_marginTop="3dp"
+            android:paddingLeft="5dp"/>
 
         <Button
             android:id="@+id/btn_comment_post"
@@ -67,6 +66,7 @@
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_marginTop="5dp"
+            android:paddingRight="5dp"
             android:background="@drawable/ic_right_arrow" />
 
     </RelativeLayout>

@@ -14,8 +14,8 @@
         android:layout_marginTop="@dimen/feed_item_margin"
         android:background="@drawable/bg_parent_rounded_corner"
         android:orientation="vertical"
-        android:paddingTop="@dimen/feed_item_padding_top_bottom"
-        android:paddingBottom="1dp">
+        android:paddingBottom="1dp"
+        android:paddingTop="@dimen/feed_item_padding_top_bottom">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -28,7 +28,7 @@
                 android:id="@+id/profilePic"
                 android:layout_width="@dimen/feed_item_profile_pic"
                 android:layout_height="@dimen/feed_item_profile_pic"
-                android:scaleType="fitCenter"/>
+                android:scaleType="fitCenter" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -82,13 +82,33 @@
             android:background="@color/white"
             android:scaleType="fitXY"
             android:visibility="visible" />
+        <!--like comments count-->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="@dimen/feed_item_padding_left_right">
+            <TextView
+                android:id="@+id/comments_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="comments"
+                android:paddingLeft="5dp"/>
+        </LinearLayout>
         <!--like comment layout-->
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:layout_marginTop="17dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/bg_comment_like_layout"
             android:orientation="horizontal">
             <!--like layout-->

@@ -36,7 +36,7 @@ public class FriendProfileActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
     private FeedAdapter feedAdapter;
     private static String tag = "json_tag";
-    private static final String TAG = HomePageActivity.class.getSimpleName();
+    private static final String TAG = FriendProfileActivity.class.getSimpleName();
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private NetworkImageView profileImage;
     private String userName;

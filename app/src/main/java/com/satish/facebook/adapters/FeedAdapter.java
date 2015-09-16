@@ -73,6 +73,7 @@ public class FeedAdapter extends BaseAdapter {
                 .findViewById(R.id.timestamp);
         TextView statusMsg = (TextView) convertView
                 .findViewById(R.id.txtStatusMsg);
+        TextView lblCommentsCount= (TextView) convertView.findViewById(R.id.comments_count);
         TextView url = (TextView) convertView.findViewById(R.id.txtUrl);
         NetworkImageView profilePic = (NetworkImageView) convertView
                 .findViewById(R.id.profilePic);
@@ -146,16 +147,15 @@ public class FeedAdapter extends BaseAdapter {
                 }
             }
         });
-
+        lblCommentsCount.setText(Integer.toString(item.getComments_count()));
         comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent commentIntent=new Intent(activity, CommentActivity.class);
-                commentIntent.putExtra("post_id",item.getPost_id());
+                Intent commentIntent = new Intent(activity, CommentActivity.class);
+                commentIntent.putExtra("post_id", item.getPost_id());
                 activity.startActivity(commentIntent);
             }
         });
-
         return convertView;
     }
 }

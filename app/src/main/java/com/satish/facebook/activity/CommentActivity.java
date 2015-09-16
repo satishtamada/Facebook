@@ -86,7 +86,7 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 btnComment.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_right_arrow_select));
-                if (s.length() == 0)
+                if (s.toString().trim().length() == 0)
                     btnComment.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_right_arrow));
             }
         });

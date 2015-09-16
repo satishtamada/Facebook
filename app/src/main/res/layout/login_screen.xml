@@ -24,6 +24,7 @@
             android:paddingRight="10dp"
             android:text="f"
             android:textColor="@color/colorPrimary"
+            android:textCursorDrawable="@drawable/cursor_color"
             android:textSize="35dp"
             android:textStyle="bold" />
 
@@ -66,7 +67,7 @@
             android:background="@null"
             android:text="@string/link_register"
             android:textAllCaps="false"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="#ffffff"
             android:textSize="15dp" />
     </LinearLayout>
 

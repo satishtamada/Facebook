@@ -114,6 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
                     boolean error = jObj.getBoolean("success");
 
                     if (error) {
+                        session.setLogin(true);
                         Toast.makeText(getApplicationContext(), "Register successfully", Toast.LENGTH_LONG).show();
                         hideDialog();
                        // inputEmail.setText("");
@@ -128,7 +129,7 @@ public class RegisterActivity extends AppCompatActivity {
                         // Launch login activity
                         Intent intent = new Intent(
                                 RegisterActivity.this,
-                                LoginActivity.class);
+                                MainActivity.class);
                         startActivity(intent);
                         finish();
                     } else {

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -33,11 +34,12 @@ public class FeedFragment extends Fragment {
     private ListView listView;
     private ArrayList<Feed> feedArrayList;
     private ProgressDialog pDialog;
-    private static final String TAG = HomePageActivity.class.getSimpleName();
+    private static final String TAG = FeedFragment.class.getSimpleName();
     private FeedAdapter feedAdapter;
     private static String tag = "json_tag";
     private SQLiteHandler db;
     private String id;
+    private LinearLayout noFeedLayout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +50,13 @@ public class FeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
+        noFeedLayout= (LinearLayout) view.findViewById(R.id.noFeedLayout);
         //creating listview instance
         listView = (ListView) view.findViewById(R.id.feed_list);
         feedArrayList = new ArrayList<>();
         feedAdapter = new FeedAdapter(getActivity(), feedArrayList);
         //set adapter to listview
-        listView.setAdapter(feedAdapter);
+       listView.setAdapter(feedAdapter);
         db=new SQLiteHandler(getActivity());
 
         //display prograss dialog
@@ -84,19 +87,25 @@ public class FeedFragment extends Fragment {
                                     String post_image = friendObj.getString("image");
                                     String created_at = friendObj.getString("created_at");
                                     String postText = friendObj.getString("text");
-                                    String postId=friendObj.getString("post_id");
+                                    int postId=friendObj.getInt("post_id");
+                                    int commentsCount=friendObj.getInt("comments_count");
                                     String userName = toTitleCase(name);
                                     Feed feed = new Feed();
                                     feed.setName(userName);
                                     feed.setProfileImageUrl(profile_image);
                                     feed.setCreated_at(created_at);
                                     feed.setStatus(postText);
-                                    feed.setPost_id(Integer.parseInt(postId));
+                                    feed.setPost_id(postId);
+                                    feed.setComments_count(commentsCount);
                                     if (friendObj.getString("image").length() != 0) {
                                         feed.setImage(post_image);
                                     }
                                     feedArrayList.add(feed);
                                 }
+                            }
+                            else{
+                                listView.setVisibility(View.GONE);
+                                noFeedLayout.setVisibility(View.VISIBLE);
                             }
                         } catch (Exception e) {
                             Log.d("error in", "catch");

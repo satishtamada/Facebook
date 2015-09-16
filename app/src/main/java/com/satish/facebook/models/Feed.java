@@ -5,12 +5,12 @@ package com.satish.facebook.models;
  */
 public class Feed {
     private String name, profileImageUrl, status, image, created_at, url;
-    private int post_id;
+    private int post_id,comments_count;
 
     public Feed() {
     }
 
-    public Feed(String name, String profileImageUrl, String status, String image, String created_at, String url,int post_id) {
+    public Feed(String name, String profileImageUrl, String status, String image, String created_at, String url,int post_id,int comments_count) {
         this.name = name;
         this.profileImageUrl = profileImageUrl;
         this.status = status;
@@ -18,6 +18,7 @@ public class Feed {
         this.created_at = created_at;
         this.url = url;
         this.post_id=post_id;
+        this.comments_count=comments_count;
     }
 
     public String getName() {
@@ -74,5 +75,13 @@ public class Feed {
 
     public void setPost_id(int post_id) {
         this.post_id = post_id;
+    }
+
+    public int getComments_count() {
+        return comments_count;
+    }
+
+    public void setComments_count(int comments_count) {
+        this.comments_count = comments_count;
     }
 }
