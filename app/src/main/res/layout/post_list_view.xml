@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff">
+
+    <!--user profile pic-->
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/profile_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+
+        />
+    <!--layout for user name,posted date-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/profile_image"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/friend_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/created_at"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <!--posted text view -->
+    <TextView
+        android:id="@+id/post_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profile_image"
+        android:padding="10dp"
+        android:textSize="18dp" />
+
+    <!--posted image view -->
+    <com.satish.facebook.helper.FeedImageView
+        android:id="@+id/post_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/post_text"
+        android:scaleType="fitXY"
+        />
+
+    <View
+        android:id="@+id/horizontal_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_below="@+id/post_image"
+        android:layout_marginTop="10dp"
+        android:background="#e5e5e5" />
+
+    <ToggleButton
+        android:id="@+id/btnLike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/horizontal_line"
+        android:layout_marginLeft="10dp"
+        android:background="@null"
+        android:drawableLeft="@drawable/ic_like_unselect"
+        android:padding="10dp"
+        android:textOff="Like"
+        android:textOn="Like"
+        android:textAllCaps="false" />
+    <Button
+        android:id="@+id/btnComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/horizontal_line"
+        android:layout_toRightOf="@+id/btnLike"
+        android:layout_marginLeft="5dp"
+        android:background="@null"
+        android:drawableLeft="@drawable/comment"
+        android:padding="10dp"
+        android:text="Comment"
+        android:textAllCaps="false" />
+</RelativeLayout>
