@@ -30,4 +30,7 @@ public class AppConfig {
     // supported file formats
     public static final List<String> FILE_EXTN = Arrays.asList("jpg", "jpeg",
             "png");
+
+    // notificaitons changes
+
 }
