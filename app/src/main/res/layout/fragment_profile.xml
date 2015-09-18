@@ -3,7 +3,19 @@
     android:id="@+id/ScrollView01"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">  <ProgressBar
+    android:id="@+id/progressBar"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_gravity="bottom"
+    android:layout_marginBottom="60dp"
+    android:indeterminateTint="@color/colorAccent"
+    android:indeterminateTintMode="src_atop"
+    android:visibility="gone" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -366,4 +378,5 @@
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
+</RelativeLayout>
 </ScrollView>

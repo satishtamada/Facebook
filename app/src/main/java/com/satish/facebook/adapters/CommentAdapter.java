@@ -2,6 +2,7 @@ package com.satish.facebook.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,11 @@ import com.satish.facebook.R;
 import com.satish.facebook.app.AppController;
 import com.satish.facebook.models.Comments;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by satish on 2/9/15.
@@ -58,9 +63,23 @@ public class CommentAdapter extends BaseAdapter {
         TextView lblCreated_at = (TextView) view.findViewById(R.id.created_at);
         Comments c=commetArrayList.get(position);
         lblName.setText(c.getCommented_username());
+        profileImage.setImageUrl(c.getProfile_image(), imageLoader);
         lblComment.setText(c.getComment());
-        lblCreated_at.setText(c.getCreated_at().toString());
-        profileImage.setImageUrl(c.getProfile_image(),imageLoader);
+        //setting time to created at
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        Date date = null;
+        try {
+            date = sdf.parse(c.getCreated_at().toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        calendar.setTime(date);
+        CharSequence timeAgo = DateUtils.getRelativeTimeSpanString(
+                Long.parseLong(String.valueOf(calendar.getTimeInMillis())),
+                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+        lblCreated_at.setText(timeAgo);
+
         return view;
     }
 }

@@ -15,6 +15,9 @@
     <string name="msg_prompt_remove_friend">Are you sure you want remove #name# as your friend?</string>
     <string name="txt_comment_hint">Write a comment...</string>
     <string name="btn_find_friends">Find Friends</string>
+    <string name="btn_skip">skip</string>
+    <string name="btn_upload_profile">Upload a photo</string>
+    <string name="lbl_your_current_profile">Your current profile picture is always public</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -1,5 +1,6 @@
 package com.satish.facebook.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -11,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.satish.facebook.R;
-import com.satish.facebook.helper.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class FriendsHandlerActivity extends AppCompatActivity {
     private Toolbar toolbar;
     ViewPager viewPager;
     TabLayout tabLayout;
-    private SessionManager session;
+    int tab_position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,21 +35,33 @@ public class FriendsHandlerActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         viewPager = (ViewPager) findViewById(R.id.tab_viewpager);
         setUpViewPager(viewPager);
-
-        // Give the TabLayout the ViewPager
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.setTabTextColors(Color.parseColor("#c2c3c8"),Color.parseColor("#00bcd4"));
+        tabLayout.setTabTextColors(Color.parseColor("#c2c3c8"), Color.parseColor("#00bcd4"));
         tabLayout.setupWithViewPager(viewPager);
     }
 
     private void setUpViewPager(ViewPager viewPager) {
+        Intent intent = getIntent();
+        tab_position = intent.getIntExtra("tab_name", 1);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FriendsListFragment(), "FRIENDS");
-        adapter.addFragment(new SuggestionsFragment(), "SUGGESTIONS");
-        adapter.addFragment(new FriendRequsetFragment(), "REQUESTS");
-        viewPager.setAdapter(adapter);
+        switch (tab_position) {
+            case 1:
+                adapter.addFragment(new FriendsListFragment(), "FRIENDS");
+                adapter.addFragment(new SuggestionsFragment(), "SUGGESTIONS");
+                adapter.addFragment(new FriendRequsetFragment(), "REQUESTS");
+                break;
+            case 2:
+                adapter.addFragment(new SuggestionsFragment(), "SUGGESTIONS");
+                adapter.addFragment(new FriendsListFragment(), "FRIENDS");
+                adapter.addFragment(new FriendRequsetFragment(), "REQUESTS");
+                break;
+            default:
 
-    }  class ViewPagerAdapter extends FragmentPagerAdapter {
+        }
+        viewPager.setAdapter(adapter);
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 

@@ -5,6 +5,17 @@
     android:background="#fff"
     android:orientation="vertical">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="60dp"
+        android:indeterminateTint="@color/colorAccent"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="gone" />
     <TextView
         android:id="@+id/lbl_comments_on"
         android:layout_width="wrap_content"
@@ -20,6 +31,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lbl_comments_on"
+        android:layout_marginBottom="30dp"
         android:divider="@null" />
     <!--if no comments available then it display-->
     <LinearLayout

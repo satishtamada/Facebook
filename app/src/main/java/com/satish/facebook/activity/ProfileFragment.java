@@ -1,6 +1,5 @@
 package com.satish.facebook.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +38,7 @@ import java.util.HashMap;
 public class ProfileFragment extends Fragment {
     private static String tag = "json_tag";
     private static final String TAG = ProfileFragment.class.getSimpleName();
-    private ProgressDialog pDialog;
+    private ProgressBar progressBar;
     private TextView lblUserName, lblUserMailId, lblUserJoined, lblFriendCount, lblPostCount, lblPictureCount;
     private RelativeLayout userProfileLayout, friendsLayout, findFriendsLayout, pictureLayout,logoutLayout;
     private NetworkImageView profile_image;
@@ -71,6 +71,7 @@ public class ProfileFragment extends Fragment {
         findFriendsLayout = (RelativeLayout) view.findViewById(R.id.findFriendsLayout);
         pictureLayout = (RelativeLayout) view.findViewById(R.id.picturesLayout);
         logoutLayout= (RelativeLayout) view.findViewById(R.id.logoutLayout);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         userImages = new ArrayList<>();
         postIds = new ArrayList<>();
         db=new SQLiteHandler(getActivity());
@@ -92,6 +93,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent friendsIntent = new Intent(getActivity(), FriendsHandlerActivity.class);
+                friendsIntent.putExtra("tab_name",1);
                 startActivity(friendsIntent);
             }
         });
@@ -99,6 +101,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent findFriendsIntent = new Intent(getActivity(), FriendsHandlerActivity.class);
+                findFriendsIntent.putExtra("tab_name",2);
                 startActivity(findFriendsIntent);
             }
         });
@@ -121,11 +124,7 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-        pDialog = new ProgressDialog(getActivity());
-        pDialog.setMessage("Loading...");
-        pDialog.setIndeterminate(true);
-        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pDialog.show();
+        progressBar.setVisibility(View.VISIBLE);
 
         HashMap<String, String> user = db.getUserDetails();
         id=user.get("uid");
@@ -166,10 +165,10 @@ public class ProfileFragment extends Fragment {
                                     lblPictureCount.setText(Integer.toString(userImages.size()));
                                     Log.d("image array is", userImages.toString());
                                 }
-                                pDialog.hide();
+                                progressBar.setVisibility(View.GONE);
                             } else {
                                 Toast.makeText(getActivity(), "server busy", Toast.LENGTH_LONG).show();
-                                pDialog.hide();
+                                progressBar.setVisibility(View.GONE);
                             }
 
                         } catch (JSONException e) {
@@ -183,7 +182,7 @@ public class ProfileFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
                 // hide the progress dialog
-                pDialog.hide();
+                progressBar.setVisibility(View.VISIBLE);
             }
         });
 

@@ -1,6 +1,5 @@
 package com.satish.facebook.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLinkRegister, btnLogin;
     private EditText txtInputEmail, txtInputPassword;
     private SessionManager session;
-    private ProgressDialog pDialog;
+    private ProgressBar progressBar;
     private static final String TAG = LoginActivity.class.getSimpleName();
     private SQLiteHandler db;
     @Override
@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         txtInputEmail = (EditText) findViewById(R.id.txt_email);
         txtInputPassword = (EditText) findViewById(R.id.txt_password);
         btnLinkRegister = (Button) findViewById(R.id.btn_link_register);
-        pDialog=new ProgressDialog(this);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         btnLogin = (Button) findViewById(R.id.btn_login);
         session = new SessionManager(getApplicationContext());
         db = new SQLiteHandler(getApplicationContext());
@@ -88,10 +88,7 @@ public class LoginActivity extends AppCompatActivity {
     private void checkLogin(final String email, final String password) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
-        pDialog.setMessage("Logging in ...");
-        pDialog.setIndeterminate(false);
-        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        showDialog();
+        progressBar.setVisibility(View.VISIBLE);
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 AppConfig.URL_LOGIN, new Response.Listener<String>() {
@@ -120,13 +117,13 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(LoginActivity.this,
                                 MainActivity.class);
                         startActivity(intent);
-                        hideDialog();
+                        progressBar.setVisibility(View.GONE);
                         finish();
                     } else {
                         // Error in login. Get the error message
                         JSONObject errorObj = jObj.getJSONObject("error");
                         String errorMsg = errorObj.getString("message");
-                        hideDialog();
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                         txtInputPassword.setText("");
@@ -143,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Login Error: " + error.getMessage());
-                hideDialog();
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_LONG).show();
 
@@ -163,13 +160,4 @@ public class LoginActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
-
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
-    }
 }

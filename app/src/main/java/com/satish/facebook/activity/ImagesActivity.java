@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 
 import com.satish.facebook.R;
 import com.satish.facebook.adapters.ImagesAdapter;
@@ -30,15 +31,17 @@ public class ImagesActivity extends AppCompatActivity {
     private int columnWidth;
     private ImagesAdapter imagesAdapter;
     private String userName;
-
+    private ProgressBar progressBar;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         gridView = (GridView) findViewById(R.id.grid_view);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        progressBar.setVisibility(View.VISIBLE);
         utils = new Utils(this);
 
         Intent imagesIntent = getIntent();
@@ -52,10 +55,9 @@ public class ImagesActivity extends AppCompatActivity {
         Log.d("postIds",Integer.toString(postIds.size()));
         imagesAdapter = new ImagesAdapter(ImagesActivity.this, imageUrls,
                 columnWidth);
-
-
         // Instance of ImageAdapter Class
         gridView.setAdapter(imagesAdapter);
+        progressBar.setVisibility(View.GONE);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v,

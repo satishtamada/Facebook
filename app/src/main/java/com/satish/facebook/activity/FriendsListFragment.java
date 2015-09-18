@@ -1,6 +1,5 @@
 package com.satish.facebook.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -38,7 +38,7 @@ public class FriendsListFragment extends Fragment {
     private ArrayList<Friend> friendArrayList;
     private static String tag = "json_tag";
     private static final String TAG = FriendsListFragment.class.getSimpleName();
-    private ProgressDialog pDialog;
+    private ProgressBar progressBar;
     private String id;
     private SQLiteHandler db;
 
@@ -53,6 +53,7 @@ public class FriendsListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_suggestions, container, false);
         listView = (ListView) view.findViewById(R.id.friend_list_view);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         friendArrayList = new ArrayList<>();
         friendAdapter = new FriendAdapter(friendArrayList, getActivity());
         db = new SQLiteHandler(getActivity());
@@ -66,12 +67,7 @@ public class FriendsListFragment extends Fragment {
             }
         });
         Log.d("hello", TAG);
-
-        pDialog = new ProgressDialog(getActivity());
-        pDialog.setMessage("Loading...");
-        pDialog.setIndeterminate(false);
-        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pDialog.show();
+        progressBar.setVisibility(View.VISIBLE);
         HashMap<String, String> user = db.getUserDetails();
         id = user.get("uid");
         String url = AppConfig.URL_FRIENDS_LIST;
@@ -109,7 +105,7 @@ public class FriendsListFragment extends Fragment {
 
                         }
                         friendAdapter.notifyDataSetChanged();
-                        pDialog.hide();
+                        progressBar.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {
 
@@ -117,7 +113,7 @@ public class FriendsListFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
                 // hide the progress dialog
-                pDialog.hide();
+                progressBar.setVisibility(View.GONE);
             }
         });
 

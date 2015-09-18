@@ -1,6 +1,5 @@
 package com.satish.facebook.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -33,7 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText inputFullName;
     private EditText inputEmail;
     private EditText inputPassword;
-    private ProgressDialog pDialog;
+    private ProgressBar progressBar;
     private SessionManager session;
     private SQLiteHandler db;
 
@@ -46,8 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
         inputPassword = (EditText) findViewById(R.id.txt_password);
         btnRegister = (Button) findViewById(R.id.btn_register);
         btnLinkToLogin = (Button) findViewById(R.id.btn_link_to_login);
-        pDialog = new ProgressDialog(this);
-
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         session = new SessionManager(getApplicationContext());
         db = new SQLiteHandler(getApplicationContext());
@@ -98,8 +97,8 @@ public class RegisterActivity extends AppCompatActivity {
                               final String password) {
         // Tag used to cancel the request
         String tag_string_req = "req_register";
-        pDialog.setMessage("Registering ...");
-        showDialog();
+        progressBar.setVisibility(View.VISIBLE);
+
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 AppConfig.URL_REGISTER, new Response.Listener<String>() {
@@ -116,8 +115,9 @@ public class RegisterActivity extends AppCompatActivity {
                     if (error) {
                         session.setLogin(true);
                         Toast.makeText(getApplicationContext(), "Register successfully", Toast.LENGTH_LONG).show();
-                        hideDialog();
-                       // inputEmail.setText("");
+                        progressBar.setVisibility(View.GONE);
+
+                        // inputEmail.setText("");
                         JSONObject user = jObj.getJSONObject("profile");
                         String name = user.getString("name");
                         String email = user.getString("email");
@@ -128,8 +128,7 @@ public class RegisterActivity extends AppCompatActivity {
                         db.addUser(id, name, email, apikey, created_at);
                         // Launch login activity
                         Intent intent = new Intent(
-                                RegisterActivity.this,
-                                MainActivity.class);
+                                RegisterActivity.this,ProfileImageActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
@@ -137,7 +136,8 @@ public class RegisterActivity extends AppCompatActivity {
                         JSONObject errorObj = jObj.getJSONObject("error");
                         String errorMsg = errorObj.getString("message");
                         Toast.makeText(getApplicationContext(), "Register fails", Toast.LENGTH_LONG).show();
-                        hideDialog();
+                        progressBar.setVisibility(View.GONE);
+
 
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
@@ -155,7 +155,8 @@ public class RegisterActivity extends AppCompatActivity {
                 Log.e(TAG, "Registration Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
+                progressBar.setVisibility(View.GONE);
+
 
             }
         }) {
@@ -178,13 +179,4 @@ public class RegisterActivity extends AppCompatActivity {
 
     }//end of registeruser
 
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
-
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
-    }
 }

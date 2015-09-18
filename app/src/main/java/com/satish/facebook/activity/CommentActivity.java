@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +53,7 @@ public class CommentActivity extends AppCompatActivity {
     private EditText txtComment;
     private Button btnComment;
     private ImageView noCommentIcon;
-    private TextView lblNoComments;
+    private TextView lblNoComments;    private ProgressBar progressBar;
     int post_id;
     private SQLiteHandler db;
     Timestamp timestamp;
@@ -64,7 +65,7 @@ public class CommentActivity extends AppCompatActivity {
         btnComment = (Button) findViewById(R.id.btn_comment_post);
         txtComment = (EditText) findViewById(R.id.txt_comment);
         noCommentIcon = (ImageView) findViewById(R.id.no_comments);
-        lblNoComments = (TextView) findViewById(R.id.lbl_no_comments);
+        lblNoComments = (TextView) findViewById(R.id.lbl_no_comments); progressBar = (ProgressBar) findViewById(R.id.progressBar);
         commetArrayList = new ArrayList<>();
         db = new SQLiteHandler(this);
         commentAdapter = new CommentAdapter(commetArrayList, this);
@@ -102,9 +103,7 @@ public class CommentActivity extends AppCompatActivity {
                 commentAdapter.notifyDataSetChanged();
             }
         });
-        pDialog = new ProgressDialog(this);
-        pDialog.setMessage("Loading...");
-        pDialog.show();
+        progressBar.setVisibility(View.VISIBLE);
         String url = AppConfig.URL_COMMENTS;
         url += "?post_id=" + post_id;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
@@ -157,7 +156,7 @@ public class CommentActivity extends AppCompatActivity {
 
                         }
                         commentAdapter.notifyDataSetChanged();
-                        pDialog.hide();
+                        progressBar.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {
 
@@ -165,7 +164,7 @@ public class CommentActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
                 // hide the progress dialog
-                pDialog.hide();
+                progressBar.setVisibility(View.GONE);
             }
         }) {
 
@@ -185,7 +184,7 @@ public class CommentActivity extends AppCompatActivity {
     }
     private void commentPost(final String comment, final String userId, final String postId) {
         String tag_string_req = "comment_post";
-        showDialog();
+        progressBar.setVisibility(View.VISIBLE);
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 AppConfig.URL_POST_COMMENTS, new Response.Listener<String>() {
 
@@ -196,12 +195,12 @@ public class CommentActivity extends AppCompatActivity {
                     JSONObject jObj = new JSONObject(response);
                     boolean error = jObj.getBoolean("success");
                     if (error) {
-                        hideDialog();
+                        progressBar.setVisibility(View.GONE);
                     } else {
                         JSONObject errorObj = jObj.getJSONObject("error");
                         String errorMsg = errorObj.getString("message");
                         Toast.makeText(getApplicationContext(),errorMsg, Toast.LENGTH_LONG).show();
-                        hideDialog();
+                        progressBar.setVisibility(View.GONE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -215,7 +214,7 @@ public class CommentActivity extends AppCompatActivity {
                 Log.e(TAG, "Registration Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
+                progressBar.setVisibility(View.GONE);
 
             }
         }) {
@@ -252,14 +251,5 @@ public class CommentActivity extends AppCompatActivity {
         }
 
         return titleCase.toString();
-    }
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
-
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
     }
 }

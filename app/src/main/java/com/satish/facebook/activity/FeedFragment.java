@@ -1,15 +1,17 @@
 package com.satish.facebook.activity;
 
 
-import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -33,13 +35,14 @@ public class FeedFragment extends Fragment {
 
     private ListView listView;
     private ArrayList<Feed> feedArrayList;
-    private ProgressDialog pDialog;
+    private ProgressBar progressBar;
     private static final String TAG = FeedFragment.class.getSimpleName();
     private FeedAdapter feedAdapter;
     private static String tag = "json_tag";
     private SQLiteHandler db;
     private String id;
     private LinearLayout noFeedLayout;
+    private Button btnFindFriends;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,20 +54,26 @@ public class FeedFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
         noFeedLayout= (LinearLayout) view.findViewById(R.id.noFeedLayout);
+        btnFindFriends= (Button) view.findViewById(R.id.find_friends);
         //creating listview instance
         listView = (ListView) view.findViewById(R.id.feed_list);
+        progressBar = (ProgressBar)view. findViewById(R.id.progressBar);
         feedArrayList = new ArrayList<>();
         feedAdapter = new FeedAdapter(getActivity(), feedArrayList);
         //set adapter to listview
-       listView.setAdapter(feedAdapter);
+        listView.setAdapter(feedAdapter);
         db=new SQLiteHandler(getActivity());
+        btnFindFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), FriendsHandlerActivity.class);
+                startActivity(i);
+            }
+        });
 
         //display prograss dialog
-        pDialog = new ProgressDialog(getActivity());
-        pDialog.setMessage("Loading....");
-        pDialog.setIndeterminate(true);
-        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pDialog.show();
+
+        progressBar.setVisibility(View.VISIBLE);
         HashMap<String, String> user = db.getUserDetails();
         id=user.get("uid");
         String url = AppConfig.URL_HOME;
@@ -113,7 +122,7 @@ public class FeedFragment extends Fragment {
 
                         }
                         feedAdapter.notifyDataSetChanged();
-                        pDialog.hide();
+                        progressBar.setVisibility(View.GONE);
                     }
 
 
@@ -123,7 +132,7 @@ public class FeedFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
                 // hide the progress dialog
-                pDialog.hide();
+                progressBar.setVisibility(View.GONE);
             }
         });
 
