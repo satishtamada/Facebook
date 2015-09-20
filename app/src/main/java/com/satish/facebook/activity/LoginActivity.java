@@ -37,21 +37,23 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_screen);
-        txtInputEmail = (EditText) findViewById(R.id.txt_email);
-        txtInputPassword = (EditText) findViewById(R.id.txt_password);
-        btnLinkRegister = (Button) findViewById(R.id.btn_link_register);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        btnLogin = (Button) findViewById(R.id.btn_login);
-        session = new SessionManager(getApplicationContext());
-        db = new SQLiteHandler(getApplicationContext());
         // Check if user is already logged in or not
+        session = new SessionManager(getApplicationContext());
         if (session.isLoggedIn()) {
             // User is already logged in. Take him to main activity
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }
+        setContentView(R.layout.login_screen);
+        txtInputEmail = (EditText) findViewById(R.id.txt_email);
+        txtInputPassword = (EditText) findViewById(R.id.txt_password);
+        btnLinkRegister = (Button) findViewById(R.id.btn_link_register);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        btnLogin = (Button) findViewById(R.id.btn_login);
+
+        db = new SQLiteHandler(getApplicationContext());
+
 
         //user login into facebook
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
                 String email = txtInputEmail.getText().toString();
                 String password = txtInputPassword.getText().toString();
 
-                if (email.trim().length() > 0 && password.trim().length() > 0) {
+                if (email.trim().length() > 0 && password.length() > 0) {
                     Log.d(TAG, email + "," + password);
                     // login user
                     checkLogin(email, password);

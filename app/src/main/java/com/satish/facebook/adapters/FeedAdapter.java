@@ -138,8 +138,8 @@ public class FeedAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if(lblLike.getCurrentTextColor()== Color.parseColor("#9197a3")){
-                   lblLike.setTextColor(Color.parseColor("#00a0b4"));
-                    like_icon.setImageResource(R.drawable.ic_like_select);
+                   lblLike.setTextColor(activity.getResources().getColor(R.color.colorPrimary));
+                    like_icon.setImageResource(R.drawable.ic_like_selected);
                 }
                 else {
                     lblLike.setTextColor(Color.parseColor("#9197a3"));

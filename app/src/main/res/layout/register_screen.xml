@@ -32,7 +32,8 @@
             android:layout_marginBottom="15dp"
             android:background="#fff"
             android:hint="@string/name_input"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:singleLine="true" />
 
         <EditText
             android:id="@+id/txt_email"
@@ -42,7 +43,8 @@
             android:background="#fff"
             android:hint="@string/email_input"
             android:inputType="textEmailAddress"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:singleLine="true" />
 
         <EditText
             android:id="@+id/txt_password"
@@ -52,14 +54,15 @@
             android:background="#fff"
             android:hint="@string/password_input"
             android:inputType="textPassword"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:singleLine="true" />
 
         <Button
             android:id="@+id/btn_register"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="@color/colorPrimaryDark"
+            android:background="@drawable/bg_button_style"
             android:text="@string/btn_register"
             android:textAllCaps="false"
             android:textColor="#fff"

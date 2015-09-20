@@ -121,8 +121,15 @@ public class FeedFragment extends Fragment {
                             e.printStackTrace();
 
                         }
-                        feedAdapter.notifyDataSetChanged();
-                        progressBar.setVisibility(View.GONE);
+
+                        if(feedArrayList.size() > 0) {
+                            feedAdapter.notifyDataSetChanged();
+                            progressBar.setVisibility(View.GONE);
+                            listView.setVisibility(View.VISIBLE);
+                        }else{
+                            progressBar.setVisibility(View.GONE);
+                            noFeedLayout.setVisibility(View.VISIBLE);
+                        }
                     }
 
 

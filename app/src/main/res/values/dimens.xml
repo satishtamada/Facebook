@@ -15,4 +15,7 @@
     <dimen name="feed_item_status_pad_top">15dp</dimen>
     <dimen name="feed_item_corner_radius">3dp</dimen>
     <dimen name="feed_item_border_width">1dp</dimen>
+    <dimen name="lbl_comment_size">12dp</dimen>
+    <dimen name="btn_positive_padding_top_bottom">10dp</dimen>
+    <dimen name="lbl_comment_size_count">12dp</dimen>
 </resources>

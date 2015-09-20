@@ -1,72 +1,82 @@
 package com.satish.facebook.activity;
 
-import android.app.ProgressDialog;
+import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.android.volley.toolbox.StringRequest;
 import com.satish.facebook.R;
 import com.satish.facebook.app.AppConfig;
 import com.satish.facebook.app.AppController;
+import com.satish.facebook.helper.SQLiteHandler;
 
-import org.json.JSONException;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by satish on 26/8/15.
  */
 public class FeedPostActivity extends AppCompatActivity {
-    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private Button btnPostImage;
-    private Button btnPost;
     private EditText txtPostText;
-    private TextView lblUserName;
-    private ProgressDialog pDialog;
     private static int RESULT_LOAD_IMAGE = 1;
     private static final String TAG = FeedPostActivity.class.getSimpleName();
-    private com.android.volley.toolbox.NetworkImageView userProfileImage;
-
+    private ImageView imgUploadFeed;
+    private Toolbar toolbar;
+    private ProgressBar progressBar;
+    Bitmap image;
+    String responseString = null;
+    String postText;
+    String  id;
+    private SQLiteHandler db;
+    byte[] bytes;ByteArrayOutputStream byteArrayOutputStream = null;
+    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+    private NetworkImageView userProfileImage;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_image_text_post);
-        txtPostText = (EditText) findViewById(R.id.text_post);
-        btnPostImage = (Button) findViewById(R.id.btn_image);
-        btnPost = (Button) findViewById(R.id.btn_post);
-        lblUserName= (TextView) findViewById(R.id.username);
-        Intent intent = getIntent();
+        setContentView(R.layout.activity_feed_post);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Post to Facebook");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        txtPostText = (EditText) findViewById(R.id.feed_text_post);
+        btnPostImage = (Button) findViewById(R.id.btn_postImage);
+        imgUploadFeed = (ImageView) findViewById(R.id.imageUpload);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         userProfileImage= (NetworkImageView) findViewById(R.id.user_profile_image);
-        lblUserName= (TextView) findViewById(R.id.username);
-        lblUserName.setText(intent.getStringExtra("userName"));
-        userProfileImage.setImageUrl(intent.getStringExtra("userProfileImage"), imageLoader);
-        pDialog = new ProgressDialog(this);
-        //event on post button
-        btnPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String postText = txtPostText.getText().toString();
-                String user_id = Integer.toString(61);
-                //  String image = "";
-                if (!postText.isEmpty()) {
-                    userPost(postText, user_id);
-                    Toast.makeText(getApplicationContext(), "successfully posted", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+        Intent intent = getIntent();
+        //userProfileImage.setImageUrl(intent.getStringExtra("userProfileImage"), imageLoader);
         //event on button image post
         btnPostImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,102 +85,133 @@ public class FeedPostActivity extends AppCompatActivity {
                 Intent i = new Intent(
                         Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
             }
         });
+        db = new SQLiteHandler(getApplicationContext());
+        HashMap<String, String> user = db.getUserDetails();
+        id = user.get("uid");
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_post, menu);
+        return true;
     }
 
-    private void userPost(final String postText, final String user_id) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-        String tag_string_req = "req_register";
-        pDialog.setMessage("Posted on Facebook ...");
-        showDialog();
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_FEED_CREATE, new Response.Listener<String>() {
+        int id = item.getItemId();
+        if (id == R.id.post) {
+            postText = txtPostText.getText().toString();
+            if (!postText.isEmpty()||image!=null) {
+                new UploadFileToServer().execute();
+            }
 
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "Register Response: " + response.toString());
+            return true;
+        }
 
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+            String s = getRealPathFromURI(selectedImageUri);
+            image = BitmapFactory.decodeFile(s);
+            imgUploadFeed.setImageBitmap(image);
+            imgUploadFeed.setAlpha((float) 0.4);
+        }
+    }
 
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("success");
+    public String getRealPathFromURI(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        @SuppressWarnings("deprecation")
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }  //upload image to server
 
-                    if (error) {
-                        Toast.makeText(getApplicationContext(), "Register successfully", Toast.LENGTH_LONG).show();
-                        hideDialog();
-                        // inputEmail.setText("");
-                        // JSONObject user = jObj.getJSONObject("profile");
-                        // String name = user.getString("name");
-                        // String email = user.getString("email");
-                        // String uid = user.getString("apikey");
-                        /// String created_at = user.getString("created_at");
-                        //  String id = user.getString("id");
-                        // Log.d("email and name is", name + "," + email + "," + uid + "," + created_at + "," + id);
+    private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
+        @Override
+        protected void onPreExecute() {
+            // setting progress bar to zero
 
+            super.onPreExecute();
+        }
 
-                        // Launch login activity
-                        //  Intent intent = new Intent(
-                        //        RegisterActivity.this,
-                        //        LoginActivity.class);
-                        // startActivity(intent);
-                        //  finish();
-                    } else {
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
 
-                        JSONObject errorObj = jObj.getJSONObject("error");
-                        // String errorMsg = errorObj.getString("message");
-                        // Toast.makeText(getApplicationContext(), "Register fails", Toast.LENGTH_LONG).show();
-                        // hideDialog();
+        @Override
+        protected String doInBackground(Void... params) {
+            return uploadFile();
+        }
 
-                        //  Toast.makeText(getApplicationContext(),
-                        //         errorMsg, Toast.LENGTH_LONG).show();
-                        // inputEmail.setText("");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        @SuppressWarnings("deprecation")
+        private String uploadFile() {
+
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost(AppConfig.URL_FEED_CREATE);
+            try {
+                MultipartEntityBuilder multipartEntity =
+                        MultipartEntityBuilder.create();
+                multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+                if(image!=null) {
+                    byteArrayOutputStream = new ByteArrayOutputStream();
+                    image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                    bytes = byteArrayOutputStream.toByteArray();
+                    ByteArrayBody bab = new ByteArrayBody(bytes, "forest.jpg");
+                    multipartEntity.addPart("image", bab);
                 }
-
+                multipartEntity.addTextBody("user_id", id);
+                multipartEntity.addTextBody("text",postText);
+                httppost.setEntity(multipartEntity.build());
+                // Making server call
+                HttpResponse response = httpclient.execute(httppost);
+                Log.d("response is", response.toString());
+                HttpEntity r_entity = response.getEntity();
+                int statusCode = response.getStatusLine().getStatusCode();
+                if (statusCode == 200) {
+                    // Server response
+                    responseString = EntityUtils.toString(r_entity);
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseString);
+                        boolean error = jsonObject.getBoolean("success");
+                        if (error) {
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                            progressBar.setVisibility(View.GONE);
+                        } else
+                            Toast.makeText(getApplicationContext(), "server busy...!", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                    } catch (Exception e) {
+                    }
+                } else {
+                    responseString = "Error occurred! Http Status Code: "
+                            + statusCode;
+                }
+            } catch (ClientProtocolException e) {
+                responseString = e.toString();
+            } catch (IOException e) {
+                responseString = e.toString();
             }
-        }, new Response.ErrorListener() {
+            return responseString;
+        }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Post Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
+        @Override
+        protected void onPostExecute(String result) {
+            Log.e("profile", "Response from server: " + result);
+            // showing the server response in an alert dialog
+            // showAlert(result);
+            super.onPostExecute(result);
+        }
 
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting params to register url
-                Map<String, String> params = new HashMap<String, String>();
-                // params.put("tag", "register");
-                params.put("user_id", user_id);
-                params.put("text", postText);
-                //  params.put("image",image);
-                Log.d("in getParams", postText);
-
-                return params;
-            }
-
-        };
-
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-
-    }
-
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
-
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
     }
 }

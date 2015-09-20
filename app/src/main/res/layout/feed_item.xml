@@ -95,11 +95,13 @@
                 android:id="@+id/comments_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"/>
+                android:text="0"
+                android:textSize="@dimen/lbl_comment_size_count"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="comments"
+                android:textSize="@dimen/lbl_comment_size_count"
                 android:paddingLeft="5dp"/>
         </LinearLayout>
         <!--like comment layout-->
@@ -132,8 +134,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
-                    android:text="Like"
+                    android:text="@string/btn_like_lbl"
                     android:textColor="#9197a3"
+                    android:textSize="@dimen/lbl_comment_size"
                     android:textStyle="bold" />
             </LinearLayout>
             <!--comment layout-->
@@ -156,7 +159,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
-                    android:text="Comment"
+                    android:textSize="@dimen/lbl_comment_size"
+                    android:text="@string/btn_comment_lbl"
                     android:textColor="#9197a3"
                     android:textStyle="bold" />
 

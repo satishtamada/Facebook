@@ -4,56 +4,66 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".app.AppController"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_facebook"
         android:label="@string/app_name"
         android:theme="@style/MyMaterialTheme">
+        <!--home-->
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
+        <!--Login-->
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-
+        <!--Register-->
         <activity
             android:name=".activity.RegisterActivity"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
+        <!--friends tabs activity-->
         <activity
             android:name=".activity.FriendsHandlerActivity"
             android:parentActivityName=".activity.MainActivity"
             android:screenOrientation="portrait">
-        </activity>
 
+        </activity>
+        <!--user images-->
         <activity
             android:name=".activity.ImagesActivity"
             android:parentActivityName=".activity.MainActivity"
             android:screenOrientation="portrait">
 
         </activity>
-
+        <!--full image-->
         <activity
             android:name=".activity.FullImageActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
 
+        </activity>
+        <!--comment post-->
         <activity
             android:name=".activity.CommentActivity"
             android:screenOrientation="portrait"></activity>
-
-        <activity android:name=".activity.ProfileImageActivity"
+        <!--profile image upload-->
+        <activity
+            android:name=".activity.ProfileImageActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
+        </activity>
+        <!--feed post -->
+        <activity
+            android:name=".activity.FeedPostActivity"
+            android:screenOrientation="portrait">
+
         </activity>
     </application>
 

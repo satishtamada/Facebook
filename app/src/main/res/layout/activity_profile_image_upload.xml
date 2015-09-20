@@ -10,6 +10,17 @@
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
     </android.support.design.widget.AppBarLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="60dp"
+        android:indeterminateTint="@color/colorAccent"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="gone" />
     <LinearLayout
         android:id="@+id/noFeedLayout"
         android:layout_width="fill_parent"
@@ -34,7 +45,7 @@
             android:textAllCaps="false"
             android:textColor="#ffffff"
             android:layout_marginTop="25dip"
-            android:background="@color/colorPrimaryDark"
+            android:background="@drawable/bg_button_style"
             android:text="@string/btn_upload_profile"
             />
 

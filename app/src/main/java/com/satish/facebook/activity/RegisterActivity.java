@@ -3,6 +3,7 @@ package com.satish.facebook.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -67,11 +68,14 @@ public class RegisterActivity extends AppCompatActivity {
                 String name = inputFullName.getText().toString();
                 String email = inputEmail.getText().toString();
                 String password = inputPassword.getText().toString();
-
-
+                boolean validEmail=isValidEmail(email.trim());
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
                     Log.d(TAG, name + " " + email + " " + password);
-                    registerUser(name, email, password);
+                    if (validEmail)
+                        registerUser(name, email, password);
+                    else
+                        Toast.makeText(getApplicationContext(),"Invalid email address", Toast.LENGTH_SHORT).show();
+
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Please enter your details!", Toast.LENGTH_LONG)
@@ -91,6 +95,10 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private boolean isValidEmail(String email) {
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private void registerUser(final String name, final String email,
