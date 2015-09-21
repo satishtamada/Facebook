@@ -1,7 +1,6 @@
 package com.satish.facebook.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -36,7 +35,7 @@ public class FriendsHandlerActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.tab_viewpager);
         setUpViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.setTabTextColors(Color.parseColor("#c2c3c8"), Color.parseColor("#00bcd4"));
+        tabLayout.setTabTextColors(getResources().getColor(R.color.tab_unselected),getResources().getColor(R.color.colorPrimary));
         tabLayout.setupWithViewPager(viewPager);
     }
 
@@ -48,12 +47,12 @@ public class FriendsHandlerActivity extends AppCompatActivity {
             case 1:
                 adapter.addFragment(new FriendsListFragment(), "FRIENDS");
                 adapter.addFragment(new SuggestionsFragment(), "SUGGESTIONS");
-                adapter.addFragment(new FriendRequsetFragment(), "REQUESTS");
+                adapter.addFragment(new FriendRequesetFragment(), "REQUESTS");
                 break;
             case 2:
                 adapter.addFragment(new SuggestionsFragment(), "SUGGESTIONS");
                 adapter.addFragment(new FriendsListFragment(), "FRIENDS");
-                adapter.addFragment(new FriendRequsetFragment(), "REQUESTS");
+                adapter.addFragment(new FriendRequesetFragment(), "REQUESTS");
                 break;
             default:
 

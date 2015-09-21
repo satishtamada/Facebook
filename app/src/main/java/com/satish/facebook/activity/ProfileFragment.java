@@ -40,7 +40,7 @@ public class ProfileFragment extends Fragment {
     private static final String TAG = ProfileFragment.class.getSimpleName();
     private ProgressBar progressBar;
     private TextView lblUserName, lblUserMailId, lblUserJoined, lblFriendCount, lblPostCount, lblPictureCount;
-    private RelativeLayout userProfileLayout, friendsLayout, findFriendsLayout, pictureLayout,logoutLayout;
+    private RelativeLayout parentLayout,userProfileLayout, friendsLayout, findFriendsLayout, pictureLayout,logoutLayout;
     private NetworkImageView profile_image;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private ArrayList<String> userImages;
@@ -67,6 +67,7 @@ public class ProfileFragment extends Fragment {
         lblPictureCount = (TextView) view.findViewById(R.id.imageCount);
         profile_image = (NetworkImageView) view.findViewById(R.id.profile_image);
         userProfileLayout = (RelativeLayout) view.findViewById(R.id.user_profile);
+        parentLayout= (RelativeLayout) view.findViewById(R.id.profile_parent_layout);
         friendsLayout = (RelativeLayout) view.findViewById(R.id.friendsLayout);
         findFriendsLayout = (RelativeLayout) view.findViewById(R.id.findFriendsLayout);
         pictureLayout = (RelativeLayout) view.findViewById(R.id.picturesLayout);
@@ -166,6 +167,7 @@ public class ProfileFragment extends Fragment {
                                     Log.d("image array is", userImages.toString());
                                 }
                                 progressBar.setVisibility(View.GONE);
+                                parentLayout.setVisibility(View.VISIBLE);
                             } else {
                                 Toast.makeText(getActivity(), "server busy", Toast.LENGTH_LONG).show();
                                 progressBar.setVisibility(View.GONE);

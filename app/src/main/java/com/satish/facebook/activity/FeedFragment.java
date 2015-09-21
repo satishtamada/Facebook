@@ -67,6 +67,7 @@ public class FeedFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), FriendsHandlerActivity.class);
+                i.putExtra("tab_name",2);
                 startActivity(i);
             }
         });

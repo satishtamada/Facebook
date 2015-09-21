@@ -7,7 +7,7 @@ import java.util.List;
  * Created by satish on 6/8/15.
  */
 public class AppConfig {
-    public static String URL="http://192.168.0.100:8080/facebook_rest/rest/";
+    public static String URL="http://192.168.0.104:8080/facebook_rest/rest/";
     public static String URL_REGISTER = URL+"user/register";
     public static String URL_LOGIN = URL+"user/login";
     public static String URL_FIND_FRIEND = URL+"friend/find_friend";
@@ -19,6 +19,9 @@ public class AppConfig {
     public static String URL_COMMENTS=URL+"post/comments";
     public static String URL_POST_COMMENTS=URL+"comment/create";
     public static String URL_PROFILE_UPLOAD=URL+"user/profile_upload";
+    public static String URL_FRIEND_SUGGESTIONS=URL+"friend/add_friend";
+    public static String URL_FRIEND_REQUESTS=URL+"friend/friend_requests";
+    public static String URL_FRIEND_REQUEST_ACCEPT=URL+"friend/add_friend_confirm";
 
     // Number of columns of Grid View
     public static final int NUM_OF_COLUMNS = 3;

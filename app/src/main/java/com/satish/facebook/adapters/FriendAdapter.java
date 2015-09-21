@@ -58,7 +58,7 @@ public class FriendAdapter extends BaseAdapter {
         if (convertView == null)
             view = inflater.inflate(R.layout.friends_list_view, null);
         TextView lbl_name = (TextView) view.findViewById(R.id.friend_name);
-        NetworkImageView networkImage = (NetworkImageView) view.findViewById(R.id.image);
+        NetworkImageView networkImage = (NetworkImageView) view.findViewById(R.id.friend_profile_image);
         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
         final Button btnFriend = (Button) view.findViewById(R.id.un_friend);
         final TextView lblRequestSent = (TextView) view.findViewById(R.id.text_friend_request_sent);
@@ -95,12 +95,12 @@ public class FriendAdapter extends BaseAdapter {
                 } else if (btnFriend.getText().equals("Add Friend")) {
                     lblRequestSent.setText("Request is sent");
                     btnFriend.setText("Cancel");
-                    btnFriend.setTextColor(Color.parseColor("#00b4e2"));
+                    btnFriend.setTextColor(activity.getResources().getColor(R.color.colorPrimary));
                     //event button cancel request
                 } else if (btnFriend.getText().equals("Cancel")) {
                     lblRequestSent.setText("Request canceled");
                     btnFriend.setText("Add Friend");
-                    btnFriend.setTextColor(Color.parseColor("#4e5665"));
+                    btnFriend.setTextColor(activity.getResources().getColor(R.color.colorPrimary));
                 } else {
                 }
             }

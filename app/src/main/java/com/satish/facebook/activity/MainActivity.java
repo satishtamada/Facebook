@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     TabLayout tabLayout;
     private SessionManager session;
-    int currentTab=0;
+    int currentTab = 0;
     private FloatingActionButton floatingActionButton;
 
     @Override
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        floatingActionButton= (FloatingActionButton) findViewById(R.id.fab);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(getApplicationContext(),FeedPostActivity.class);
+                Intent i = new Intent(getApplicationContext(), FeedPostActivity.class);
                 startActivity(i);
             }
         });
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(currentTab!=0){
+        if (currentTab != 0) {
             viewPager.setCurrentItem(0);
             return;
         }
@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpTabs() {
+
+
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_tab_feed);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_tab_friends);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_tab_notification);
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
     private void setUpViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new FeedFragment());
-        adapter.addFragment(new FriensRequestFragment());
+        adapter.addFragment(new FriendRequesetFragment());
         adapter.addFragment(new NotificationFragment());
         adapter.addFragment(new ProfileFragment());
         viewPager.setAdapter(adapter);

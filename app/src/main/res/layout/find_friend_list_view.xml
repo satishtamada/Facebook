@@ -32,7 +32,7 @@
         android:paddingLeft="10dp"
         android:textColor="#7e7e7e" />
 
-    <ToggleButton
+    <Button
         android:id="@+id/add_friend"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
@@ -43,8 +43,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:textAllCaps="false"
-        android:textColor="#4e5665"
-        android:textOff="Add Friend"
-        android:textOn="Cancel" />
+        android:textColor="@color/colorPrimary"
+        android:text="Add Friend" />
 
 </RelativeLayout>

@@ -5,7 +5,7 @@
     android:padding="10dp" >
 
     <com.android.volley.toolbox.NetworkImageView
-        android:id="@+id/image"
+        android:id="@+id/friend_profile_image"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_marginLeft="10dp"
@@ -16,7 +16,7 @@
         android:id="@+id/friend_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/image"
+        android:layout_toRightOf="@+id/friend_profile_image"
         android:layout_marginTop="13dp"
         android:paddingLeft="10dp"
         android:textSize="15dp"
@@ -43,7 +43,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:textAllCaps="false"
-        android:textColor="#00b4e2"
+        android:textColor="@color/colorPrimary"
         android:text="Friends" />
 
 

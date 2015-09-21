@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,20 +31,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by satish on 30/8/15.
+ * Created by satish on 21/9/15.
  */
-public class FindFriendAdapter extends BaseAdapter {
+public class FriendRequestAdapter extends BaseAdapter {
     private ArrayList<Friend> friendArrayList;
     private LayoutInflater inflater;
     private Activity activity;
-    String id;
-    private TextView lblRequestSent;
-    private Button btnAddFriend;
+    private String id;
     private static String tag = "json_tag";
-    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-
-    public FindFriendAdapter(ArrayList<Friend> friendArrayList, Activity activity, String id) {
-
+private  LinearLayout confirm_delete_layout;
+    private TextView lblNowFriends;
+    private   TextView lbl_name;
+    public FriendRequestAdapter(ArrayList<Friend> friendArrayList, Activity activity, String id) {
         this.friendArrayList = friendArrayList;
         this.activity = activity;
         this.id = id;
@@ -70,33 +69,29 @@ public class FindFriendAdapter extends BaseAdapter {
         if (view == null)
             inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
-            view = inflater.inflate(R.layout.find_friend_list_view, null);
-        TextView lblName = (TextView) view.findViewById(R.id.friend_name);
-        lblRequestSent = (TextView) view.findViewById(R.id.text_friend_request_sent);
-        NetworkImageView profileImage = (NetworkImageView) view.findViewById(R.id.image);
-        btnAddFriend = (Button) view.findViewById(R.id.add_friend);
+            view = inflater.inflate(R.layout.friends_request_list_view, null);
+        lbl_name = (TextView) view.findViewById(R.id.friend_name);
+        confirm_delete_layout= (LinearLayout) view.findViewById(R.id.confirm_delete_layout);
+        lblNowFriends= (TextView) view.findViewById(R.id.lbl_your_now_friends);
+        Button btnConfirm = (Button) view.findViewById(R.id.btn_confirm);
+        Button btnDelete = (Button) view.findViewById(R.id.btn_delete);
+        NetworkImageView networkImage = (NetworkImageView) view.findViewById(R.id.friend_profile_image);
+        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
         final Friend friend = friendArrayList.get(position);
-        Log.d("id,name", friend.getName());
-        lblName.setText(friend.getName());
-        profileImage.setImageUrl(friend.getProfileImageUrl(), imageLoader);
-        btnAddFriend.setOnClickListener(new View.OnClickListener() {
+        lbl_name.setText(friend.getName());
+        networkImage.setImageUrl(friend.getProfileImageUrl(), imageLoader);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (btnAddFriend.getText().equals("Add Friend")) {
-                    Toast.makeText(activity.getApplicationContext(),id+""+friend.getId(),Toast.LENGTH_LONG).show();
-                    requestSent(id, friend.getId());
-                } else if (btnAddFriend.getText().equals("Cancel")) {
-                    lblRequestSent.setText("Request canceled");
-                    btnAddFriend.setText("Add Friend");
-                    btnAddFriend.setTextColor(activity.getResources().getColor(R.color.colorPrimary));
-                }
+                Toast.makeText(activity.getApplicationContext(), id + " " + friend.getId(), Toast.LENGTH_LONG).show();
+                friendConfirm(id, friend.getId());
             }
         });
         return view;
     }
 
-    private void requestSent(final String user_id, final String friend_id) {
-        String url = AppConfig.URL_FRIEND_SUGGESTIONS;
+    private void friendConfirm(final String user_id, final String friend_id) {
+        String url = AppConfig.URL_FRIEND_REQUEST_ACCEPT;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 url, null,
                 new Response.Listener<JSONObject>() {
@@ -105,11 +100,10 @@ public class FindFriendAdapter extends BaseAdapter {
                         try {
                             boolean success = response.getBoolean("success");
                             if (success) {
-                                lblRequestSent.setText("Request is sent");
-                                btnAddFriend.setText("Cancel");
-                                btnAddFriend.setTextColor(activity.getResources().getColor(R.color.colorPrimary));
-                            } else lblRequestSent.setText("");
-                            btnAddFriend.setText("Add Friend");
+                                lblNowFriends.setVisibility(View.VISIBLE);
+                                confirm_delete_layout.setVisibility(View.GONE);
+                            } else {
+                            }
                         } catch (Exception e) {
                             Log.d("error in", "catch");
                             e.printStackTrace();
@@ -128,7 +122,6 @@ public class FindFriendAdapter extends BaseAdapter {
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("tag", "login");
                 params.put("user_id", user_id);
                 params.put("friend_id", friend_id);
                 return params;
