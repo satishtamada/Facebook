@@ -73,16 +73,16 @@ public class FeedAdapter extends BaseAdapter {
                 .findViewById(R.id.timestamp);
         TextView statusMsg = (TextView) convertView
                 .findViewById(R.id.txtStatusMsg);
-        TextView lblCommentsCount= (TextView) convertView.findViewById(R.id.comments_count);
+        TextView lblCommentsCount = (TextView) convertView.findViewById(R.id.comments_count);
         TextView url = (TextView) convertView.findViewById(R.id.txtUrl);
         NetworkImageView profilePic = (NetworkImageView) convertView
                 .findViewById(R.id.profilePic);
         FeedImageView feedImageView = (FeedImageView) convertView
                 .findViewById(R.id.feedImage1);
-        final LinearLayout like= (LinearLayout) convertView.findViewById(R.id.like_layout);
-        LinearLayout comment= (LinearLayout) convertView.findViewById(R.id.comment_layout);
-        final ImageView like_icon= (ImageView) convertView.findViewById(R.id.icon_like);
-        final TextView lblLike= (TextView) convertView.findViewById(R.id.lbl_like);
+        final LinearLayout like = (LinearLayout) convertView.findViewById(R.id.like_layout);
+        LinearLayout comment = (LinearLayout) convertView.findViewById(R.id.comment_layout);
+        final ImageView like_icon = (ImageView) convertView.findViewById(R.id.icon_like);
+        final TextView lblLike = (TextView) convertView.findViewById(R.id.lbl_like);
         final Feed item = feedList.get(position);
 
         name.setText(item.getName());
@@ -137,11 +137,10 @@ public class FeedAdapter extends BaseAdapter {
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(lblLike.getCurrentTextColor()== Color.parseColor("#9197a3")){
-                   lblLike.setTextColor(activity.getResources().getColor(R.color.colorPrimary));
+                if (lblLike.getCurrentTextColor() == Color.parseColor("#9197a3")) {
+                    lblLike.setTextColor(activity.getResources().getColor(R.color.colorPrimary));
                     like_icon.setImageResource(R.drawable.ic_like_selected);
-                }
-                else {
+                } else {
                     lblLike.setTextColor(Color.parseColor("#9197a3"));
                     like_icon.setImageResource(R.drawable.ic_like_unselect);
                 }

@@ -22,7 +22,11 @@
     <string name="btn_comment_lbl">Comment</string>
     <string name="btn_like_lbl">Like</string>
     <string name="lbl_now_your_friends">You are now friends</string>
+    <string name="lbl_no_requests">No New Requests</string>
+    <string name="lbl_no_friends">No friends to show</string>
+    <string name="lbl_no_suggestion">No suggestions to show</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

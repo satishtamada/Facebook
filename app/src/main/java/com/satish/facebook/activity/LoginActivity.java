@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private static final String TAG = LoginActivity.class.getSimpleName();
     private SQLiteHandler db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,14 +108,15 @@ public class LoginActivity extends AppCompatActivity {
                         // Fetching user details from sqlite
                         HashMap<String, String> userData = db.getUserDetails();
                         //checking user data is not available in sqllite
-                        if(userData.size()==0){
+                        if (userData.size() == 0) {
                             JSONObject user = jObj.getJSONObject("profile");
                             String name = user.getString("name");
                             String email = user.getString("email");
                             String uid = user.getString("apikey");
                             String created_at = user.getString("created_at");
                             String id = user.getString("id");
-                            db.addUser(id, name, email, uid, created_at);}
+                            db.addUser(id, name, email, uid, created_at);
+                        }
                         // Launch main activity
                         Intent intent = new Intent(LoginActivity.this,
                                 MainActivity.class);

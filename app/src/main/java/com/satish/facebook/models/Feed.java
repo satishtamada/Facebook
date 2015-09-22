@@ -5,20 +5,20 @@ package com.satish.facebook.models;
  */
 public class Feed {
     private String name, profileImageUrl, status, image, created_at, url;
-    private int post_id,comments_count;
+    private int post_id, comments_count;
 
     public Feed() {
     }
 
-    public Feed(String name, String profileImageUrl, String status, String image, String created_at, String url,int post_id,int comments_count) {
+    public Feed(String name, String profileImageUrl, String status, String image, String created_at, String url, int post_id, int comments_count) {
         this.name = name;
         this.profileImageUrl = profileImageUrl;
         this.status = status;
         this.image = image;
         this.created_at = created_at;
         this.url = url;
-        this.post_id=post_id;
-        this.comments_count=comments_count;
+        this.post_id = post_id;
+        this.comments_count = comments_count;
     }
 
     public String getName() {

@@ -25,19 +25,21 @@
             android:maxLength="14"
             android:textSize="15dp"
             android:textStyle="bold" />
-        <TextView android:id="@+id/lbl_your_now_friends"
+
+        <TextView
+            android:id="@+id/lbl_your_now_friends"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/lbl_now_your_friends"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
-        <LinearLayout android:id="@+id/confirm_delete_layout"
+        <LinearLayout
+            android:id="@+id/confirm_delete_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:visibility="visible">
 
-           >
             <Button
                 android:id="@+id/btn_confirm"
                 android:layout_width="wrap_content"
@@ -57,7 +59,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:background="@drawable/bg_btn_delete"
-                android:paddingLeft="10dp" android:layout_margin="5dp"
+                android:paddingLeft="10dp"
+                android:layout_margin="5dp"
                 android:paddingRight="10dp"
                 android:text="delete"
                 android:textAllCaps="false"

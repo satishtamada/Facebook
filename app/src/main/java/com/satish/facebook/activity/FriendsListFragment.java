@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -41,6 +42,7 @@ public class FriendsListFragment extends Fragment {
     private ProgressBar progressBar;
     private String id;
     private SQLiteHandler db;
+    private TextView lbl_no_friends;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,9 +53,10 @@ public class FriendsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_suggestions, container, false);
+        View view = inflater.inflate(R.layout.fragment_friends_list, container, false);
         listView = (ListView) view.findViewById(R.id.friend_list_view);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        lbl_no_friends= (TextView) view.findViewById(R.id.lbl_no_friends);
         friendArrayList = new ArrayList<>();
         friendAdapter = new FriendAdapter(friendArrayList, getActivity());
         db = new SQLiteHandler(getActivity());
@@ -102,10 +105,15 @@ public class FriendsListFragment extends Fragment {
                         } catch (Exception e) {
                             Log.d("error in", "catch");
                             e.printStackTrace();
-
                         }
-                        friendAdapter.notifyDataSetChanged();
-                        progressBar.setVisibility(View.GONE);
+                        if(friendArrayList.size()>0) {
+                            friendAdapter.notifyDataSetChanged();
+                            progressBar.setVisibility(View.GONE);
+                            listView.setVisibility(View.VISIBLE);
+                        }else {
+                            progressBar.setVisibility(View.GONE);
+                            lbl_no_friends.setVisibility(View.VISIBLE);
+                        }
                     }
                 }, new Response.ErrorListener() {
 

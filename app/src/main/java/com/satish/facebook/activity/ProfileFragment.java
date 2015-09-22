@@ -40,15 +40,17 @@ public class ProfileFragment extends Fragment {
     private static final String TAG = ProfileFragment.class.getSimpleName();
     private ProgressBar progressBar;
     private TextView lblUserName, lblUserMailId, lblUserJoined, lblFriendCount, lblPostCount, lblPictureCount;
-    private RelativeLayout parentLayout,userProfileLayout, friendsLayout, findFriendsLayout, pictureLayout,logoutLayout;
+    private RelativeLayout parentLayout, userProfileLayout, friendsLayout, findFriendsLayout, pictureLayout, logoutLayout;
     private NetworkImageView profile_image;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private ArrayList<String> userImages;
     private ArrayList<String> postIds;
     private String userName;
     private int postCount;
-    private String id;private SQLiteHandler db;
+    private String id;
+    private SQLiteHandler db;
     private SessionManager session;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,15 +69,15 @@ public class ProfileFragment extends Fragment {
         lblPictureCount = (TextView) view.findViewById(R.id.imageCount);
         profile_image = (NetworkImageView) view.findViewById(R.id.profile_image);
         userProfileLayout = (RelativeLayout) view.findViewById(R.id.user_profile);
-        parentLayout= (RelativeLayout) view.findViewById(R.id.profile_parent_layout);
+        parentLayout = (RelativeLayout) view.findViewById(R.id.profile_parent_layout);
         friendsLayout = (RelativeLayout) view.findViewById(R.id.friendsLayout);
         findFriendsLayout = (RelativeLayout) view.findViewById(R.id.findFriendsLayout);
         pictureLayout = (RelativeLayout) view.findViewById(R.id.picturesLayout);
-        logoutLayout= (RelativeLayout) view.findViewById(R.id.logoutLayout);
+        logoutLayout = (RelativeLayout) view.findViewById(R.id.logoutLayout);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         userImages = new ArrayList<>();
         postIds = new ArrayList<>();
-        db=new SQLiteHandler(getActivity());
+        db = new SQLiteHandler(getActivity());
         // session manager
         session = new SessionManager(getActivity());
 
@@ -94,7 +96,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent friendsIntent = new Intent(getActivity(), FriendsHandlerActivity.class);
-                friendsIntent.putExtra("tab_name",1);
+                friendsIntent.putExtra("tab_name", 1);
                 startActivity(friendsIntent);
             }
         });
@@ -102,7 +104,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent findFriendsIntent = new Intent(getActivity(), FriendsHandlerActivity.class);
-                findFriendsIntent.putExtra("tab_name",2);
+                findFriendsIntent.putExtra("tab_name", 2);
                 startActivity(findFriendsIntent);
             }
         });
@@ -128,7 +130,7 @@ public class ProfileFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
         HashMap<String, String> user = db.getUserDetails();
-        id=user.get("uid");
+        id = user.get("uid");
 
         String url = AppConfig.URL_USER_PROFILE;
         url += "?id=" + id;
@@ -146,7 +148,7 @@ public class ProfileFragment extends Fragment {
                                 profile_image.setImageUrl(jsonObject.getString("profile_image"), imageLoader);
                                 userName = toTitleCase(jsonObject.getString("name"));
                                 lblUserName.setText(userName);
-                                Log.d("name is",userName);
+                                Log.d("name is", userName);
                                 lblUserMailId.setText(jsonObject.getString("email"));
                                 lblUserJoined.setText(jsonObject.getString("created_at"));
                                 lblFriendCount.setText(jsonObject.getString("friends_count"));
@@ -211,6 +213,7 @@ public class ProfileFragment extends Fragment {
 
         return titleCase.toString();
     }
+
     private void logoutUser() {
         session.setLogin(false);
 

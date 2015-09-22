@@ -35,7 +35,7 @@ public class FriendsHandlerActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.tab_viewpager);
         setUpViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.setTabTextColors(getResources().getColor(R.color.tab_unselected),getResources().getColor(R.color.colorPrimary));
+        tabLayout.setTabTextColors(getResources().getColor(R.color.tab_unselected), getResources().getColor(R.color.colorPrimary));
         tabLayout.setupWithViewPager(viewPager);
     }
 

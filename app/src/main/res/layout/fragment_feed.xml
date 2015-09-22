@@ -14,12 +14,13 @@
         android:indeterminateTint="@color/colorPrimary"
         android:indeterminateTintMode="src_atop"
         android:visibility="gone" />
+
     <ListView
         android:id="@+id/feed_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:divider="@null"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/noFeedLayout"
@@ -54,8 +55,7 @@
             android:paddingRight="10dp"
             android:textAllCaps="false"
             android:textColor="#4e5665"
-            android:text="@string/btn_find_friends"
-            />
+            android:text="@string/btn_find_friends" />
 
     </LinearLayout>
 

@@ -32,6 +32,7 @@ public class ImagesActivity extends AppCompatActivity {
     private ImagesAdapter imagesAdapter;
     private String userName;
     private ProgressBar progressBar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,7 @@ public class ImagesActivity extends AppCompatActivity {
 
         // Initilizing Grid View
         InitilizeGridLayout();
-        Log.d("postIds",Integer.toString(postIds.size()));
+        Log.d("postIds", Integer.toString(postIds.size()));
         imagesAdapter = new ImagesAdapter(ImagesActivity.this, imageUrls,
                 columnWidth);
         // Instance of ImageAdapter Class

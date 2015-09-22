@@ -57,7 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (session.isLoggedIn()) {
             // User is already logged in. Take him to main activity
             Intent intent = new Intent(RegisterActivity.this,
-                   MainActivity.class);
+                    MainActivity.class);
             startActivity(intent);
             finish();
         }
@@ -68,13 +68,13 @@ public class RegisterActivity extends AppCompatActivity {
                 String name = inputFullName.getText().toString();
                 String email = inputEmail.getText().toString();
                 String password = inputPassword.getText().toString();
-                boolean validEmail=isValidEmail(email.trim());
+                boolean validEmail = isValidEmail(email.trim());
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
                     Log.d(TAG, name + " " + email + " " + password);
                     if (validEmail)
                         registerUser(name, email, password);
                     else
-                        Toast.makeText(getApplicationContext(),"Invalid email address", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
 
                 } else {
                     Toast.makeText(getApplicationContext(),
@@ -136,7 +136,7 @@ public class RegisterActivity extends AppCompatActivity {
                         db.addUser(id, name, email, apikey, created_at);
                         // Launch login activity
                         Intent intent = new Intent(
-                                RegisterActivity.this,ProfileImageActivity.class);
+                                RegisterActivity.this, ProfileImageActivity.class);
                         startActivity(intent);
                         finish();
                     } else {

@@ -43,6 +43,7 @@ public class FeedFragment extends Fragment {
     private String id;
     private LinearLayout noFeedLayout;
     private Button btnFindFriends;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,21 +54,21 @@ public class FeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
-        noFeedLayout= (LinearLayout) view.findViewById(R.id.noFeedLayout);
-        btnFindFriends= (Button) view.findViewById(R.id.find_friends);
+        noFeedLayout = (LinearLayout) view.findViewById(R.id.noFeedLayout);
+        btnFindFriends = (Button) view.findViewById(R.id.find_friends);
         //creating listview instance
         listView = (ListView) view.findViewById(R.id.feed_list);
-        progressBar = (ProgressBar)view. findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         feedArrayList = new ArrayList<>();
         feedAdapter = new FeedAdapter(getActivity(), feedArrayList);
         //set adapter to listview
         listView.setAdapter(feedAdapter);
-        db=new SQLiteHandler(getActivity());
+        db = new SQLiteHandler(getActivity());
         btnFindFriends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), FriendsHandlerActivity.class);
-                i.putExtra("tab_name",2);
+                i.putExtra("tab_name", 2);
                 startActivity(i);
             }
         });
@@ -76,7 +77,7 @@ public class FeedFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
         HashMap<String, String> user = db.getUserDetails();
-        id=user.get("uid");
+        id = user.get("uid");
         String url = AppConfig.URL_HOME;
         url += "?id=" + id;
 
@@ -97,8 +98,8 @@ public class FeedFragment extends Fragment {
                                     String post_image = friendObj.getString("image");
                                     String created_at = friendObj.getString("created_at");
                                     String postText = friendObj.getString("text");
-                                    int postId=friendObj.getInt("post_id");
-                                    int commentsCount=friendObj.getInt("comments_count");
+                                    int postId = friendObj.getInt("post_id");
+                                    int commentsCount = friendObj.getInt("comments_count");
                                     String userName = toTitleCase(name);
                                     Feed feed = new Feed();
                                     feed.setName(userName);
@@ -112,8 +113,7 @@ public class FeedFragment extends Fragment {
                                     }
                                     feedArrayList.add(feed);
                                 }
-                            }
-                            else{
+                            } else {
                                 listView.setVisibility(View.GONE);
                                 noFeedLayout.setVisibility(View.VISIBLE);
                             }
@@ -123,11 +123,11 @@ public class FeedFragment extends Fragment {
 
                         }
 
-                        if(feedArrayList.size() > 0) {
+                        if (feedArrayList.size() > 0) {
                             feedAdapter.notifyDataSetChanged();
                             progressBar.setVisibility(View.GONE);
                             listView.setVisibility(View.VISIBLE);
-                        }else{
+                        } else {
                             progressBar.setVisibility(View.GONE);
                             noFeedLayout.setVisibility(View.VISIBLE);
                         }

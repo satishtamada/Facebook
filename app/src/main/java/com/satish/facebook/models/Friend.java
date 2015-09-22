@@ -7,6 +7,7 @@ public class Friend {
     private String name;
     private String id;
     private String profileImageUrl;
+    private int status;
 
     public Friend() {
     }
@@ -40,5 +41,13 @@ public class Friend {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

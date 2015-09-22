@@ -37,7 +37,7 @@ public class CommentAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-       return commetArrayList.size();
+        return commetArrayList.size();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class CommentAdapter extends BaseAdapter {
         NetworkImageView profileImage = (NetworkImageView) view.findViewById(R.id.profile_image);
         TextView lblComment = (TextView) view.findViewById(R.id.comment);
         TextView lblCreated_at = (TextView) view.findViewById(R.id.created_at);
-        Comments c=commetArrayList.get(position);
+        Comments c = commetArrayList.get(position);
         lblName.setText(c.getCommented_username());
         profileImage.setImageUrl(c.getProfile_image(), imageLoader);
         lblComment.setText(c.getComment());

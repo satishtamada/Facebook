@@ -1,13 +1,16 @@
 package com.satish.facebook.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -30,7 +33,7 @@ import java.util.HashMap;
 /**
  * Created by satish on 13/9/15.
  */
-public class FriendRequesetFragment extends Fragment {
+public class FriendRequesetFragment extends Fragment implements FriendRequestAdapter.FriendRequestAdapterListener {
     private ListView listView;
     private FriendRequestAdapter friendRequestAdapter;
     private ArrayList<Friend> friendArrayList;
@@ -39,27 +42,41 @@ public class FriendRequesetFragment extends Fragment {
     private ProgressBar progressBar;
     private String id;
     private SQLiteHandler db;
+    private TextView lblNoNewRequests;
+    private Button btnFindFriend;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-    }  @Override
-       public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                Bundle savedInstanceState) {
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friend_requestes, container, false);
         listView = (ListView) view.findViewById(R.id.friend_request_listview);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        lblNoNewRequests= (TextView) view.findViewById(R.id.lbl_no_new_requests);
+        btnFindFriend= (Button) view.findViewById(R.id.btn_find_friend);
         friendArrayList = new ArrayList<>();
-        db=new SQLiteHandler(getActivity());
+        db = new SQLiteHandler(getActivity());
+        progressBar.setVisibility(View.VISIBLE);
+        btnFindFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent findFriendsIntent=new Intent(getActivity(),FriendsHandlerActivity.class);
+                findFriendsIntent.putExtra("tab_name", 2);
+                startActivity(findFriendsIntent);
+            }
+        });
         HashMap<String, String> user = db.getUserDetails();
         id = user.get("uid");
         String url = AppConfig.URL_FRIEND_REQUESTS;
         url += "?id=" + id;
-
-        friendRequestAdapter=new FriendRequestAdapter(friendArrayList, getActivity(),id);
-        progressBar.setVisibility(View.VISIBLE);
+        friendRequestAdapter = new FriendRequestAdapter(friendArrayList, getActivity(), id);
+        friendRequestAdapter.setFriendRequestAdapterListener(this);
         listView.setAdapter(friendRequestAdapter);
-
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null,
@@ -83,6 +100,7 @@ public class FriendRequesetFragment extends Fragment {
                                 friend.setId(id);
                                 friend.setName(name);
                                 friend.setProfileImageUrl(image);
+                                friend.setStatus(AppConfig.FRIEND_STATUS_WAITIN_CONFIRMATION);
                                 friendArrayList.add(friend);
                             }
 
@@ -91,8 +109,15 @@ public class FriendRequesetFragment extends Fragment {
                             e.printStackTrace();
 
                         }
-                        friendRequestAdapter.notifyDataSetChanged();
-                        progressBar.setVisibility(View.GONE);
+                        if(friendArrayList.size()>0) {
+                            friendRequestAdapter.notifyDataSetChanged();
+                            progressBar.setVisibility(View.GONE);
+                            listView.setVisibility(View.VISIBLE);
+                        }else {
+                            progressBar.setVisibility(View.GONE);
+                            lblNoNewRequests.setVisibility(View.VISIBLE);
+                            btnFindFriend.setVisibility(View.VISIBLE);
+                        }
                     }
                 }, new Response.ErrorListener() {
 
@@ -127,4 +152,23 @@ public class FriendRequesetFragment extends Fragment {
         return titleCase.toString();
     }
 
+    @Override
+    public void onFriendRequestConfirmed(int position) {
+        Friend friend = friendArrayList.get(position);
+        friend.setStatus(AppConfig.FRIEND_STATUS_CONFIRMED);
+        friendArrayList.remove(position);
+        friendArrayList.add(position, friend);
+        friendRequestAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFriendRequestConfirmError(String error) {
+
+    }
+
+    @Override
+    public void onFriendRequestDeleted(int position) {
+        friendArrayList.remove(position);
+        friendRequestAdapter.notifyDataSetChanged();
+    }
 }

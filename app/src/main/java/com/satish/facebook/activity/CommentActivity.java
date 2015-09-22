@@ -53,7 +53,8 @@ public class CommentActivity extends AppCompatActivity {
     private EditText txtComment;
     private Button btnComment;
     private ImageView noCommentIcon;
-    private TextView lblNoComments;    private ProgressBar progressBar;
+    private TextView lblNoComments;
+    private ProgressBar progressBar;
     int post_id;
     private SQLiteHandler db;
     Timestamp timestamp;
@@ -65,7 +66,8 @@ public class CommentActivity extends AppCompatActivity {
         btnComment = (Button) findViewById(R.id.btn_comment_post);
         txtComment = (EditText) findViewById(R.id.txt_comment);
         noCommentIcon = (ImageView) findViewById(R.id.no_comments);
-        lblNoComments = (TextView) findViewById(R.id.lbl_no_comments); progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        lblNoComments = (TextView) findViewById(R.id.lbl_no_comments);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         commetArrayList = new ArrayList<>();
         db = new SQLiteHandler(this);
         commentAdapter = new CommentAdapter(commetArrayList, this);
@@ -182,6 +184,7 @@ public class CommentActivity extends AppCompatActivity {
 // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag);
     }
+
     private void commentPost(final String comment, final String userId, final String postId) {
         String tag_string_req = "comment_post";
         progressBar.setVisibility(View.VISIBLE);
@@ -199,7 +202,7 @@ public class CommentActivity extends AppCompatActivity {
                     } else {
                         JSONObject errorObj = jObj.getJSONObject("error");
                         String errorMsg = errorObj.getString("message");
-                        Toast.makeText(getApplicationContext(),errorMsg, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.GONE);
                     }
                 } catch (JSONException e) {

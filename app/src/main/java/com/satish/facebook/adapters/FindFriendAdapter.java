@@ -14,15 +14,15 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.StringRequest;
 import com.satish.facebook.R;
 import com.satish.facebook.app.AppConfig;
 import com.satish.facebook.app.AppController;
 import com.satish.facebook.models.Friend;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -33,13 +33,13 @@ import java.util.Map;
  * Created by satish on 30/8/15.
  */
 public class FindFriendAdapter extends BaseAdapter {
+    private static final String TAG = FindFriendAdapter.class.getSimpleName();
     private ArrayList<Friend> friendArrayList;
     private LayoutInflater inflater;
     private Activity activity;
     String id;
     private TextView lblRequestSent;
     private Button btnAddFriend;
-    private static String tag = "json_tag";
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
     public FindFriendAdapter(ArrayList<Friend> friendArrayList, Activity activity, String id) {
@@ -79,11 +79,12 @@ public class FindFriendAdapter extends BaseAdapter {
         Log.d("id,name", friend.getName());
         lblName.setText(friend.getName());
         profileImage.setImageUrl(friend.getProfileImageUrl(), imageLoader);
+
         btnAddFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (btnAddFriend.getText().equals("Add Friend")) {
-                    Toast.makeText(activity.getApplicationContext(),id+""+friend.getId(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity.getApplicationContext(), id + "" + friend.getId(), Toast.LENGTH_LONG).show();
                     requestSent(id, friend.getId());
                 } else if (btnAddFriend.getText().equals("Cancel")) {
                     lblRequestSent.setText("Request canceled");
@@ -96,31 +97,39 @@ public class FindFriendAdapter extends BaseAdapter {
     }
 
     private void requestSent(final String user_id, final String friend_id) {
-        String url = AppConfig.URL_FRIEND_SUGGESTIONS;
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            boolean success = response.getBoolean("success");
-                            if (success) {
-                                lblRequestSent.setText("Request is sent");
-                                btnAddFriend.setText("Cancel");
-                                btnAddFriend.setTextColor(activity.getResources().getColor(R.color.colorPrimary));
-                            } else lblRequestSent.setText("");
-                            btnAddFriend.setText("Add Friend");
-                        } catch (Exception e) {
-                            Log.d("error in", "catch");
-                            e.printStackTrace();
+        String tag_string_req = "req_friend_confirm";
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_FRIEND_SUGGESTIONS, new Response.Listener<String>() {
 
-                        }
+            @Override
+            public void onResponse(String response) {
+                Log.d("FriendRequestAdapter", "Login Response: " + response.toString());
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("success");
+                    if (error) {
+                        lblRequestSent.setText("Request is sent");
+                        btnAddFriend.setText("Cancel");
+                        btnAddFriend.setTextColor(activity.getResources().getColor(R.color.colorPrimary));
+                    } else {
+
+                        lblRequestSent.setText("");
+                        btnAddFriend.setText("Add Friend");
                     }
-                }, new Response.ErrorListener() {
+                } catch (JSONException e) {
+                    // JSON error
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("FindFriendAdapter", "Error: " + error.getMessage());
+                Toast.makeText(activity.getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+
             }
         }) {
 
@@ -131,12 +140,15 @@ public class FindFriendAdapter extends BaseAdapter {
                 params.put("tag", "login");
                 params.put("user_id", user_id);
                 params.put("friend_id", friend_id);
+
+                Log.e(TAG, "params: " + params.toString());
+
                 return params;
             }
         };
 
 // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq, tag);
-
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
+
 }

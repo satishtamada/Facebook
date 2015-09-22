@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -41,16 +42,21 @@ public class SuggestionsFragment extends Fragment {
     private ProgressBar progressBar;
     private String id;
     private SQLiteHandler db;
+    private TextView lbl_no_suggestions;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-    }  @Override
-       public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                Bundle savedInstanceState) {
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_suggestions, container, false);
         listView = (ListView) view.findViewById(R.id.friend_list_view);
-        progressBar = (ProgressBar)view.findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        lbl_no_suggestions= (TextView) view.findViewById(R.id.lbl_no_suggestion);
         friendArrayList = new ArrayList<>();
         db = new SQLiteHandler(getActivity());
 
@@ -67,10 +73,10 @@ public class SuggestionsFragment extends Fragment {
         id = user.get("uid");
         String url = AppConfig.URL_FIND_FRIEND;
         url += "?id=" + id;
-        friendCustomAdapter = new FindFriendAdapter(friendArrayList, getActivity(),id);
+        friendCustomAdapter = new FindFriendAdapter(friendArrayList, getActivity(), id);
         listView.setAdapter(friendCustomAdapter);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-               url, null,
+                url, null,
                 new Response.Listener<JSONObject>() {
 
                     @Override
@@ -85,9 +91,9 @@ public class SuggestionsFragment extends Fragment {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject friendObj = (JSONObject) jsonArray.get(i);
                                 String id = friendObj.getString("user_id");
-                                String username=friendObj.getString("username");
+                                String username = friendObj.getString("username");
                                 String image = friendObj.getString("profile_image");
-                                String name =  toTitleCase(username);
+                                String name = toTitleCase(username);
                                 Log.d(TAG, id + name);
                                 Log.d("image", image);
                                 Friend friend = new Friend();
@@ -101,8 +107,16 @@ public class SuggestionsFragment extends Fragment {
                             Log.d("error in", "catch");
                             e.printStackTrace();
 
-                        } friendCustomAdapter.notifyDataSetChanged();
-                        progressBar.setVisibility(View.GONE);
+                        } if(friendArrayList.size()>0) {
+                            friendCustomAdapter.notifyDataSetChanged();
+                            progressBar.setVisibility(View.GONE);
+                            listView.setVisibility(View.VISIBLE);
+                        }else {
+                            progressBar.setVisibility(View.GONE);
+                            lbl_no_suggestions.setVisibility(View.VISIBLE);
+                        }
+
+
                     }
                 }, new Response.ErrorListener() {
 
@@ -119,6 +133,7 @@ public class SuggestionsFragment extends Fragment {
 
         return view;
     }
+
     private String toTitleCase(String name) {
         StringBuilder titleCase = new StringBuilder();
         boolean nextTitleCase = true;

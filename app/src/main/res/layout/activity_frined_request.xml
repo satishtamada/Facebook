@@ -3,15 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ffffff" >
+    android:background="#ffffff">
 
-    <TextView android:id="@+id/text_view"
+    <TextView
+        android:id="@+id/text_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="friend request screen"
         android:textSize="20dp"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
 
 
 </RelativeLayout>

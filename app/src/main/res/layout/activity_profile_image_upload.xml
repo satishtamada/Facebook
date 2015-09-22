@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -10,6 +12,7 @@
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
     </android.support.design.widget.AppBarLayout>
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="30dp"
@@ -21,6 +24,7 @@
         android:indeterminateTint="@color/colorAccent"
         android:indeterminateTintMode="src_atop"
         android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/noFeedLayout"
         android:layout_width="fill_parent"
@@ -46,8 +50,7 @@
             android:textColor="#ffffff"
             android:layout_marginTop="25dip"
             android:background="@drawable/bg_button_style"
-            android:text="@string/btn_upload_profile"
-            />
+            android:text="@string/btn_upload_profile" />
 
         <TextView
             android:layout_width="wrap_content"

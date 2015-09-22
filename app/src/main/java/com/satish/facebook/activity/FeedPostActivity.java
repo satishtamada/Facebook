@@ -58,11 +58,13 @@ public class FeedPostActivity extends AppCompatActivity {
     Bitmap image;
     String responseString = null;
     String postText;
-    String  id;
+    String id;
     private SQLiteHandler db;
-    byte[] bytes;ByteArrayOutputStream byteArrayOutputStream = null;
+    byte[] bytes;
+    ByteArrayOutputStream byteArrayOutputStream = null;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private NetworkImageView userProfileImage;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_post);
@@ -74,7 +76,7 @@ public class FeedPostActivity extends AppCompatActivity {
         btnPostImage = (Button) findViewById(R.id.btn_postImage);
         imgUploadFeed = (ImageView) findViewById(R.id.imageUpload);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        userProfileImage= (NetworkImageView) findViewById(R.id.user_profile_image);
+        userProfileImage = (NetworkImageView) findViewById(R.id.user_profile_image);
         Intent intent = getIntent();
         //userProfileImage.setImageUrl(intent.getStringExtra("userProfileImage"), imageLoader);
         //event on button image post
@@ -92,6 +94,7 @@ public class FeedPostActivity extends AppCompatActivity {
         HashMap<String, String> user = db.getUserDetails();
         id = user.get("uid");
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -105,7 +108,7 @@ public class FeedPostActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.post) {
             postText = txtPostText.getText().toString();
-            if (!postText.isEmpty()||image!=null) {
+            if (!postText.isEmpty() || image != null) {
                 new UploadFileToServer().execute();
             }
 
@@ -114,6 +117,7 @@ public class FeedPostActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
@@ -162,7 +166,7 @@ public class FeedPostActivity extends AppCompatActivity {
                 MultipartEntityBuilder multipartEntity =
                         MultipartEntityBuilder.create();
                 multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-                if(image!=null) {
+                if (image != null) {
                     byteArrayOutputStream = new ByteArrayOutputStream();
                     image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
                     bytes = byteArrayOutputStream.toByteArray();
@@ -170,7 +174,7 @@ public class FeedPostActivity extends AppCompatActivity {
                     multipartEntity.addPart("image", bab);
                 }
                 multipartEntity.addTextBody("user_id", id);
-                multipartEntity.addTextBody("text",postText);
+                multipartEntity.addTextBody("text", postText);
                 httppost.setEntity(multipartEntity.build());
                 // Making server call
                 HttpResponse response = httpclient.execute(httppost);

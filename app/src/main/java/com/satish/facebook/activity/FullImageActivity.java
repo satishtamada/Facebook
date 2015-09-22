@@ -27,13 +27,13 @@ public class FullImageActivity extends AppCompatActivity {
         // Selected image id
         final int position = i.getExtras().getInt("id");
         NetworkImageView imageView = (NetworkImageView) findViewById(R.id.full_image_view);
-        Button btnComment= (Button) findViewById(R.id.btnComment);
+        Button btnComment = (Button) findViewById(R.id.btnComment);
         imageView.setImageUrl(ImagesActivity.imageUrls.get(position), imageLoader);
         btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent commentIntent = new Intent(getApplicationContext(), CommentActivity.class);
-                commentIntent.putExtra("post_id",Integer.parseInt(ImagesActivity.postIds.get(position)));
+                commentIntent.putExtra("post_id", Integer.parseInt(ImagesActivity.postIds.get(position)));
                 startActivity(commentIntent);
             }
         });
