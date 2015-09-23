@@ -45,7 +45,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_margin="10dp"
-                android:src="@drawable/satish" />
+                android:src="@drawable/profile_selected" />
 
             <EditText
                 android:id="@+id/feed_text_post"

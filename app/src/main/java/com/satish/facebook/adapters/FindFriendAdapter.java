@@ -84,7 +84,6 @@ public class FindFriendAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (btnAddFriend.getText().equals("Add Friend")) {
-                    Toast.makeText(activity.getApplicationContext(), id + "" + friend.getId(), Toast.LENGTH_LONG).show();
                     requestSent(id, friend.getId());
                 } else if (btnAddFriend.getText().equals("Cancel")) {
                     lblRequestSent.setText("Request canceled");
@@ -99,7 +98,7 @@ public class FindFriendAdapter extends BaseAdapter {
     private void requestSent(final String user_id, final String friend_id) {
         String tag_string_req = "req_friend_confirm";
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_FRIEND_SUGGESTIONS, new Response.Listener<String>() {
+                AppConfig.URL_FRIEND_ADD, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {

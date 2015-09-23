@@ -7,19 +7,19 @@ import java.util.List;
  * Created by satish on 6/8/15.
  */
 public class AppConfig {
-    public static String URL = "http://192.168.0.100:8080/facebook_rest/rest/";
-    public static String URL_REGISTER = URL + "user/register";
+    public static String URL = "http://192.168.0.103:8080/facebook_rest/rest/";
     public static String URL_LOGIN = URL + "user/login";
-    public static String URL_FIND_FRIEND = URL + "friend/find_friend";
+    public static String URL_REGISTER = URL + "user/register";
+    public static String URL_PROFILE_UPLOAD = URL + "user/profile_upload";
+    public static String URL_HOME = URL + "friend/feed";
+    public static String URL_FRIEND_SUGGESTIONS = URL + "friend/friend_suggestions";
     public static String URL_FRIENDS_LIST = URL + "friend/friends_list";
-    public static String URL_HOME = URL + "friend/friend_posts";
-    //public static String URL_USER_POSTS = URL+"friend/user_posts?id=104";
     public static String URL_FEED_CREATE = URL + "feed/create";
     public static String URL_USER_PROFILE = URL + "friend/profile";
     public static String URL_COMMENTS = URL + "post/comments";
     public static String URL_POST_COMMENTS = URL + "comment/create";
-    public static String URL_PROFILE_UPLOAD = URL + "user/profile_upload";
-    public static String URL_FRIEND_SUGGESTIONS = URL + "friend/add_friend";
+
+    public static String URL_FRIEND_ADD = URL + "friend/add_friend";
     public static String URL_FRIEND_REQUESTS = URL + "friend/friend_requests";
     public static String URL_FRIEND_REQUEST_ACCEPT = URL + "friend/add_friend_confirm";
     public static String URL_FRIEND_REQUEST_DELETE = URL + "friend/add_friend_delete";

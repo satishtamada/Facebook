@@ -71,7 +71,7 @@ public class SuggestionsFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         HashMap<String, String> user = db.getUserDetails();
         id = user.get("uid");
-        String url = AppConfig.URL_FIND_FRIEND;
+        String url = AppConfig.URL_FRIEND_SUGGESTIONS;
         url += "?id=" + id;
         friendCustomAdapter = new FindFriendAdapter(friendArrayList, getActivity(), id);
         listView.setAdapter(friendCustomAdapter);

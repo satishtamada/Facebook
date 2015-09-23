@@ -8,9 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -42,7 +42,7 @@ public class FriendRequesetFragment extends Fragment implements FriendRequestAda
     private ProgressBar progressBar;
     private String id;
     private SQLiteHandler db;
-    private TextView lblNoNewRequests;
+    private LinearLayout noRequestsLayout;
     private Button btnFindFriend;
 
     @Override
@@ -57,8 +57,8 @@ public class FriendRequesetFragment extends Fragment implements FriendRequestAda
         View view = inflater.inflate(R.layout.fragment_friend_requestes, container, false);
         listView = (ListView) view.findViewById(R.id.friend_request_listview);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        lblNoNewRequests= (TextView) view.findViewById(R.id.lbl_no_new_requests);
         btnFindFriend= (Button) view.findViewById(R.id.btn_find_friend);
+        noRequestsLayout= (LinearLayout) view.findViewById(R.id.noRequestsLayout);
         friendArrayList = new ArrayList<>();
         db = new SQLiteHandler(getActivity());
         progressBar.setVisibility(View.VISIBLE);
@@ -115,8 +115,8 @@ public class FriendRequesetFragment extends Fragment implements FriendRequestAda
                             listView.setVisibility(View.VISIBLE);
                         }else {
                             progressBar.setVisibility(View.GONE);
-                            lblNoNewRequests.setVisibility(View.VISIBLE);
-                            btnFindFriend.setVisibility(View.VISIBLE);
+                            noRequestsLayout.setVisibility(View.VISIBLE);
+
                         }
                     }
                 }, new Response.ErrorListener() {
