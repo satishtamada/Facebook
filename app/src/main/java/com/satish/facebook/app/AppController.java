@@ -8,6 +8,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.satish.facebook.helper.ImageBitmapCache;
+import com.satish.facebook.utils.ParseUtils;
 
 /**
  * Created by satish on 6/8/15.
@@ -21,6 +22,8 @@ public class AppController extends Application {
     public void onCreate() {
         super.onCreate();
         appControllerInstance = this;
+        // register with parse
+        ParseUtils.registerParse(this);
     }
 
     public static synchronized AppController getInstance() {

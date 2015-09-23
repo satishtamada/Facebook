@@ -19,6 +19,7 @@ import com.satish.facebook.app.AppConfig;
 import com.satish.facebook.app.AppController;
 import com.satish.facebook.helper.SQLiteHandler;
 import com.satish.facebook.helper.SessionManager;
+import com.satish.facebook.utils.ParseUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -106,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (error) {
                         session.setLogin(true);
                         // Fetching user details from sqlite
+
                         HashMap<String, String> userData = db.getUserDetails();
                         //checking user data is not available in sqllite
                         if (userData.size() == 0) {
@@ -116,6 +118,9 @@ public class LoginActivity extends AppCompatActivity {
                             String created_at = user.getString("created_at");
                             String id = user.getString("id");
                             db.addUser(id, name, email, uid, created_at);
+
+                            //subscribe to parse with email
+                            ParseUtils.subscribeWithEmail(email);
                         }
                         // Launch main activity
                         Intent intent = new Intent(LoginActivity.this,

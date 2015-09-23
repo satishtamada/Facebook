@@ -66,7 +66,7 @@ public class FriendRequesetFragment extends Fragment implements FriendRequestAda
             @Override
             public void onClick(View v) {
                 Intent findFriendsIntent=new Intent(getActivity(),FriendsHandlerActivity.class);
-                findFriendsIntent.putExtra("tab_name", 2);
+                findFriendsIntent.putExtra("tab_name", 1);
                 startActivity(findFriendsIntent);
             }
         });

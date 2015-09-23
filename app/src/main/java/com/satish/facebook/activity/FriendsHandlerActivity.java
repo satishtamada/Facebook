@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.satish.facebook.R;
 
@@ -19,6 +20,7 @@ import java.util.List;
  * Created by satish on 13/9/15.
  */
 public class FriendsHandlerActivity extends AppCompatActivity {
+    private static String TAG = FriendsHandlerActivity.class.getSimpleName();
     private Toolbar toolbar;
     ViewPager viewPager;
     TabLayout tabLayout;
@@ -41,23 +43,16 @@ public class FriendsHandlerActivity extends AppCompatActivity {
 
     private void setUpViewPager(ViewPager viewPager) {
         Intent intent = getIntent();
-        tab_position = intent.getIntExtra("tab_name", 1);
+        tab_position = intent.getIntExtra("tab_name", 0);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        switch (tab_position) {
-            case 1:
-                adapter.addFragment(new FriendsListFragment(), "FRIENDS");
-                adapter.addFragment(new SuggestionsFragment(), "SUGGESTIONS");
-                adapter.addFragment(new FriendRequesetFragment(), "REQUESTS");
-                break;
-            case 2:
-                adapter.addFragment(new SuggestionsFragment(), "SUGGESTIONS");
-                adapter.addFragment(new FriendsListFragment(), "FRIENDS");
-                adapter.addFragment(new FriendRequesetFragment(), "REQUESTS");
-                break;
-            default:
-
-        }
+        adapter.addFragment(new FriendsListFragment(), "FRIENDS");
+        adapter.addFragment(new SuggestionsFragment(), "SUGGESTIONS");
+        adapter.addFragment(new FriendRequesetFragment(), "REQUESTS");
         viewPager.setAdapter(adapter);
+
+        Log.e(TAG, "tabPosition: " + tab_position);
+
+        viewPager.setCurrentItem(tab_position);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

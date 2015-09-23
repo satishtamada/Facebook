@@ -7,6 +7,11 @@ import java.util.List;
  * Created by satish on 6/8/15.
  */
 public class AppConfig {
+    public static final String PARSE_CHANNEL = "AndroidHive";
+    public static final String PARSE_APPLICATION_ID = "3M4IbwBiVGDiJLLRWbaUWDbBujhyI4mj0R2U7Fvg";
+    public static final String PARSE_CLIENT_KEY = "ZxzSclm7HIMDAYYbxQ7wjDhmy0ed6kTopra8neV8";
+    public static final int NOTIFICATION_ID = 100;
+
     public static String URL = "http://192.168.0.103:8080/facebook_rest/rest/";
     public static String URL_LOGIN = URL + "user/login";
     public static String URL_REGISTER = URL + "user/register";
@@ -42,6 +47,13 @@ public class AppConfig {
     public static final int FRIEND_STATUS_WAITIN_CONFIRMATION = 0;
     public static final int FRIEND_STATUS_CONFIRMED = 1;
     public static final int FRIEND_STATUS_DELETED = 2;
+    public static final int REQUEST_STATUS_CONFIRMED=3;
+
+    // Push notification flag values
+    public static final int FLAG_NEW_FRIEND_REQUEST = 1;
+    public static final int FLAG_NEW_LIKE = 2;
+    public static final int FLAG_NEW_COMMENT = 3;
+
 
 
 }

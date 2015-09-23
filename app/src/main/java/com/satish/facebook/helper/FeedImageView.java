@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
+
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;

@@ -18,6 +18,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 import com.satish.facebook.R;
+import com.satish.facebook.activity.SuggestionsFragment;
 import com.satish.facebook.app.AppConfig;
 import com.satish.facebook.app.AppController;
 import com.satish.facebook.models.Friend;
@@ -41,6 +42,11 @@ public class FindFriendAdapter extends BaseAdapter {
     private TextView lblRequestSent;
     private Button btnAddFriend;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+    private RequestSentAdapterListener requestSentAdapterListener;
+
+    public void setRequestSentAdapterListener(SuggestionsFragment requestSentAdapterListener) {
+        this.requestSentAdapterListener = requestSentAdapterListener;
+    }
 
     public FindFriendAdapter(ArrayList<Friend> friendArrayList, Activity activity, String id) {
 
@@ -65,7 +71,7 @@ public class FindFriendAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null)
             inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -79,23 +85,26 @@ public class FindFriendAdapter extends BaseAdapter {
         Log.d("id,name", friend.getName());
         lblName.setText(friend.getName());
         profileImage.setImageUrl(friend.getProfileImageUrl(), imageLoader);
-
+        if (friend.getStatus() == AppConfig.REQUEST_STATUS_CONFIRMED) {
+            lblRequestSent.setText("Request is sent");
+            btnAddFriend.setVisibility(View.GONE);
+        }
+        else {
+            lblRequestSent.setText("");
+            btnAddFriend.setVisibility(View.VISIBLE);
+        }
         btnAddFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (btnAddFriend.getText().equals("Add Friend")) {
-                    requestSent(id, friend.getId());
-                } else if (btnAddFriend.getText().equals("Cancel")) {
-                    lblRequestSent.setText("Request canceled");
-                    btnAddFriend.setText("Add Friend");
-                    btnAddFriend.setTextColor(activity.getResources().getColor(R.color.colorPrimary));
+                    requestSent(position, id, friend.getId());
                 }
             }
         });
         return view;
     }
 
-    private void requestSent(final String user_id, final String friend_id) {
+    private void requestSent(final int position, final String user_id, final String friend_id) {
         String tag_string_req = "req_friend_confirm";
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 AppConfig.URL_FRIEND_ADD, new Response.Listener<String>() {
@@ -108,13 +117,9 @@ public class FindFriendAdapter extends BaseAdapter {
                     JSONObject jObj = new JSONObject(response);
                     boolean error = jObj.getBoolean("success");
                     if (error) {
-                        lblRequestSent.setText("Request is sent");
-                        btnAddFriend.setText("Cancel");
-                        btnAddFriend.setTextColor(activity.getResources().getColor(R.color.colorPrimary));
+                        requestSentAdapterListener.onRequestSentConfirmed(position);
                     } else {
-
-                        lblRequestSent.setText("");
-                        btnAddFriend.setText("Add Friend");
+                      Toast.makeText(activity.getApplicationContext(),"Failed to add friend",Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     // JSON error
@@ -134,9 +139,8 @@ public class FindFriendAdapter extends BaseAdapter {
 
             @Override
             protected Map<String, String> getParams() {
-                // Posting parameters to login url
+                // Posting parameters to add friend url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("tag", "login");
                 params.put("user_id", user_id);
                 params.put("friend_id", friend_id);
 
@@ -148,6 +152,12 @@ public class FindFriendAdapter extends BaseAdapter {
 
 // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+
+    public interface RequestSentAdapterListener {
+        void onRequestSentConfirmed(int position);
+
     }
 
 }

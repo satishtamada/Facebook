@@ -40,4 +40,6 @@ dependencies {
     compile 'com.android.support:design:23.0.1'
     compile 'com.mcxiaoke.volley:library-aar:1.0.0'
     compile 'com.android.support:multidex:1.0.1'
+    compile 'com.parse.bolts:bolts-android:1.+'
+    compile fileTree(dir: 'libs', include: 'Parse-*.jar')
 }

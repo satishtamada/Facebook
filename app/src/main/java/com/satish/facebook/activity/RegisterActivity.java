@@ -20,6 +20,7 @@ import com.satish.facebook.app.AppConfig;
 import com.satish.facebook.app.AppController;
 import com.satish.facebook.helper.SQLiteHandler;
 import com.satish.facebook.helper.SessionManager;
+import com.satish.facebook.utils.ParseUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -134,6 +135,11 @@ public class RegisterActivity extends AppCompatActivity {
                         String id = user.getString("id");
                         Log.d("email and name is", name + "," + email + "," + apikey + "," + created_at + "," + id);
                         db.addUser(id, name, email, apikey, created_at);
+
+
+                        //subscribe to parse with email
+                        ParseUtils.subscribeWithEmail(email);
+
                         // Launch login activity
                         Intent intent = new Intent(
                                 RegisterActivity.this, ProfileImageActivity.class);

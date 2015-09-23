@@ -1,6 +1,5 @@
 package com.satish.facebook.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -33,7 +32,7 @@ import java.util.HashMap;
 /**
  * Created by satish on 13/9/15.
  */
-public class SuggestionsFragment extends Fragment {
+public class SuggestionsFragment extends Fragment implements FindFriendAdapter.RequestSentAdapterListener{
     private ListView listView;
     private FindFriendAdapter friendCustomAdapter;
     private ArrayList<Friend> friendArrayList;
@@ -63,9 +62,7 @@ public class SuggestionsFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent in = new Intent(getActivity(),
-                        FriendProfileActivity.class);
-                startActivity(in);
+
             }
         });
         progressBar.setVisibility(View.VISIBLE);
@@ -74,6 +71,7 @@ public class SuggestionsFragment extends Fragment {
         String url = AppConfig.URL_FRIEND_SUGGESTIONS;
         url += "?id=" + id;
         friendCustomAdapter = new FindFriendAdapter(friendArrayList, getActivity(), id);
+        friendCustomAdapter.setRequestSentAdapterListener(this);
         listView.setAdapter(friendCustomAdapter);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null,
@@ -150,5 +148,15 @@ public class SuggestionsFragment extends Fragment {
         }
 
         return titleCase.toString();
+    }
+
+    @Override
+    public void onRequestSentConfirmed(int position) {
+        Friend friend=friendArrayList.get(position);
+        friend.setStatus(AppConfig.REQUEST_STATUS_CONFIRMED);
+        friendArrayList.remove(position);
+        friendArrayList.add(position,friend);
+        friendCustomAdapter.notifyDataSetChanged();
+
     }
 }
