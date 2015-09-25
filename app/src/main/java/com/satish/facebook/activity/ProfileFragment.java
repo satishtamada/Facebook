@@ -96,7 +96,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent friendsIntent = new Intent(getActivity(), FriendsHandlerActivity.class);
-                friendsIntent.putExtra("tab_name", 1);
+                friendsIntent.putExtra("tab_name", 0);
                 startActivity(friendsIntent);
             }
         });
@@ -104,7 +104,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent findFriendsIntent = new Intent(getActivity(), FriendsHandlerActivity.class);
-                findFriendsIntent.putExtra("tab_name", 2);
+                findFriendsIntent.putExtra("tab_name", 1);
                 startActivity(findFriendsIntent);
             }
         });

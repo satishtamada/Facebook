@@ -38,7 +38,7 @@ public class FriendRequesetFragment extends Fragment implements FriendRequestAda
     private FriendRequestAdapter friendRequestAdapter;
     private ArrayList<Friend> friendArrayList;
     private static String tag = "json_tag";
-    private static final String TAG = FriendsListFragment.class.getSimpleName();
+    private static final String TAG = FriendRequesetFragment.class.getSimpleName();
     private ProgressBar progressBar;
     private String id;
     private SQLiteHandler db;

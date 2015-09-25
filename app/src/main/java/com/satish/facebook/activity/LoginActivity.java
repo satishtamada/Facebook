@@ -117,7 +117,8 @@ public class LoginActivity extends AppCompatActivity {
                             String uid = user.getString("apikey");
                             String created_at = user.getString("created_at");
                             String id = user.getString("id");
-                            db.addUser(id, name, email, uid, created_at);
+                            String profileImageUrl=user.getString("profile_image");
+                            db.addUser(id, name, email, uid, created_at,profileImageUrl);
 
                             //subscribe to parse with email
                             ParseUtils.subscribeWithEmail(email);

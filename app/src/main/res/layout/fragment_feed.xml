@@ -1,8 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.satish.facebook.activity.FeedFragment">
+    android:layout_height="match_parent">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -15,12 +14,19 @@
         android:indeterminateTintMode="src_atop"
         android:visibility="gone" />
 
-    <ListView
-        android:id="@+id/feed_list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:divider="@null"
-        android:visibility="gone" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ListView
+            android:id="@+id/feed_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"
+            android:visibility="gone" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:id="@+id/noFeedLayout"
@@ -28,8 +34,8 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:visibility="gone"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="100dp"
@@ -40,9 +46,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No posts to show"
             android:alpha="0.4"
             android:padding="5dp"
+            android:text="No posts to show"
             android:textStyle="bold" />
 
         <Button
@@ -53,10 +59,11 @@
             android:background="@color/windowBackground"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:text="@string/btn_find_friends"
             android:textAllCaps="false"
-            android:textColor="#4e5665"
-            android:text="@string/btn_find_friends" />
+            android:textColor="#4e5665" />
 
     </LinearLayout>
 
 </RelativeLayout>
+

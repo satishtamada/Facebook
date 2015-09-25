@@ -25,6 +25,8 @@
     <string name="lbl_no_requests">No New Requests</string>
     <string name="lbl_no_friends">No friends to show</string>
     <string name="lbl_no_suggestion">No suggestions to show</string>
+    <string name="lbl_no_notifications">No notifications</string>
+    <string name="lbl_no_comments">No Comments Yet</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

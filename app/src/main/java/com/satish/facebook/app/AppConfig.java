@@ -12,7 +12,7 @@ public class AppConfig {
     public static final String PARSE_CLIENT_KEY = "ZxzSclm7HIMDAYYbxQ7wjDhmy0ed6kTopra8neV8";
     public static final int NOTIFICATION_ID = 100;
 
-    public static String URL = "http://192.168.0.103:8080/facebook_rest/rest/";
+    public static String URL = "http://192.168.0.102:8080/facebook_rest/rest/";
     public static String URL_LOGIN = URL + "user/login";
     public static String URL_REGISTER = URL + "user/register";
     public static String URL_PROFILE_UPLOAD = URL + "user/profile_upload";
@@ -23,11 +23,13 @@ public class AppConfig {
     public static String URL_USER_PROFILE = URL + "friend/profile";
     public static String URL_COMMENTS = URL + "post/comments";
     public static String URL_POST_COMMENTS = URL + "comment/create";
+    public static String URL_NOTIFICATIONS=URL+"notification/notifications";
 
     public static String URL_FRIEND_ADD = URL + "friend/add_friend";
     public static String URL_FRIEND_REQUESTS = URL + "friend/friend_requests";
     public static String URL_FRIEND_REQUEST_ACCEPT = URL + "friend/add_friend_confirm";
     public static String URL_FRIEND_REQUEST_DELETE = URL + "friend/add_friend_delete";
+    public static String URL_FEED_ITEM=URL+"feed/feed_item";
 
     // Number of columns of Grid View
     public static final int NUM_OF_COLUMNS = 3;

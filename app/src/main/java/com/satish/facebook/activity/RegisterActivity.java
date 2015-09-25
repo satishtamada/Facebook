@@ -133,8 +133,9 @@ public class RegisterActivity extends AppCompatActivity {
                         String apikey = user.getString("apikey");
                         String created_at = user.getString("created_at");
                         String id = user.getString("id");
+                        String profileImageUrl=user.getString("profile_image");
                         Log.d("email and name is", name + "," + email + "," + apikey + "," + created_at + "," + id);
-                        db.addUser(id, name, email, apikey, created_at);
+                        db.addUser(id, name, email, apikey, created_at,profileImageUrl);
 
 
                         //subscribe to parse with email

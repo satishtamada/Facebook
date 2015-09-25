@@ -4,6 +4,7 @@ package com.satish.facebook.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +32,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class FeedFragment extends Fragment {
+public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private ListView listView;
     private ArrayList<Feed> feedArrayList;
@@ -43,6 +44,8 @@ public class FeedFragment extends Fragment {
     private String id;
     private LinearLayout noFeedLayout;
     private Button btnFindFriends;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private String feedUrl;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class FeedFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
         noFeedLayout = (LinearLayout) view.findViewById(R.id.noFeedLayout);
         btnFindFriends = (Button) view.findViewById(R.id.find_friends);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         //creating listview instance
         listView = (ListView) view.findViewById(R.id.feed_list);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
@@ -72,17 +76,27 @@ public class FeedFragment extends Fragment {
                 startActivity(i);
             }
         });
-
-        //display prograss dialog
-
-        progressBar.setVisibility(View.VISIBLE);
         HashMap<String, String> user = db.getUserDetails();
         id = user.get("uid");
         String url = AppConfig.URL_HOME;
         url += "?id=" + id;
+        swipeRefreshLayout.setOnRefreshListener(this);
+        feedUrl = url;
+        swipeRefreshLayout.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        swipeRefreshLayout.setRefreshing(true);
+                                        fetchFeed(feedUrl);
+                                    }
+                                }
+        );
 
+        return view;
+    }
+    private void fetchFeed(String finalUrl) {
+        swipeRefreshLayout.setRefreshing(true);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                url, null,
+                finalUrl, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -114,6 +128,7 @@ public class FeedFragment extends Fragment {
                                     feedArrayList.add(feed);
                                 }
                             } else {
+                                swipeRefreshLayout.setRefreshing(false);
                                 listView.setVisibility(View.GONE);
                                 noFeedLayout.setVisibility(View.VISIBLE);
                             }
@@ -125,9 +140,11 @@ public class FeedFragment extends Fragment {
 
                         if (feedArrayList.size() > 0) {
                             feedAdapter.notifyDataSetChanged();
-                            progressBar.setVisibility(View.GONE);
+                            swipeRefreshLayout.setRefreshing(false);
+                            noFeedLayout.setVisibility(View.GONE);
                             listView.setVisibility(View.VISIBLE);
                         } else {
+                            swipeRefreshLayout.setRefreshing(false);
                             progressBar.setVisibility(View.GONE);
                             noFeedLayout.setVisibility(View.VISIBLE);
                         }
@@ -140,6 +157,7 @@ public class FeedFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
                 // hide the progress dialog
+                swipeRefreshLayout.setRefreshing(false);
                 progressBar.setVisibility(View.GONE);
             }
         });
@@ -147,7 +165,6 @@ public class FeedFragment extends Fragment {
 // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag);
 
-        return view;
     }
 
     private String toTitleCase(String name) {
@@ -168,4 +185,8 @@ public class FeedFragment extends Fragment {
         return titleCase.toString();
     }
 
+    @Override
+    public void onRefresh() {
+        fetchFeed(feedUrl);
+    }
 }

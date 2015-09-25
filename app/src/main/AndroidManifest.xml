@@ -77,14 +77,21 @@
         </activity>
         <!--feed post -->
         <activity
-            android:name=".activity.FeedPostActivity"
+            android:name=".activity.FeedCreateActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <!--feed item-->
+        <activity
+            android:name=".activity.FeedItemActivity"
             android:screenOrientation="portrait">
 
         </activity>
 
         <service android:name="com.parse.PushService" />
 
-        <receiver android:name=".receiver.CustomPushReceiver"
+        <receiver
+            android:name=".receiver.CustomPushReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

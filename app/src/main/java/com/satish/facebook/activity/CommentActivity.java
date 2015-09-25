@@ -1,6 +1,5 @@
 package com.satish.facebook.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,14 +9,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -47,14 +47,12 @@ public class CommentActivity extends AppCompatActivity {
     private ListView listView;
     private ArrayList<Comments> commetArrayList;
     private static final String TAG = CommentActivity.class.getSimpleName();
-    private ProgressDialog pDialog;
     private static String tag = "json_tag";
     private CommentAdapter commentAdapter;
     private EditText txtComment;
     private Button btnComment;
-    private ImageView noCommentIcon;
-    private TextView lblNoComments;
     private ProgressBar progressBar;
+    private LinearLayout noCommentsLayout;
     int post_id;
     private SQLiteHandler db;
     Timestamp timestamp;
@@ -65,8 +63,7 @@ public class CommentActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.comment_list_view);
         btnComment = (Button) findViewById(R.id.btn_comment_post);
         txtComment = (EditText) findViewById(R.id.txt_comment);
-        noCommentIcon = (ImageView) findViewById(R.id.no_comments);
-        lblNoComments = (TextView) findViewById(R.id.lbl_no_comments);
+        noCommentsLayout= (LinearLayout) findViewById(R.id.no_comments_layout);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         commetArrayList = new ArrayList<>();
         db = new SQLiteHandler(this);
@@ -88,7 +85,7 @@ public class CommentActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                btnComment.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_right_arrow_select));
+                btnComment.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_right_arrow_selected));
                 if (s.toString().trim().length() == 0)
                     btnComment.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_right_arrow));
             }
@@ -119,46 +116,49 @@ public class CommentActivity extends AppCompatActivity {
                         try {
                             boolean error = response.getBoolean("success");
                             if (error) {
-                                Log.d(TAG, "hello");
                                 JSONArray jsonArray = response.getJSONArray("comments");
-
-                                Log.d(TAG, "size is" + jsonArray);
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject friendObj = (JSONObject) jsonArray.get(i);
-                                    String id = friendObj.getString("user_id");
-                                    String name = friendObj.getString("username");
-                                    String image = friendObj.getString("profile_image");
-                                    String comment_text = friendObj.getString("comment");
-                                    String created_at = friendObj.getString("created_at");
-                                    String userName = toTitleCase(name);
-                                    try {
-                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-                                        Date parsedDate = dateFormat.parse(created_at);
-                                        timestamp = new java.sql.Timestamp(parsedDate.getTime());
-                                    } catch (Exception e) {
+                                if(jsonArray.length()>0) {
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject friendObj = (JSONObject) jsonArray.get(i);
+                                        String id = friendObj.getString("user_id");
+                                        String name = friendObj.getString("username");
+                                        String image = friendObj.getString("profile_image");
+                                        String comment_text = friendObj.getString("comment");
+                                        String created_at = friendObj.getString("created_at");
+                                        String userName = toTitleCase(name);
+                                        try {
+                                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+                                            Date parsedDate = dateFormat.parse(created_at);
+                                            timestamp = new java.sql.Timestamp(parsedDate.getTime());
+                                        } catch (Exception e) {
+                                        }
+                                        Log.d(TAG, id + name);
+                                        Log.d("image", image);
+                                        Comments comment = new Comments();
+                                        comment.setCommented_user_id(Integer.parseInt(id));
+                                        comment.setCommented_username(userName);
+                                        comment.setProfile_image(image);
+                                        comment.setComment(comment_text);
+                                        comment.setCreated_at(timestamp);
+                                        commetArrayList.add(comment);
                                     }
-                                    Log.d(TAG, id + name);
-                                    Log.d("image", image);
-                                    Comments comment = new Comments();
-                                    comment.setCommented_user_id(Integer.parseInt(id));
-                                    comment.setCommented_username(userName);
-                                    comment.setProfile_image(image);
-                                    comment.setComment(comment_text);
-                                    comment.setCreated_at(timestamp);
-                                    commetArrayList.add(comment);
                                 }
                             } else {
-                                Toast.makeText(getApplicationContext(), "no comments ", Toast.LENGTH_LONG).show();
-                                noCommentIcon.setImageResource(R.drawable.ic_no_comments);
-                                lblNoComments.setText("No Comments Yet");
+                                progressBar.setVisibility(View.GONE);
+                                noCommentsLayout.setVisibility(View.VISIBLE);
                             }
                         } catch (Exception e) {
                             Log.d("error in", "catch");
                             e.printStackTrace();
 
+                        }if (commetArrayList.size() > 0) {
+                            commentAdapter.notifyDataSetChanged();
+                            progressBar.setVisibility(View.GONE);
+                            listView.setVisibility(View.VISIBLE);
+                        } else {
+                            progressBar.setVisibility(View.GONE);
+                            noCommentsLayout.setVisibility(View.VISIBLE);
                         }
-                        commentAdapter.notifyDataSetChanged();
-                        progressBar.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {
 
@@ -233,6 +233,11 @@ public class CommentActivity extends AppCompatActivity {
             }
 
         };
+
+        int socketTimeout = 0;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+
+        strReq.setRetryPolicy(policy);
 
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 

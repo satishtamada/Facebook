@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private SessionManager session;
     int currentTab = 0;
     private FloatingActionButton floatingActionButton;
+    private String profileImageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         setSupportActionBar(toolbar);
+        Intent i=getIntent();
+        profileImageUrl=i.getStringExtra("profileImageUrl");
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager) findViewById(R.id.tab_viewpager);
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), FeedPostActivity.class);
+                Intent i = new Intent(getApplicationContext(), FeedCreateActivity.class);
                 startActivity(i);
             }
         });

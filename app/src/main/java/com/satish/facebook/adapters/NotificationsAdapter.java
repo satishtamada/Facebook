@@ -2,6 +2,7 @@ package com.satish.facebook.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.Html;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.satish.facebook.R;
 import com.satish.facebook.app.AppController;
-import com.satish.facebook.models.Comments;
+import com.satish.facebook.models.Notifications;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,27 +23,28 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by satish on 2/9/15.
+ * Created by satish on 24/9/15.
  */
-public class CommentAdapter extends BaseAdapter {
-    private ArrayList<Comments> commnetArrayList;
+public class NotificationsAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Activity activity;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+    private ArrayList<Notifications> notificationsArrayList;
 
-    public CommentAdapter(ArrayList<Comments> commentArrayList, Activity activity) {
-        this.commnetArrayList = commentArrayList;
+    public NotificationsAdapter(ArrayList<Notifications> notificationsArrayList, Activity activity) {
+        this.notificationsArrayList = notificationsArrayList;
         this.activity = activity;
+
     }
 
     @Override
     public int getCount() {
-        return commnetArrayList.size();
+        return notificationsArrayList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return commnetArrayList.get(position);
+        return notificationsArrayList.get(position);
     }
 
     @Override
@@ -56,21 +58,19 @@ public class CommentAdapter extends BaseAdapter {
         if (view == null)
             inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
-            view = inflater.inflate(R.layout.activity_commet_list_item_view, null);
-        TextView lblName = (TextView) view.findViewById(R.id.username);
+            view = inflater.inflate(R.layout.notifications_list_view, null);
         NetworkImageView profileImage = (NetworkImageView) view.findViewById(R.id.profile_image);
-        TextView lblComment = (TextView) view.findViewById(R.id.comment);
+        TextView lblMessage = (TextView) view.findViewById(R.id.message);
         TextView lblCreated_at = (TextView) view.findViewById(R.id.created_at);
-        Comments c = commnetArrayList.get(position);
-        lblName.setText(c.getCommented_username());
-        profileImage.setImageUrl(c.getProfile_image(), imageLoader);
-        lblComment.setText(c.getComment());
+        Notifications notifications = notificationsArrayList.get(position);
+        profileImage.setImageUrl(notifications.getProfile_image(), imageLoader);
+        lblMessage.setText(Html.fromHtml(notifications.getMessage()));
         //setting time to created at
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
         Calendar calendar = Calendar.getInstance();
         Date date = null;
         try {
-            date = sdf.parse(c.getCreated_at().toString());
+            date = sdf.parse(notifications.getCreated_at().toString());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -79,7 +79,6 @@ public class CommentAdapter extends BaseAdapter {
                 Long.parseLong(String.valueOf(calendar.getTimeInMillis())),
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
         lblCreated_at.setText(timeAgo);
-
         return view;
     }
 }

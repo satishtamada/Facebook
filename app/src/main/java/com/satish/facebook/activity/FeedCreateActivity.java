@@ -47,11 +47,11 @@ import java.util.HashMap;
 /**
  * Created by satish on 26/8/15.
  */
-public class FeedPostActivity extends AppCompatActivity {
+public class FeedCreateActivity extends AppCompatActivity {
     private Button btnPostImage;
     private EditText txtPostText;
     private static int RESULT_LOAD_IMAGE = 1;
-    private static final String TAG = FeedPostActivity.class.getSimpleName();
+    private static final String TAG = FeedCreateActivity.class.getSimpleName();
     private ImageView imgUploadFeed;
     private Toolbar toolbar;
     private ProgressBar progressBar;
@@ -64,6 +64,7 @@ public class FeedPostActivity extends AppCompatActivity {
     ByteArrayOutputStream byteArrayOutputStream = null;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private NetworkImageView userProfileImage;
+    String profileImageUrl;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +78,6 @@ public class FeedPostActivity extends AppCompatActivity {
         imgUploadFeed = (ImageView) findViewById(R.id.imageUpload);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         userProfileImage = (NetworkImageView) findViewById(R.id.user_profile_image);
-        Intent intent = getIntent();
-        //userProfileImage.setImageUrl(intent.getStringExtra("userProfileImage"), imageLoader);
         //event on button image post
         btnPostImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +92,8 @@ public class FeedPostActivity extends AppCompatActivity {
         db = new SQLiteHandler(getApplicationContext());
         HashMap<String, String> user = db.getUserDetails();
         id = user.get("uid");
+        profileImageUrl=user.get("profile_image");
+        userProfileImage.setImageUrl(profileImageUrl, imageLoader);
     }
 
     @Override
