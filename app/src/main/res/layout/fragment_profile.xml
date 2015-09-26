@@ -18,7 +18,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="bottom"
             android:layout_marginBottom="60dp"
-            android:indeterminateTint="@color/colorAccent"
+            android:indeterminateTint="@color/colorPrimary"
             android:indeterminateTintMode="src_atop"
             android:visibility="gone" />
 
@@ -79,12 +79,12 @@
                 <ImageView
                     android:id="@+id/mail_image"
                     android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_height="@dimen/feed_item_profile_pic"
                     android:layout_alignParentLeft="true"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/mail_id" />
+                    android:src="@mipmap/ic_mail" />
 
                 <TextView
                     android:id="@+id/user_mailId"
@@ -113,7 +113,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginRight="15dp"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/joined_on" />
+                    android:src="@mipmap/ic_created_at" />
 
                 <TextView
                     android:id="@+id/userJoined"
@@ -157,7 +157,7 @@
                         android:layout_marginBottom="10dp"
                         android:layout_marginRight="15dp"
                         android:layout_marginTop="10dp"
-                        android:src="@drawable/friends" />
+                        android:src="@mipmap/ic_friends" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -193,13 +193,13 @@
 
                     <ImageView
                         android:id="@+id/postImage"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
+                        android:layout_width="@dimen/feed_item_profile_pic"
+                        android:layout_height="@dimen/feed_item_profile_pic"
                         android:layout_alignParentLeft="true"
                         android:layout_marginBottom="10dp"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
-                        android:src="@drawable/posts" />
+                        android:src="@mipmap/ic_posts" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -233,13 +233,13 @@
 
                     <ImageView
                         android:id="@+id/pictureImage"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
+                        android:layout_width="@dimen/feed_item_profile_pic"
+                        android:layout_height="@dimen/feed_item_profile_pic"
                         android:layout_alignParentLeft="true"
                         android:layout_marginBottom="10dp"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
-                        android:src="@drawable/pictures" />
+                        android:src="@mipmap/ic_pics" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -292,13 +292,13 @@
 
                     <ImageView
                         android:id="@+id/findFriendsImage"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
+                        android:layout_width="@dimen/feed_item_profile_pic"
+                        android:layout_height="@dimen/feed_item_profile_pic"
                         android:layout_alignParentLeft="true"
                         android:layout_marginBottom="10dp"
                         android:layout_marginRight="15dp"
                         android:layout_marginTop="10dp"
-                        android:src="@drawable/friends" />
+                        android:src="@mipmap/ic_find_friends" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -336,13 +336,13 @@
 
                     <ImageView
                         android:id="@+id/aboutImage"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
+                        android:layout_width="@dimen/feed_item_profile_pic"
+                        android:layout_height="@dimen/feed_item_profile_pic"
                         android:layout_alignParentLeft="true"
                         android:layout_marginBottom="10dp"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
-                        android:src="@drawable/about" />
+                        android:src="@mipmap/ic_about_us" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -367,9 +367,9 @@
                         android:layout_height="45dp"
                         android:layout_alignParentLeft="true"
                         android:layout_marginBottom="10dp"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
-                        android:src="@drawable/logout" />
+                        android:src="@mipmap/ic_logout" />
 
                     <TextView
                         android:layout_width="wrap_content"

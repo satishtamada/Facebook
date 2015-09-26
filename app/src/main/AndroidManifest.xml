@@ -78,12 +78,14 @@
         <!--feed post -->
         <activity
             android:name=".activity.FeedCreateActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:screenOrientation="portrait">
 
         </activity>
         <!--feed item-->
         <activity
             android:name=".activity.FeedItemActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:screenOrientation="portrait">
 
         </activity>

@@ -84,14 +84,6 @@ public class ProfileFragment extends Fragment {
         if (!session.isLoggedIn()) {
             logoutUser();
         }
-        userProfileLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), userName, Toast.LENGTH_LONG).show();
-                Intent profileIntent = new Intent(getActivity(), FriendProfileActivity.class);
-                startActivity(profileIntent);
-            }
-        });
         friendsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

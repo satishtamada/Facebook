@@ -25,10 +25,11 @@ public class AppConfig {
     public static String URL_POST_COMMENTS = URL + "comment/create";
     public static String URL_NOTIFICATIONS=URL+"notification/notifications";
 
+    public static String URL_REMOVE_FRIEND=URL+"friend/remove_friend";
     public static String URL_FRIEND_ADD = URL + "friend/add_friend";
     public static String URL_FRIEND_REQUESTS = URL + "friend/friend_requests";
-    public static String URL_FRIEND_REQUEST_ACCEPT = URL + "friend/add_friend_confirm";
-    public static String URL_FRIEND_REQUEST_DELETE = URL + "friend/add_friend_delete";
+    public static String URL_FRIEND_REQUEST_ACCEPT = URL + "friend/friend_request_confirm";
+    public static String URL_FRIEND_REQUEST_DELETE = URL + "friend/friend_request_delete";
     public static String URL_FEED_ITEM=URL+"feed/feed_item";
 
     // Number of columns of Grid View
@@ -50,6 +51,7 @@ public class AppConfig {
     public static final int FRIEND_STATUS_CONFIRMED = 1;
     public static final int FRIEND_STATUS_DELETED = 2;
     public static final int REQUEST_STATUS_CONFIRMED=3;
+    public static final int FRIEND_STATUS_REMOVED=4;
 
     // Push notification flag values
     public static final int FLAG_NEW_FRIEND_REQUEST = 1;

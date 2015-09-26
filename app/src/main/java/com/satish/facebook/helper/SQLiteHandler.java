@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.satish.facebook.models.Profile;
+
 import java.util.HashMap;
 
 /**
@@ -108,6 +110,34 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         Log.d(TAG, "Fetching user from Sqlite: " + user.toString());
 
         return user;
+    }
+
+    public Profile getUserProfile() {
+        HashMap<String, String> user = new HashMap<String, String>();
+        String selectQuery = "SELECT  * FROM " + TABLE_USER;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        // Move to first row
+        cursor.moveToFirst();
+
+        Profile profile = new Profile();
+
+        if (cursor.getCount() > 0) {
+
+            profile.setId(cursor.getString(2));
+            profile.setApikey(cursor.getString(1));
+            profile.setName(cursor.getString(3));
+            profile.setEmail(cursor.getString(4));
+            profile.setCreated_at(cursor.getString(5));
+            profile.setProfile_image_url(cursor.getString(6));
+        }
+        cursor.close();
+        db.close();
+        // return user
+        Log.d(TAG, "Fetching user from Sqlite: " + user.toString());
+
+        return profile;
     }
 
     /**

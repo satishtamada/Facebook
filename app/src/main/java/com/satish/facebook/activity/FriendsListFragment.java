@@ -1,13 +1,11 @@
 package com.satish.facebook.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,7 +31,7 @@ import java.util.HashMap;
 /**
  * Created by satish on 13/9/15.
  */
-public class FriendsListFragment extends Fragment {
+public class FriendsListFragment extends Fragment implements FriendAdapter.RemoveFriendAdapterListener{
     private ListView listView;
     private FriendAdapter friendAdapter;
     private ArrayList<Friend> friendArrayList;
@@ -58,21 +56,15 @@ public class FriendsListFragment extends Fragment {
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         lbl_no_friends= (TextView) view.findViewById(R.id.lbl_no_friends);
         friendArrayList = new ArrayList<>();
-        friendAdapter = new FriendAdapter(friendArrayList, getActivity());
         db = new SQLiteHandler(getActivity());
-        listView.setAdapter(friendAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent in = new Intent(getActivity(),
-                        FriendProfileActivity.class);
-                startActivity(in);
-            }
-        });
-        Log.d("hello", TAG);
-        progressBar.setVisibility(View.VISIBLE);
         HashMap<String, String> user = db.getUserDetails();
         id = user.get("uid");
+        friendAdapter = new FriendAdapter(friendArrayList, getActivity(),id);
+        listView.setAdapter(friendAdapter);
+        friendAdapter.setRemoveFriendAdapterListener(this);
+        Log.d("hello", TAG);
+        progressBar.setVisibility(View.VISIBLE);
+
         String url = AppConfig.URL_FRIENDS_LIST;
         url += "?id=" + id;
 
@@ -148,4 +140,12 @@ public class FriendsListFragment extends Fragment {
         return titleCase.toString();
     }
 
+    @Override
+    public void onRemoveFriend(int position) {
+        Friend friend=friendArrayList.get(position);
+        friend.setStatus(AppConfig.FRIEND_STATUS_REMOVED);
+        friendArrayList.remove(position);
+        friendArrayList.add(position,friend);
+        friendAdapter.notifyDataSetChanged();
+    }
 }

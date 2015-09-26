@@ -19,4 +19,5 @@
     <color name="textColor">#1e1e1e</color>
     <color name="statusColor">#363636</color>
     <color name="btn_delete">#7e7e7e</color>
+    <color name="notification_on">#F50057</color>
 </resources>

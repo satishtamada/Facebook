@@ -24,7 +24,7 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginBottom="60dp"
-        android:indeterminateTint="@color/colorAccent"
+        android:indeterminateTint="@color/colorPrimary"
         android:indeterminateTintMode="src_atop"
         android:visibility="gone" />
 
@@ -45,7 +45,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_margin="10dp"
-                android:src="@drawable/profile_selected" />
+                />
 
             <EditText
                 android:id="@+id/feed_text_post"

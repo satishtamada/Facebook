@@ -23,7 +23,7 @@
         android:maxLength="14" />
 
     <TextView
-        android:id="@+id/text_friend_request_sent"
+        android:id="@+id/txt_friend_removed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/friend_name"
@@ -44,7 +44,7 @@
         android:paddingRight="10dp"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimary"
-        android:text="Friends" />
+        android:text="@string/btn_un_friend" />
 
 
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.satish.facebook.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,7 +11,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.satish.facebook.R;
 import com.satish.facebook.helper.SessionManager;
@@ -26,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     int currentTab = 0;
     private FloatingActionButton floatingActionButton;
     private String profileImageUrl;
+    ViewGroup container;
+    LayoutInflater inflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +38,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         setSupportActionBar(toolbar);
-        Intent i=getIntent();
-        profileImageUrl=i.getStringExtra("profileImageUrl");
+        Intent i = getIntent();
+        profileImageUrl = i.getStringExtra("profileImageUrl");
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager) findViewById(R.id.tab_viewpager);
@@ -88,7 +94,10 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_tab_feed);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_tab_friends);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_tab_notification);
+        //set custom notification tab
+        View view = inflater.inflate(R.layout.custom_tab, container, false);
+
+        tabLayout.getTabAt(2).setCustomView(view);
         tabLayout.getTabAt(3).setIcon(R.drawable.ic_tab_userprofile);
     }
 

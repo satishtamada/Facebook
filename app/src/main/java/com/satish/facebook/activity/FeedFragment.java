@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -67,6 +68,17 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         feedAdapter = new FeedAdapter(getActivity(), feedArrayList);
         //set adapter to listview
         listView.setAdapter(feedAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+               Feed feed=feedArrayList.get(position);
+
+                Intent i=new Intent(getActivity(),FeedItemActivity.class);
+                i.putExtra("post_id", feed.getPost_id());
+                startActivity(i);
+
+            }
+        });
         db = new SQLiteHandler(getActivity());
         btnFindFriends.setOnClickListener(new View.OnClickListener() {
             @Override

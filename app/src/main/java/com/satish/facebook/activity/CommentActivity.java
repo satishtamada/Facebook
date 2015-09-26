@@ -28,6 +28,7 @@ import com.satish.facebook.app.AppConfig;
 import com.satish.facebook.app.AppController;
 import com.satish.facebook.helper.SQLiteHandler;
 import com.satish.facebook.models.Comments;
+import com.satish.facebook.models.Profile;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,9 +44,9 @@ import java.util.Map;
 /**
  * Created by satish on 2/9/15.
  */
-public class CommentActivity extends AppCompatActivity {
+public class CommentActivity extends AppCompatActivity{
     private ListView listView;
-    private ArrayList<Comments> commetArrayList;
+    private ArrayList<Comments> commentArrayList;
     private static final String TAG = CommentActivity.class.getSimpleName();
     private static String tag = "json_tag";
     private CommentAdapter commentAdapter;
@@ -65,9 +66,9 @@ public class CommentActivity extends AppCompatActivity {
         txtComment = (EditText) findViewById(R.id.txt_comment);
         noCommentsLayout= (LinearLayout) findViewById(R.id.no_comments_layout);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        commetArrayList = new ArrayList<>();
+        commentArrayList = new ArrayList<>();
         db = new SQLiteHandler(this);
-        commentAdapter = new CommentAdapter(commetArrayList, this);
+        commentAdapter = new CommentAdapter(commentArrayList, this);
         listView.setAdapter(commentAdapter);
 
         Intent i = getIntent();
@@ -140,7 +141,7 @@ public class CommentActivity extends AppCompatActivity {
                                         comment.setProfile_image(image);
                                         comment.setComment(comment_text);
                                         comment.setCreated_at(timestamp);
-                                        commetArrayList.add(comment);
+                                        commentArrayList.add(comment);
                                     }
                                 }
                             } else {
@@ -151,14 +152,9 @@ public class CommentActivity extends AppCompatActivity {
                             Log.d("error in", "catch");
                             e.printStackTrace();
 
-                        }if (commetArrayList.size() > 0) {
-                            commentAdapter.notifyDataSetChanged();
-                            progressBar.setVisibility(View.GONE);
-                            listView.setVisibility(View.VISIBLE);
-                        } else {
-                            progressBar.setVisibility(View.GONE);
-                            noCommentsLayout.setVisibility(View.VISIBLE);
                         }
+
+                        toggeleListVisibility();
                     }
                 }, new Response.ErrorListener() {
 
@@ -185,6 +181,18 @@ public class CommentActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag);
     }
 
+    private void toggeleListVisibility(){
+        if (commentArrayList.size() > 0) {
+            commentAdapter.notifyDataSetChanged();
+            progressBar.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+            noCommentsLayout.setVisibility(View.GONE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+            noCommentsLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void commentPost(final String comment, final String userId, final String postId) {
         String tag_string_req = "comment_post";
         progressBar.setVisibility(View.VISIBLE);
@@ -199,6 +207,25 @@ public class CommentActivity extends AppCompatActivity {
                     boolean error = jObj.getBoolean("success");
                     if (error) {
                         progressBar.setVisibility(View.GONE);
+
+                        SQLiteHandler db = new SQLiteHandler(getApplicationContext());
+
+                        Profile profile = db.getUserProfile();
+
+                        if(profile != null){
+                            Comments c = new Comments();
+                            c.setComment(comment);
+                            c.setCommented_user_id(Integer.parseInt(userId));
+                            c.setProfile_image(profile.getProfile_image_url());
+                            c.setCommented_username(profile.getName());
+                            c.setCreated_at(getCurrentTimeStamp());
+                            commentArrayList.add(c);
+                            commentAdapter.notifyDataSetChanged();
+                            toggeleListVisibility();
+                        }
+
+
+
                     } else {
                         JSONObject errorObj = jObj.getJSONObject("error");
                         String errorMsg = errorObj.getString("message");
@@ -260,4 +287,17 @@ public class CommentActivity extends AppCompatActivity {
 
         return titleCase.toString();
     }
+
+    public static Timestamp getCurrentTimeStamp(){
+        try {
+
+            java.util.Date date= new java.util.Date();
+            return new Timestamp(date.getTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
 }

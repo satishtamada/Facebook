@@ -110,6 +110,7 @@ public class FeedCreateActivity extends AppCompatActivity {
         if (id == R.id.post) {
             postText = txtPostText.getText().toString();
             if (!postText.isEmpty() || image != null) {
+
                 new UploadFileToServer().execute();
             }
 
@@ -141,16 +142,17 @@ public class FeedCreateActivity extends AppCompatActivity {
     }  //upload image to server
 
     private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
+
         @Override
         protected void onPreExecute() {
-            // setting progress bar to zero
+            progressBar.setVisibility(View.VISIBLE);
 
             super.onPreExecute();
         }
 
         @Override
         protected void onProgressUpdate(Integer... progress) {
-            progressBar.setVisibility(View.VISIBLE);
+
         }
 
         @Override

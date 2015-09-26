@@ -29,7 +29,6 @@ public class CommentAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Activity activity;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-
     public CommentAdapter(ArrayList<Comments> commentArrayList, Activity activity) {
         this.commnetArrayList = commentArrayList;
         this.activity = activity;
@@ -51,7 +50,7 @@ public class CommentAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null)
             inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -79,7 +78,7 @@ public class CommentAdapter extends BaseAdapter {
                 Long.parseLong(String.valueOf(calendar.getTimeInMillis())),
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
         lblCreated_at.setText(timeAgo);
-
         return view;
+
     }
 }

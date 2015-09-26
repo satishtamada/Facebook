@@ -137,7 +137,6 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                         txtInputPassword.setText("");
-                        txtInputEmail.setText("");
                     }
                 } catch (JSONException e) {
                     // JSON error

@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -70,8 +69,6 @@ public class NotificationFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 Notifications notifications=notificationsArrayList.get(position);
-                Toast.makeText(getActivity().getApplicationContext(), Integer.toString(notifications.getPost_id()), Toast.LENGTH_SHORT).show();
-
                 Intent i=new Intent(getActivity(),FeedItemActivity.class);
                 i.putExtra("post_id", notifications.getPost_id());
                 startActivity(i);
