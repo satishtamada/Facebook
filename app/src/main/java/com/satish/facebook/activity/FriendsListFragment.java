@@ -31,12 +31,12 @@ import java.util.HashMap;
 /**
  * Created by satish on 13/9/15.
  */
-public class FriendsListFragment extends Fragment implements FriendAdapter.RemoveFriendAdapterListener{
+public class FriendsListFragment extends Fragment implements FriendAdapter.RemoveFriendAdapterListener {
+    private static final String TAG = FriendsListFragment.class.getSimpleName();
+    private static String tag = "json_tag";
     private ListView listView;
     private FriendAdapter friendAdapter;
     private ArrayList<Friend> friendArrayList;
-    private static String tag = "json_tag";
-    private static final String TAG = FriendsListFragment.class.getSimpleName();
     private ProgressBar progressBar;
     private String id;
     private SQLiteHandler db;
@@ -54,12 +54,12 @@ public class FriendsListFragment extends Fragment implements FriendAdapter.Remov
         View view = inflater.inflate(R.layout.fragment_friends_list, container, false);
         listView = (ListView) view.findViewById(R.id.friend_list_view);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        lbl_no_friends= (TextView) view.findViewById(R.id.lbl_no_friends);
+        lbl_no_friends = (TextView) view.findViewById(R.id.lbl_no_friends);
         friendArrayList = new ArrayList<>();
         db = new SQLiteHandler(getActivity());
         HashMap<String, String> user = db.getUserDetails();
         id = user.get("uid");
-        friendAdapter = new FriendAdapter(friendArrayList, getActivity(),id);
+        friendAdapter = new FriendAdapter(friendArrayList, getActivity(), id);
         listView.setAdapter(friendAdapter);
         friendAdapter.setRemoveFriendAdapterListener(this);
         Log.d("hello", TAG);
@@ -98,11 +98,11 @@ public class FriendsListFragment extends Fragment implements FriendAdapter.Remov
                             Log.d("error in", "catch");
                             e.printStackTrace();
                         }
-                        if(friendArrayList.size()>0) {
+                        if (friendArrayList.size() > 0) {
                             friendAdapter.notifyDataSetChanged();
                             progressBar.setVisibility(View.GONE);
                             listView.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             progressBar.setVisibility(View.GONE);
                             lbl_no_friends.setVisibility(View.VISIBLE);
                         }
@@ -142,10 +142,10 @@ public class FriendsListFragment extends Fragment implements FriendAdapter.Remov
 
     @Override
     public void onRemoveFriend(int position) {
-        Friend friend=friendArrayList.get(position);
+        Friend friend = friendArrayList.get(position);
         friend.setStatus(AppConfig.FRIEND_STATUS_REMOVED);
         friendArrayList.remove(position);
-        friendArrayList.add(position,friend);
+        friendArrayList.add(position, friend);
         friendAdapter.notifyDataSetChanged();
     }
 }

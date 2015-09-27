@@ -21,10 +21,10 @@ import java.util.List;
  */
 public class FriendsHandlerActivity extends AppCompatActivity {
     private static String TAG = FriendsHandlerActivity.class.getSimpleName();
-    private Toolbar toolbar;
     ViewPager viewPager;
     TabLayout tabLayout;
     int tab_position;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

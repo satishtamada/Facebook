@@ -18,10 +18,10 @@ import java.util.ArrayList;
  * Created by satish on 31/8/15.
  */
 public class ImagesAdapter extends BaseAdapter {
+    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private int imageWidth;
     private Activity activity;
     private ArrayList<String> imageUrls = new ArrayList<String>();
-    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
     public ImagesAdapter(Activity activity, ArrayList<String> filePaths,
                          int imageWidth) {

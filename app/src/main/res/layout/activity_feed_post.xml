@@ -44,8 +44,7 @@
                 android:layout_height="@dimen/feed_item_profile_pic"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:layout_margin="10dp"
-                />
+                android:layout_margin="10dp" />
 
             <EditText
                 android:id="@+id/feed_text_post"

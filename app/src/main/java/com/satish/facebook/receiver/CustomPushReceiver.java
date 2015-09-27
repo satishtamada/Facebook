@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.parse.ParsePushBroadcastReceiver;
 import com.satish.facebook.activity.FriendsHandlerActivity;
+import com.satish.facebook.activity.MainActivity;
 import com.satish.facebook.app.AppConfig;
 import com.satish.facebook.helper.NotificationUtils;
 
@@ -70,18 +71,57 @@ public class CustomPushReceiver extends ParsePushBroadcastReceiver {
             boolean isBackground = json.getBoolean("is_background");
             int flag = json.getInt("flag");
 
-            switch (flag){
+            switch (flag) {
+                case AppConfig.FLAG_NEW_COMMENT:
+                    processComment(context, json, isBackground);
+                    break;
+                case AppConfig.FLAG_NEW_LIKE:
+                    processLike(context, json, isBackground);
+                    break;
                 case AppConfig.FLAG_NEW_FRIEND_REQUEST:
                     processFriendRequest(context, json, isBackground);
                     break;
+
                 default:
                     break;
             }
 
 
-
         } catch (JSONException e) {
             Log.e(TAG, "Push message json exception: " + e.getMessage());
+        }
+    }
+
+    private void processLike(Context context, JSONObject json, boolean isBackground) {
+        try {
+            JSONObject data = json.getJSONObject("data");
+            String title = data.getString("title");
+            String message = data.getString("message");
+
+            if (!isBackground) {
+                Intent resultIntent = new Intent(context, MainActivity.class);
+                resultIntent.putExtra("tab_name", 2);
+                showNotificationMessage(context, title, message, resultIntent);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void processComment(Context context, JSONObject json, boolean isBackground) {
+
+        try {
+            JSONObject data = json.getJSONObject("data");
+            String title = data.getString("title");
+            String message = data.getString("message");
+
+            if (!isBackground) {
+                Intent resultIntent = new Intent(context, MainActivity.class);
+                resultIntent.putExtra("tab_name", 2);
+                showNotificationMessage(context, title, message, resultIntent);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -94,14 +134,13 @@ public class CustomPushReceiver extends ParsePushBroadcastReceiver {
 
             if (!isBackground) {
                 Intent resultIntent = new Intent(context, FriendsHandlerActivity.class);
-                resultIntent.putExtra("tab_name", 3);
+                resultIntent.putExtra("tab_name", 0);
                 showNotificationMessage(context, title, message, resultIntent);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
 
     /**
      * Shows the notification message in the notification bar

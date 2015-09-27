@@ -22,16 +22,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private Toolbar toolbar;
     ViewPager viewPager;
     TabLayout tabLayout;
-    private SessionManager session;
     int currentTab = 0;
-    private FloatingActionButton floatingActionButton;
-    private String profileImageUrl;
     ViewGroup container;
     LayoutInflater inflater;
-
+    private Toolbar toolbar;
+    private SessionManager session;
+    private FloatingActionButton floatingActionButton;
+    private String profileImageUrl;
+    int tab_position;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,12 +102,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpViewPager() {
+        Intent intent = getIntent();
+        tab_position = intent.getIntExtra("tab_name", 0);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new FeedFragment());
         adapter.addFragment(new FriendRequesetFragment());
         adapter.addFragment(new NotificationFragment());
         adapter.addFragment(new ProfileFragment());
         viewPager.setAdapter(adapter);
+
+        viewPager.setCurrentItem(tab_position);
     }
 
     public class ViewPagerAdapter extends FragmentPagerAdapter {

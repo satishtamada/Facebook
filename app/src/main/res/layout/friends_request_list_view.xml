@@ -14,9 +14,9 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/friend_profile_image">
+        android:layout_toRightOf="@+id/friend_profile_image"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/friend_name"
@@ -44,12 +44,12 @@
                 android:id="@+id/btn_confirm"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/bg_btn_confirm"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
                 android:text="Confirm"
                 android:textAllCaps="false"
                 android:textColor="@color/colorPrimary" />
@@ -58,9 +58,9 @@
                 android:id="@+id/btn_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
+                android:layout_margin="5dp"
                 android:background="@drawable/bg_btn_delete"
                 android:paddingLeft="10dp"
-                android:layout_margin="5dp"
                 android:paddingRight="10dp"
                 android:text="delete"
                 android:textAllCaps="false"

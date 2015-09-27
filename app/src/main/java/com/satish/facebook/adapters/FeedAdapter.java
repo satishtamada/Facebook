@@ -8,6 +8,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,27 +16,39 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.StringRequest;
 import com.satish.facebook.R;
 import com.satish.facebook.activity.CommentActivity;
+import com.satish.facebook.app.AppConfig;
 import com.satish.facebook.app.AppController;
 import com.satish.facebook.helper.FeedImageView;
+import com.satish.facebook.helper.SQLiteHandler;
 import com.satish.facebook.models.Feed;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
  * Created by satish on 24/8/15.
  */
 public class FeedAdapter extends BaseAdapter {
+    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private LayoutInflater inflater;
     private Activity activity;
     private List<Feed> feedList;
-    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-
+    private SQLiteHandler db;
+    private static final String TAG = FindFriendAdapter.class.getSimpleName();
     public FeedAdapter(Activity activity, List<Feed> feedList) {
         this.activity = activity;
         this.feedList = feedList;
@@ -67,7 +80,7 @@ public class FeedAdapter extends BaseAdapter {
 
         if (imageLoader == null)
             imageLoader = AppController.getInstance().getImageLoader();
-
+        db=new SQLiteHandler(activity);
         TextView name = (TextView) convertView.findViewById(R.id.name);
         TextView timestamp = (TextView) convertView
                 .findViewById(R.id.timestamp);
@@ -138,6 +151,11 @@ public class FeedAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (lblLike.getCurrentTextColor() == Color.parseColor("#9197a3")) {
+                    HashMap<String, String> user = db.getUserDetails();
+                    String userId = user.get("uid");
+                    String postId = Integer.toString(item.getPost_id());
+                    String status="1";
+                    likeOnPost(userId,postId,status);
                     lblLike.setTextColor(activity.getResources().getColor(R.color.colorPrimary));
                     like_icon.setImageResource(R.drawable.ic_like_selected);
                 } else {
@@ -156,5 +174,53 @@ public class FeedAdapter extends BaseAdapter {
             }
         });
         return convertView;
+    }
+
+    private void likeOnPost(final String userId, final String postId, final String status) {
+        String tag_string_req = "like_on_post";
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_LIKE_ON_POST, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "like Response: " + response.toString());
+                Log.d(TAG, "like userid,postid,status: " + userId+""+postId+""+status);
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("success");
+                    if (error) {
+
+                    } else {
+
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Registration Error: " + error.getMessage());
+                Toast.makeText(activity.getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to comment_post url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("user_id", userId);
+                params.put("post_id", postId);
+                params.put("like_status", status);
+                Log.d(TAG,userId+postId+status);
+                return params;
+            }
+
+        };
+    AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 }

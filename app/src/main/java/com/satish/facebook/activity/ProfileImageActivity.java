@@ -42,20 +42,20 @@ import java.util.HashMap;
  * Created by satish on 18/9/15.
  */
 public class ProfileImageActivity extends AppCompatActivity {
-    private Toolbar toolbar;
-    private Button btnUploadImage;
-    private ImageView imgUploadImage;
     private static int RESULT_LOAD_IMAGE = 1;
-    private Uri picUri;
     final int CROP_PIC = 2;
     final int CAMERA_CAPTURE = 1;
-    private ProgressBar progressBar;
     Bitmap image;
     byte[] bytes;
-    private SQLiteHandler db;
     String id;
     ByteArrayOutputStream byteArrayOutputStream = null;
     String responseString = null;
+    private Toolbar toolbar;
+    private Button btnUploadImage;
+    private ImageView imgUploadImage;
+    private Uri picUri;
+    private ProgressBar progressBar;
+    private SQLiteHandler db;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +115,46 @@ public class ProfileImageActivity extends AppCompatActivity {
                 btnUploadImage.setText("Set as Profile Picture");
 
             }
+        }
+    }
+
+    //setting skip button to menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.skip) {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    //peform select image to crop
+    private void performCrop() {
+        try {
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+            cropIntent.setDataAndType(picUri, "image/*");
+            cropIntent.putExtra("crop", "true");
+            cropIntent.putExtra("aspectX", 1);
+            cropIntent.putExtra("aspectY", 1);
+            cropIntent.putExtra("outputX", 256);
+            cropIntent.putExtra("outputY", 256);
+            // retrieve data on return
+            cropIntent.putExtra("return-data", true);
+            // start the activity - we handle returning in onActivityResult
+            startActivityForResult(cropIntent, CROP_PIC);
+        } catch (ActivityNotFoundException anfe) {
+            Toast.makeText(this, "This device doesn't support the crop action!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -190,46 +230,6 @@ public class ProfileImageActivity extends AppCompatActivity {
             super.onPostExecute(result);
         }
 
-    }
-
-    //setting skip button to menu
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.skip) {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    //peform select image to crop
-    private void performCrop() {
-        try {
-            Intent cropIntent = new Intent("com.android.camera.action.CROP");
-            cropIntent.setDataAndType(picUri, "image/*");
-            cropIntent.putExtra("crop", "true");
-            cropIntent.putExtra("aspectX", 1);
-            cropIntent.putExtra("aspectY", 1);
-            cropIntent.putExtra("outputX", 256);
-            cropIntent.putExtra("outputY", 256);
-            // retrieve data on return
-            cropIntent.putExtra("return-data", true);
-            // start the activity - we handle returning in onActivityResult
-            startActivityForResult(cropIntent, CROP_PIC);
-        } catch (ActivityNotFoundException anfe) {
-            Toast.makeText(this, "This device doesn't support the crop action!", Toast.LENGTH_SHORT).show();
-        }
     }
 
 }

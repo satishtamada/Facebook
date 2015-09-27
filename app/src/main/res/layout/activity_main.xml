@@ -26,8 +26,8 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/feed_item_margin"
         android:src="@drawable/ic_add"
-        app:elevation="6dp"
-        app:backgroundTint="@color/colorPrimary" />
+        app:backgroundTint="@color/colorPrimary"
+        app:elevation="6dp" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/tab_viewpager"

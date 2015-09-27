@@ -30,8 +30,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAllCaps="false"
-            android:textSize="13dp"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/textColor"
+            android:textSize="13dp" />
 
         <TextView
             android:id="@+id/created_at"

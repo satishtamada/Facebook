@@ -35,12 +35,12 @@ import java.util.HashMap;
 
 public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
+    private static final String TAG = FeedFragment.class.getSimpleName();
+    private static String tag = "json_tag";
     private ListView listView;
     private ArrayList<Feed> feedArrayList;
     private ProgressBar progressBar;
-    private static final String TAG = FeedFragment.class.getSimpleName();
     private FeedAdapter feedAdapter;
-    private static String tag = "json_tag";
     private SQLiteHandler db;
     private String id;
     private LinearLayout noFeedLayout;
@@ -71,9 +71,9 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-               Feed feed=feedArrayList.get(position);
+                Feed feed = feedArrayList.get(position);
 
-                Intent i=new Intent(getActivity(),FeedItemActivity.class);
+                Intent i = new Intent(getActivity(), FeedItemActivity.class);
                 i.putExtra("post_id", feed.getPost_id());
                 startActivity(i);
 
@@ -105,6 +105,7 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         return view;
     }
+
     private void fetchFeed(String finalUrl) {
         swipeRefreshLayout.setRefreshing(true);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,

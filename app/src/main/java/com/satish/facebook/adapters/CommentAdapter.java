@@ -25,10 +25,11 @@ import java.util.Date;
  * Created by satish on 2/9/15.
  */
 public class CommentAdapter extends BaseAdapter {
+    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private ArrayList<Comments> commnetArrayList;
     private LayoutInflater inflater;
     private Activity activity;
-    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+
     public CommentAdapter(ArrayList<Comments> commentArrayList, Activity activity) {
         this.commnetArrayList = commentArrayList;
         this.activity = activity;

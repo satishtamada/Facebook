@@ -7,8 +7,9 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:background="@color/feed_bg">
+        android:background="@color/feed_bg"
+        android:orientation="vertical">
+
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
@@ -24,12 +25,13 @@
             android:indeterminateTintMode="src_atop"
             android:visibility="gone" />
 
-        <LinearLayout android:id="@+id/feed_item"
+        <LinearLayout
+            android:id="@+id/feed_item"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/feed_bg"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -190,11 +192,11 @@
             android:id="@+id/comment_list_view"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
-            android:visibility="gone"
-            android:background="@color/white"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:divider="@null"/>
+            android:background="@color/white"
+            android:divider="@null"
+            android:visibility="gone" />
     </LinearLayout>
 </ScrollView>

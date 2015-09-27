@@ -48,23 +48,23 @@ import java.util.HashMap;
  * Created by satish on 26/8/15.
  */
 public class FeedCreateActivity extends AppCompatActivity {
-    private Button btnPostImage;
-    private EditText txtPostText;
-    private static int RESULT_LOAD_IMAGE = 1;
     private static final String TAG = FeedCreateActivity.class.getSimpleName();
-    private ImageView imgUploadFeed;
-    private Toolbar toolbar;
-    private ProgressBar progressBar;
+    private static int RESULT_LOAD_IMAGE = 1;
     Bitmap image;
     String responseString = null;
     String postText;
     String id;
-    private SQLiteHandler db;
     byte[] bytes;
     ByteArrayOutputStream byteArrayOutputStream = null;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-    private NetworkImageView userProfileImage;
     String profileImageUrl;
+    private Button btnPostImage;
+    private EditText txtPostText;
+    private ImageView imgUploadFeed;
+    private Toolbar toolbar;
+    private ProgressBar progressBar;
+    private SQLiteHandler db;
+    private NetworkImageView userProfileImage;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +92,7 @@ public class FeedCreateActivity extends AppCompatActivity {
         db = new SQLiteHandler(getApplicationContext());
         HashMap<String, String> user = db.getUserDetails();
         id = user.get("uid");
-        profileImageUrl=user.get("profile_image");
+        profileImageUrl = user.get("profile_image");
         userProfileImage.setImageUrl(profileImageUrl, imageLoader);
     }
 

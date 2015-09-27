@@ -29,11 +29,11 @@ import java.util.Map;
 
 
 public class LoginActivity extends AppCompatActivity {
+    private static final String TAG = LoginActivity.class.getSimpleName();
     private Button btnLinkRegister, btnLogin;
     private EditText txtInputEmail, txtInputPassword;
     private SessionManager session;
     private ProgressBar progressBar;
-    private static final String TAG = LoginActivity.class.getSimpleName();
     private SQLiteHandler db;
 
     @Override
@@ -117,8 +117,8 @@ public class LoginActivity extends AppCompatActivity {
                             String uid = user.getString("apikey");
                             String created_at = user.getString("created_at");
                             String id = user.getString("id");
-                            String profileImageUrl=user.getString("profile_image");
-                            db.addUser(id, name, email, uid, created_at,profileImageUrl);
+                            String profileImageUrl = user.getString("profile_image");
+                            db.addUser(id, name, email, uid, created_at, profileImageUrl);
 
                             //subscribe to parse with email
                             ParseUtils.subscribeWithEmail(email);

@@ -36,22 +36,22 @@ import java.util.Map;
  * Created by satish on 18/8/15.
  */
 public class FriendAdapter extends BaseAdapter {
+    private static final String TAG = FriendAdapter.class.getSimpleName();
+    String id;
     private ArrayList<Friend> friendArrayList;
     private LayoutInflater inflater;
     private Activity activity;
-    String id;
-    private static final String TAG = FriendAdapter.class.getSimpleName();
     private RemoveFriendAdapterListener removeFriendAdapterListener;
-
-    public void setRemoveFriendAdapterListener(FriendsListFragment removeFriendAdapterListener) {
-        this.removeFriendAdapterListener = removeFriendAdapterListener;
-    }
 
     public FriendAdapter(ArrayList<Friend> friendArrayList, Activity activity, String id) {
 
         this.friendArrayList = friendArrayList;
         this.activity = activity;
         this.id = id;
+    }
+
+    public void setRemoveFriendAdapterListener(FriendsListFragment removeFriendAdapterListener) {
+        this.removeFriendAdapterListener = removeFriendAdapterListener;
     }
 
     @Override

@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
@@ -15,39 +14,24 @@ import com.android.volley.toolbox.ImageLoader.ImageListener;
 
 public class FeedImageView extends ImageView {
 
-    public interface ResponseObserver {
-        public void onError();
-
-        public void onSuccess();
-    }
-
     private ResponseObserver mObserver;
-
-    public void setResponseObserver(ResponseObserver observer) {
-        mObserver = observer;
-    }
-
     /**
      * The URL of the network image to load
      */
     private String mUrl;
-
     /**
      * Resource ID of the image to be used as a placeholder until the network
      * image is loaded.
      */
     private int mDefaultImageId;
-
     /**
      * Resource ID of the image to be used if the network response fails.
      */
     private int mErrorImageId;
-
     /**
      * Local copy of the ImageLoader.
      */
     private ImageLoader mImageLoader;
-
     /**
      * Current ImageContainer. (either in-flight or finished)
      */
@@ -64,6 +48,10 @@ public class FeedImageView extends ImageView {
     public FeedImageView(Context context, AttributeSet attrs,
                          int defStyle) {
         super(context, attrs, defStyle);
+    }
+
+    public void setResponseObserver(ResponseObserver observer) {
+        mObserver = observer;
     }
 
     /**
@@ -257,5 +245,11 @@ public class FeedImageView extends ImageView {
         params.width = swidth;
         params.height = new_height;
         setLayoutParams(params);
+    }
+
+    public interface ResponseObserver {
+        public void onError();
+
+        public void onSuccess();
     }
 }

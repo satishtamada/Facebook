@@ -26,9 +26,9 @@ import java.util.Date;
  * Created by satish on 24/9/15.
  */
 public class NotificationsAdapter extends BaseAdapter {
+    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private LayoutInflater inflater;
     private Activity activity;
-    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private ArrayList<Notifications> notificationsArrayList;
 
     public NotificationsAdapter(ArrayList<Notifications> notificationsArrayList, Activity activity) {

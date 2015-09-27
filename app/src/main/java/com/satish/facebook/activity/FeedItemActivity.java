@@ -40,20 +40,42 @@ import java.util.Date;
  * Created by satish on 25/9/15.
  */
 public class FeedItemActivity extends AppCompatActivity {
+    private static final String TAG = FeedItemActivity.class.getSimpleName();
+    private static String tag = "json_tag";
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     TextView lblName, lblTimestamp, lblStatusMsg, lblCommentsCount;
     FeedImageView feedImageView;
     String userName;
+    Timestamp timestamp;
     private Toolbar toolbar;
-    private static String tag = "json_tag";
-    private static final String TAG = FeedItemActivity.class.getSimpleName();
     private ProgressBar progressBar;
     private NetworkImageView profile_image;
     private CommentAdapter commentAdapter;
-    Timestamp timestamp;
     private LinearLayout feedItem;
     private ArrayList<Comments> commetArrayList;
     private ListView listView;
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +85,7 @@ public class FeedItemActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         lblName = (TextView) findViewById(R.id.name);
-        feedItem= (LinearLayout) findViewById(R.id.feed_item);
+        feedItem = (LinearLayout) findViewById(R.id.feed_item);
         lblTimestamp = (TextView) findViewById(R.id.timestamp);
         lblStatusMsg = (TextView) findViewById(R.id.txtStatusMsg);
         lblCommentsCount = (TextView) findViewById(R.id.comments_count);
@@ -174,28 +196,6 @@ public class FeedItemActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag);
 
 
-    }
-
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null)
-            return;
-
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            view = listAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
-        }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-        listView.requestLayout();
     }
 
     private String toTitleCase(String name) {

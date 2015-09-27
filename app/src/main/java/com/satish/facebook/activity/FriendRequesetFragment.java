@@ -34,11 +34,11 @@ import java.util.HashMap;
  * Created by satish on 13/9/15.
  */
 public class FriendRequesetFragment extends Fragment implements FriendRequestAdapter.FriendRequestAdapterListener {
+    private static final String TAG = FriendRequesetFragment.class.getSimpleName();
+    private static String tag = "json_tag";
     private ListView listView;
     private FriendRequestAdapter friendRequestAdapter;
     private ArrayList<Friend> friendArrayList;
-    private static String tag = "json_tag";
-    private static final String TAG = FriendRequesetFragment.class.getSimpleName();
     private ProgressBar progressBar;
     private String id;
     private SQLiteHandler db;
@@ -57,15 +57,15 @@ public class FriendRequesetFragment extends Fragment implements FriendRequestAda
         View view = inflater.inflate(R.layout.fragment_friend_requestes, container, false);
         listView = (ListView) view.findViewById(R.id.friend_request_listview);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        btnFindFriend= (Button) view.findViewById(R.id.btn_find_friend);
-        noRequestsLayout= (LinearLayout) view.findViewById(R.id.noRequestsLayout);
+        btnFindFriend = (Button) view.findViewById(R.id.btn_find_friend);
+        noRequestsLayout = (LinearLayout) view.findViewById(R.id.noRequestsLayout);
         friendArrayList = new ArrayList<>();
         db = new SQLiteHandler(getActivity());
         progressBar.setVisibility(View.VISIBLE);
         btnFindFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent findFriendsIntent=new Intent(getActivity(),FriendsHandlerActivity.class);
+                Intent findFriendsIntent = new Intent(getActivity(), FriendsHandlerActivity.class);
                 findFriendsIntent.putExtra("tab_name", 1);
                 startActivity(findFriendsIntent);
             }
@@ -109,11 +109,11 @@ public class FriendRequesetFragment extends Fragment implements FriendRequestAda
                             e.printStackTrace();
 
                         }
-                        if(friendArrayList.size()>0) {
+                        if (friendArrayList.size() > 0) {
                             friendRequestAdapter.notifyDataSetChanged();
                             progressBar.setVisibility(View.GONE);
                             listView.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             progressBar.setVisibility(View.GONE);
                             noRequestsLayout.setVisibility(View.VISIBLE);
 

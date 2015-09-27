@@ -36,13 +36,13 @@ import java.util.HashMap;
  * Created by satish on 12/9/15.
  */
 public class ProfileFragment extends Fragment {
-    private static String tag = "json_tag";
     private static final String TAG = ProfileFragment.class.getSimpleName();
+    private static String tag = "json_tag";
+    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private ProgressBar progressBar;
     private TextView lblUserName, lblUserMailId, lblUserJoined, lblFriendCount, lblPostCount, lblPictureCount;
     private RelativeLayout parentLayout, userProfileLayout, friendsLayout, findFriendsLayout, pictureLayout, logoutLayout;
     private NetworkImageView profile_image;
-    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private ArrayList<String> userImages;
     private ArrayList<String> postIds;
     private String userName;

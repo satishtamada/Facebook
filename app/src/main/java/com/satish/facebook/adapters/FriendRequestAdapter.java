@@ -43,14 +43,14 @@ public class FriendRequestAdapter extends BaseAdapter {
     private TextView lbl_name;
     private FriendRequestAdapterListener friendRequestAdapterListener;
 
-    public void setFriendRequestAdapterListener(FriendRequestAdapterListener friendRequestAdapterListener) {
-        this.friendRequestAdapterListener = friendRequestAdapterListener;
-    }
-
     public FriendRequestAdapter(ArrayList<Friend> friendArrayList, Activity activity, String id) {
         this.friendArrayList = friendArrayList;
         this.activity = activity;
         this.id = id;
+    }
+
+    public void setFriendRequestAdapterListener(FriendRequestAdapterListener friendRequestAdapterListener) {
+        this.friendRequestAdapterListener = friendRequestAdapterListener;
     }
 
     @Override

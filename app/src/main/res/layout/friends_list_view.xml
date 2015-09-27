@@ -8,19 +8,19 @@
         android:id="@+id/friend_profile_image"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_marginLeft="10dp"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp" />
 
     <TextView
         android:id="@+id/friend_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/friend_profile_image"
         android:layout_marginTop="13dp"
+        android:layout_toRightOf="@+id/friend_profile_image"
+        android:maxLength="14"
         android:paddingLeft="10dp"
         android:textSize="15dp"
-        android:textStyle="bold"
-        android:maxLength="14" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txt_friend_removed"
@@ -42,9 +42,9 @@
         android:background="#fff"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:text="@string/btn_un_friend"
         android:textAllCaps="false"
-        android:textColor="@color/colorPrimary"
-        android:text="@string/btn_un_friend" />
+        android:textColor="@color/colorPrimary" />
 
 
 </RelativeLayout>

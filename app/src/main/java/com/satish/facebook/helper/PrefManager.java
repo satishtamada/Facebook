@@ -9,26 +9,20 @@ import android.content.SharedPreferences.Editor;
  * Created by satish on 23/9/15.
  */
 public class PrefManager {
-    // Shared Preferences
-    SharedPreferences pref;
-
-    // Editor for Shared preferences
-    Editor editor;
-
-    // Context
-    Context _context;
-
-    // Shared pref mode
-    int PRIVATE_MODE = 0;
-
     // Shared pref file name
     private static final String PREF_NAME = "AndroidHive";
-
     // All Shared Preferences Keys
     private static final String IS_LOGIN = "IsLoggedIn";
-
     // Email address
     private static final String KEY_EMAIL = "email";
+    // Shared Preferences
+    SharedPreferences pref;
+    // Editor for Shared preferences
+    Editor editor;
+    // Context
+    Context _context;
+    // Shared pref mode
+    int PRIVATE_MODE = 0;
 
     // Constructor
     public PrefManager(Context context) {

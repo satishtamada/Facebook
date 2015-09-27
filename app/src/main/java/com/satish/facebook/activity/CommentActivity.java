@@ -44,19 +44,31 @@ import java.util.Map;
 /**
  * Created by satish on 2/9/15.
  */
-public class CommentActivity extends AppCompatActivity{
-    private ListView listView;
-    private ArrayList<Comments> commentArrayList;
+public class CommentActivity extends AppCompatActivity {
     private static final String TAG = CommentActivity.class.getSimpleName();
     private static String tag = "json_tag";
+    int post_id;
+    Timestamp timestamp;
+    private ListView listView;
+    private ArrayList<Comments> commentArrayList;
     private CommentAdapter commentAdapter;
     private EditText txtComment;
     private Button btnComment;
     private ProgressBar progressBar;
     private LinearLayout noCommentsLayout;
-    int post_id;
     private SQLiteHandler db;
-    Timestamp timestamp;
+
+    public static Timestamp getCurrentTimeStamp() {
+        try {
+
+            java.util.Date date = new java.util.Date();
+            return new Timestamp(date.getTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return null;
+        }
+    }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +76,7 @@ public class CommentActivity extends AppCompatActivity{
         listView = (ListView) findViewById(R.id.comment_list_view);
         btnComment = (Button) findViewById(R.id.btn_comment_post);
         txtComment = (EditText) findViewById(R.id.txt_comment);
-        noCommentsLayout= (LinearLayout) findViewById(R.id.no_comments_layout);
+        noCommentsLayout = (LinearLayout) findViewById(R.id.no_comments_layout);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         commentArrayList = new ArrayList<>();
         db = new SQLiteHandler(this);
@@ -118,7 +130,7 @@ public class CommentActivity extends AppCompatActivity{
                             boolean error = response.getBoolean("success");
                             if (error) {
                                 JSONArray jsonArray = response.getJSONArray("comments");
-                                if(jsonArray.length()>0) {
+                                if (jsonArray.length() > 0) {
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject friendObj = (JSONObject) jsonArray.get(i);
                                         String id = friendObj.getString("user_id");
@@ -181,7 +193,7 @@ public class CommentActivity extends AppCompatActivity{
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag);
     }
 
-    private void toggeleListVisibility(){
+    private void toggeleListVisibility() {
         if (commentArrayList.size() > 0) {
             commentAdapter.notifyDataSetChanged();
             progressBar.setVisibility(View.GONE);
@@ -212,7 +224,7 @@ public class CommentActivity extends AppCompatActivity{
 
                         Profile profile = db.getUserProfile();
 
-                        if(profile != null){
+                        if (profile != null) {
                             Comments c = new Comments();
                             c.setComment(comment);
                             c.setCommented_user_id(Integer.parseInt(userId));
@@ -223,7 +235,6 @@ public class CommentActivity extends AppCompatActivity{
                             commentAdapter.notifyDataSetChanged();
                             toggeleListVisibility();
                         }
-
 
 
                     } else {
@@ -286,18 +297,6 @@ public class CommentActivity extends AppCompatActivity{
         }
 
         return titleCase.toString();
-    }
-
-    public static Timestamp getCurrentTimeStamp(){
-        try {
-
-            java.util.Date date= new java.util.Date();
-            return new Timestamp(date.getTime());
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            return null;
-        }
     }
 
 }

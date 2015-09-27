@@ -32,12 +32,12 @@ import java.util.HashMap;
 /**
  * Created by satish on 13/9/15.
  */
-public class SuggestionsFragment extends Fragment implements FindFriendAdapter.RequestSentAdapterListener{
+public class SuggestionsFragment extends Fragment implements FindFriendAdapter.RequestSentAdapterListener {
+    private static final String TAG = SuggestionsFragment.class.getSimpleName();
+    private static String tag = "json_tag";
     private ListView listView;
     private FindFriendAdapter friendCustomAdapter;
     private ArrayList<Friend> friendArrayList;
-    private static String tag = "json_tag";
-    private static final String TAG = SuggestionsFragment.class.getSimpleName();
     private ProgressBar progressBar;
     private String id;
     private SQLiteHandler db;
@@ -55,7 +55,7 @@ public class SuggestionsFragment extends Fragment implements FindFriendAdapter.R
         View view = inflater.inflate(R.layout.fragment_suggestions, container, false);
         listView = (ListView) view.findViewById(R.id.friend_list_view);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        lbl_no_suggestions= (TextView) view.findViewById(R.id.lbl_no_suggestion);
+        lbl_no_suggestions = (TextView) view.findViewById(R.id.lbl_no_suggestion);
         friendArrayList = new ArrayList<>();
         db = new SQLiteHandler(getActivity());
 
@@ -105,11 +105,12 @@ public class SuggestionsFragment extends Fragment implements FindFriendAdapter.R
                             Log.d("error in", "catch");
                             e.printStackTrace();
 
-                        } if(friendArrayList.size()>0) {
+                        }
+                        if (friendArrayList.size() > 0) {
                             friendCustomAdapter.notifyDataSetChanged();
                             progressBar.setVisibility(View.GONE);
                             listView.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             progressBar.setVisibility(View.GONE);
                             lbl_no_suggestions.setVisibility(View.VISIBLE);
                         }
@@ -152,10 +153,10 @@ public class SuggestionsFragment extends Fragment implements FindFriendAdapter.R
 
     @Override
     public void onRequestSentConfirmed(int position) {
-        Friend friend=friendArrayList.get(position);
+        Friend friend = friendArrayList.get(position);
         friend.setStatus(AppConfig.REQUEST_STATUS_CONFIRMED);
         friendArrayList.remove(position);
-        friendArrayList.add(position,friend);
+        friendArrayList.add(position, friend);
         friendCustomAdapter.notifyDataSetChanged();
 
     }

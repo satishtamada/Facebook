@@ -34,7 +34,7 @@
         android:layout_below="@+id/lbl_comments_on"
         android:layout_marginBottom="30dp"
         android:divider="@null"
-        android:visibility="gone"/>
+        android:visibility="gone" />
     <!--if no comments available then it display-->
     <LinearLayout
         android:id="@+id/no_comments_layout"
@@ -48,13 +48,13 @@
         <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:src="@drawable/ic_no_comments"/>
+            android:src="@drawable/ic_no_comments" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="@string/lbl_no_comments"/>
+            android:text="@string/lbl_no_comments"
+            android:textStyle="bold" />
     </LinearLayout>
     <!--comment text field button -->
     <RelativeLayout
@@ -71,9 +71,9 @@
             android:id="@+id/txt_comment"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
+            android:layout_marginTop="3dp"
             android:background="#ffffff"
             android:hint="@string/txt_comment_hint"
-            android:layout_marginTop="3dp"
             android:paddingLeft="5dp" />
 
         <Button
@@ -82,8 +82,8 @@
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_marginTop="5dp"
-            android:paddingRight="5dp"
-            android:background="@drawable/ic_right_arrow" />
+            android:background="@drawable/ic_right_arrow"
+            android:paddingRight="5dp" />
 
     </RelativeLayout>
 

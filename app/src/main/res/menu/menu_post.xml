@@ -4,7 +4,7 @@
     tools:context=".MainActivity">
     <item
         android:id="@+id/post"
-        android:title="@string/menu_btn_post"
         android:orderInCategory="100"
+        android:title="@string/menu_btn_post"
         app:showAsAction="always" />
 </menu>

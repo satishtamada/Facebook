@@ -30,10 +30,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
         <ImageView
             android:id="@+id/image_upload_profile"
@@ -46,19 +46,19 @@
             android:id="@+id/btn_upload_profile"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
-            android:textAllCaps="false"
-            android:textColor="#ffffff"
             android:layout_marginTop="25dip"
             android:background="@drawable/bg_button_style"
-            android:text="@string/btn_upload_profile" />
+            android:text="@string/btn_upload_profile"
+            android:textAllCaps="false"
+            android:textColor="#ffffff" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/lbl_your_current_profile"
-            android:alpha="0.4"
             android:layout_marginTop="10dp"
+            android:alpha="0.4"
             android:padding="5dp"
+            android:text="@string/lbl_your_current_profile"
             android:textStyle="bold" />
     </LinearLayout>
 </RelativeLayout>

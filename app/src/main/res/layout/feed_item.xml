@@ -85,11 +85,11 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="5dp"
+            android:orientation="horizontal"
             android:paddingBottom="5dp"
-            android:paddingLeft="@dimen/feed_item_padding_left_right">
+            android:paddingLeft="@dimen/feed_item_padding_left_right"
+            android:paddingTop="5dp">
 
             <TextView
                 android:id="@+id/comments_count"
@@ -101,9 +101,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
                 android:text="comments"
-                android:textSize="@dimen/lbl_comment_size_count"
-                android:paddingLeft="5dp" />
+                android:textSize="@dimen/lbl_comment_size_count" />
         </LinearLayout>
         <!--like comment layout-->
         <LinearLayout
@@ -160,9 +160,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
-                    android:textSize="@dimen/lbl_comment_size"
                     android:text="@string/btn_comment_lbl"
                     android:textColor="#9197a3"
+                    android:textSize="@dimen/lbl_comment_size"
                     android:textStyle="bold" />
 
 

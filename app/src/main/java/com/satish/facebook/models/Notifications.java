@@ -6,21 +6,21 @@ import java.sql.Timestamp;
  * Created by satish on 24/9/15.
  */
 public class Notifications {
-    private int user_id,status,post_id;
+    private int user_id, status, post_id;
     private String user_name, message, profile_image;
     private Timestamp created_at;
 
     public Notifications() {
     }
 
-    public Notifications(int user_id, int status, String user_name, String message, String profile_image, Timestamp created_at,int post_id) {
+    public Notifications(int user_id, int status, String user_name, String message, String profile_image, Timestamp created_at, int post_id) {
         this.user_id = user_id;
         this.status = status;
         this.user_name = user_name;
         this.message = message;
         this.profile_image = profile_image;
         this.created_at = created_at;
-        this.post_id=post_id;
+        this.post_id = post_id;
     }
 
     public int getUser_id() {

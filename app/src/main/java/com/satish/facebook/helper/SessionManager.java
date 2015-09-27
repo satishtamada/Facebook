@@ -8,21 +8,16 @@ import android.util.Log;
  * Created by satish on 6/8/15.
  */
 public class SessionManager {
-    private static String TAG = SessionManager.class.getSimpleName();
-
-    // Shared Preferences
-    SharedPreferences pref;
-
-    SharedPreferences.Editor editor;
-    Context _context;
-
-    // Shared pref mode
-    int PRIVATE_MODE = 0;
-
     // Shared preferences file name
     private static final String PREF_NAME = "Facebook Login";
-
     private static final String KEY_IS_LOGGEDIN = "isLoggedIn";
+    private static String TAG = SessionManager.class.getSimpleName();
+    // Shared Preferences
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    Context _context;
+    // Shared pref mode
+    int PRIVATE_MODE = 0;
 
     public SessionManager(Context context) {
         this._context = context;

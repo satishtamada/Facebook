@@ -14,20 +14,20 @@ import com.satish.facebook.utils.ParseUtils;
  * Created by satish on 6/8/15.
  */
 public class AppController extends Application {
+    public static final String TAG = AppController.class.getSimpleName();
     private static AppController appControllerInstance;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
-    public static final String TAG = AppController.class.getSimpleName();
+
+    public static synchronized AppController getInstance() {
+        return appControllerInstance;
+    }
 
     public void onCreate() {
         super.onCreate();
         appControllerInstance = this;
         // register with parse
         ParseUtils.registerParse(this);
-    }
-
-    public static synchronized AppController getInstance() {
-        return appControllerInstance;
     }
 
     public RequestQueue getRequestQueue() {

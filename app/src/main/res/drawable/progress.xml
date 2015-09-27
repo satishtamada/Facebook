@@ -1,8 +1,8 @@
 <rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="1"
     android:fromDegrees="0"
     android:pivotX="50%"
     android:pivotY="50%"
-    android:duration="1"
     android:toDegrees="360">
 
     <shape
@@ -11,8 +11,8 @@
         android:thicknessRatio="8"
         android:useLevel="false">
         <size
-            android:height="48dip"
-            android:width="48dip" />
+            android:width="48dip"
+            android:height="48dip" />
 
         <gradient
             android:centerColor="@color/colorPrimary"

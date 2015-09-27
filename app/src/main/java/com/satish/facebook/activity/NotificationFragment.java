@@ -37,16 +37,16 @@ import java.util.HashMap;
  * Created by satish on 20/9/15.
  */
 public class NotificationFragment extends Fragment {
-    private ListView listView;
-    private ArrayList<Notifications> notificationsArrayList;
     private static final String TAG = NotificationFragment.class.getSimpleName();
     private static String tag = "json_tag";
+    String id;
+    Timestamp timestamp;
+    private ListView listView;
+    private ArrayList<Notifications> notificationsArrayList;
     private NotificationsAdapter notificationsAdapter;
     private ProgressBar progressBar;
     private LinearLayout noNotificationsLayout;
-    String id;
     private SQLiteHandler db;
-    Timestamp timestamp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,8 +68,8 @@ public class NotificationFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Notifications notifications=notificationsArrayList.get(position);
-                Intent i=new Intent(getActivity(),FeedItemActivity.class);
+                Notifications notifications = notificationsArrayList.get(position);
+                Intent i = new Intent(getActivity(), FeedItemActivity.class);
                 i.putExtra("post_id", notifications.getPost_id());
                 startActivity(i);
 
@@ -101,7 +101,7 @@ public class NotificationFragment extends Fragment {
                                     String profileImage = friendObj.getString("profile_image");
                                     String message = friendObj.getString("message");
                                     String created_at = friendObj.getString("created_at");
-                                    int post_id=friendObj.getInt("post_id");
+                                    int post_id = friendObj.getInt("post_id");
                                     String userName = toTitleCase(name);
                                     try {
                                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");

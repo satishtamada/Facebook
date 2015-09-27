@@ -35,24 +35,24 @@ import java.util.Map;
  */
 public class FindFriendAdapter extends BaseAdapter {
     private static final String TAG = FindFriendAdapter.class.getSimpleName();
+    String id;
+    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private ArrayList<Friend> friendArrayList;
     private LayoutInflater inflater;
     private Activity activity;
-    String id;
     private TextView lblRequestSent;
     private Button btnAddFriend;
-    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private RequestSentAdapterListener requestSentAdapterListener;
-
-    public void setRequestSentAdapterListener(SuggestionsFragment requestSentAdapterListener) {
-        this.requestSentAdapterListener = requestSentAdapterListener;
-    }
 
     public FindFriendAdapter(ArrayList<Friend> friendArrayList, Activity activity, String id) {
 
         this.friendArrayList = friendArrayList;
         this.activity = activity;
         this.id = id;
+    }
+
+    public void setRequestSentAdapterListener(SuggestionsFragment requestSentAdapterListener) {
+        this.requestSentAdapterListener = requestSentAdapterListener;
     }
 
     @Override
@@ -88,8 +88,7 @@ public class FindFriendAdapter extends BaseAdapter {
         if (friend.getStatus() == AppConfig.REQUEST_STATUS_CONFIRMED) {
             lblRequestSent.setText("Request is sent");
             btnAddFriend.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             lblRequestSent.setText("");
             btnAddFriend.setVisibility(View.VISIBLE);
         }
@@ -119,7 +118,7 @@ public class FindFriendAdapter extends BaseAdapter {
                     if (error) {
                         requestSentAdapterListener.onRequestSentConfirmed(position);
                     } else {
-                      Toast.makeText(activity.getApplicationContext(),"Failed to add friend",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity.getApplicationContext(), "Failed to add friend", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     // JSON error

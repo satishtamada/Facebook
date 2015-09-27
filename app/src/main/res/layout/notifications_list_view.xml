@@ -16,8 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/profile_image"
-        android:paddingRight="30dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingRight="30dp">
 
         <TextView
             android:id="@+id/message"
