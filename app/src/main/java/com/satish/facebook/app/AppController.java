@@ -86,6 +86,17 @@ public class AppController extends Application {
         }
     }
 
+    public void logout(){
+        AccountUtil.deleteAccount(getApplicationContext());
+        clearUserData();
+
+        Toast.makeText(getApplicationContext(), getString(R.string.logout_message), Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(AppController.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
     public void clearUserData() {
 // cancel all volley requests
         getRequestQueue().cancelAll(getApplicationContext());

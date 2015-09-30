@@ -36,6 +36,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -43,7 +44,7 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private static final String TAG = FeedFragment.class.getSimpleName();
     private static String tag = "json_tag";
     private ListView listView;
-    private ArrayList<Feed> feedArrayList;
+    private List<Feed> feedArrayList;
     private ProgressBar progressBar;
     private FeedAdapter feedAdapter;
     private SQLiteHandler db;
@@ -52,11 +53,13 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private Button btnFindFriends;
     private SwipeRefreshLayout swipeRefreshLayout;
     private String feedUrl;
-    String date1; String date2;
+    String date1;
+    String date2;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(null);
-    
+
     }
 
     @Override
@@ -72,8 +75,15 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         feedArrayList = new ArrayList<>();
         feedAdapter = new FeedAdapter(getActivity(), feedArrayList);
 
+        toggleListVisibility();
+
         //set adapter to listview
         listView.setAdapter(feedAdapter);
+        db = new SQLiteHandler(getActivity());
+        feedArrayList.clear();
+        feedArrayList.addAll(db.getFeed());
+        feedAdapter.notifyDataSetChanged();
+        toggleListVisibility();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
@@ -85,7 +95,7 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
             }
         });
-        db = new SQLiteHandler(getActivity());
+
         btnFindFriends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,20 +146,24 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                     int commentsCount = friendObj.getInt("comments_count");
                                     int like_status = friendObj.getInt("like_status");
                                     String userName = toTitleCase(name);
-                                    Feed feed = new Feed();
-                                    feed.setName(userName);
-                                    feed.setProfileImageUrl(profile_image);
-                                    feed.setCreated_at(created_at);
-                                    feed.setStatus(postText);
-                                    feed.setPost_id(postId);
-                                    feed.setComments_count(commentsCount);
-                                    feed.setLike_status(like_status);
-                                    if (friendObj.getString("image").length() != 0) {
-                                        feed.setImage(post_image);
-                                    }
-                                    feedArrayList.add(feed);
-                                }
+                                    db.addFeed(userName, profile_image, postText, post_image, postId, commentsCount, like_status, created_at);
+                                    //Feed feed = new Feed();
+                                    //feed.setName(userName);
+                                    //  feed.setProfileImageUrl(profile_image);
+                                    //feed.setCreated_at(created_at);
+                                    //feed.setStatus(postText);
+                                    // feed.setPost_id(postId);
+                                    //feed.setComments_count(commentsCount);
+                                    //feed.setLike_status(like_status);
+                                    //if (friendObj.getString("image").length() != 0) {
+                                    //   feed.setImage(post_image);
+                                    // }
 
+                                }
+                                //feedArrayList = db.getFeed();
+                                feedArrayList.clear();
+                                feedArrayList.addAll(db.getFeed());
+                                //  db.getFeedDetails();
 
                                 PrefManager pref = new PrefManager(getActivity());
                                 pref.storeLastFeedRequestTime();
@@ -165,18 +179,7 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
                         }
 
-                        if (feedArrayList.size() > 0) {
-                            feedAdapter.notifyDataSetChanged();
-                            swipeRefreshLayout.setRefreshing(false);
-                            noFeedLayout.setVisibility(View.GONE);
-                            listView.setVisibility(View.VISIBLE);
-
-
-                        } else {
-                            swipeRefreshLayout.setRefreshing(false);
-                            progressBar.setVisibility(View.GONE);
-                            noFeedLayout.setVisibility(View.VISIBLE);
-                        }
+                        toggleListVisibility();
                     }
 
 
@@ -202,9 +205,25 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         };
 
-        if(isForceLoad || Utils.isFeedRequestTimeout(getActivity())){
+        if (isForceLoad || Utils.isFeedRequestTimeout(getActivity())) {
             swipeRefreshLayout.setRefreshing(true);            // Adding request to request queue
             AppController.getInstance().addToRequestQueue(jsonObjReq, tag);
+        }
+    }
+
+    private void toggleListVisibility() {
+        if (feedArrayList.size() > 0) {
+            Log.d(TAG, Integer.toString(feedArrayList.size()));
+            feedAdapter.notifyDataSetChanged();
+            swipeRefreshLayout.setRefreshing(false);
+            noFeedLayout.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+
+
+        } else {
+            swipeRefreshLayout.setRefreshing(false);
+            progressBar.setVisibility(View.GONE);
+            noFeedLayout.setVisibility(View.VISIBLE);
         }
     }
 

@@ -58,6 +58,7 @@ public class FeedAdapter extends BaseAdapter {
     @Override
 
     public int getCount() {
+        Log.d(TAG,""+feedList.size());
         return feedList.size();
     }
 
@@ -67,8 +68,7 @@ public class FeedAdapter extends BaseAdapter {
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
+    public long getItemId(int position) {return position;
     }
 
     @Override

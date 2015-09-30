@@ -80,7 +80,7 @@ public class NotificationFragment extends Fragment {
         id = user.get("uid");
         String url = AppConfig.URL_NOTIFICATIONS;
         url += "?user_id=" + id;
-        Log.d(TAG, id);
+        Log.d(TAG, ""+id);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null,
                 new Response.Listener<JSONObject>() {
