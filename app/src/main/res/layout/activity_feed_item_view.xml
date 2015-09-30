@@ -122,69 +122,6 @@
                         android:text="comments"
                         android:textSize="@dimen/lbl_comment_size_count" />
                 </LinearLayout>
-                <!--like comment layout-->
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/bg_comment_like_layout"
-                    android:orientation="horizontal">
-                    <!--like layout-->
-                    <LinearLayout
-                        android:id="@+id/like_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/icon_like"
-                            android:layout_width="25dp"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_like_unselect" />
-
-                        <TextView
-                            android:id="@+id/lbl_like"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="5dp"
-                            android:text="@string/btn_like_lbl"
-                            android:textColor="#9197a3"
-                            android:textSize="@dimen/lbl_comment_size"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                    <!--comment layout-->
-                    <LinearLayout
-                        android:id="@+id/comment_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_comment" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="5dp"
-                            android:text="@string/btn_comment_lbl"
-                            android:textColor="#9197a3"
-                            android:textSize="@dimen/lbl_comment_size"
-                            android:textStyle="bold" />
-
-
-                    </LinearLayout>
-                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 

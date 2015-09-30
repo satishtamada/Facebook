@@ -42,7 +42,6 @@ public class FriendRequestAdapter extends BaseAdapter {
     private TextView lblNowFriends;
     private TextView lbl_name;
     private FriendRequestAdapterListener friendRequestAdapterListener;
-
     public FriendRequestAdapter(ArrayList<Friend> friendArrayList, Activity activity, String id) {
         this.friendArrayList = friendArrayList;
         this.activity = activity;
@@ -167,6 +166,7 @@ public class FriendRequestAdapter extends BaseAdapter {
     }
 
     private void friendConfirm(final int position, final String user_id, final String friend_id) {
+
         String tag_string_req = "req_friend_confirm";
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 AppConfig.URL_FRIEND_REQUEST_ACCEPT, new Response.Listener<String>() {
@@ -179,6 +179,7 @@ public class FriendRequestAdapter extends BaseAdapter {
                     JSONObject jObj = new JSONObject(response);
                     boolean error = jObj.getBoolean("success");
                     if (error) {
+
                         friendRequestAdapterListener.onFriendRequestConfirmed(position);
                     } else {
 

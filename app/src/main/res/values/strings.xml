@@ -28,8 +28,11 @@
     <string name="lbl_no_notifications">No notifications</string>
     <string name="lbl_no_comments">No Comments Yet</string>
     <string name="btn_un_friend">Remove</string>
-
-
+    <string name="account_type">com.satish.facebook.account</string>
+    <string name="authority">com.satish.facebook.account.provider</string>
+    <string name="auth_token_type">User Access</string>
+    <string name="logout_message">You\'ve been signed out. Please sign in again!</string>
+    <string name="error_no_google_account">Your device doesn\'t have google account connected. Please add a google account in Settings and try again!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -48,7 +48,8 @@ public class FeedAdapter extends BaseAdapter {
     private Activity activity;
     private List<Feed> feedList;
     private SQLiteHandler db;
-    private static final String TAG = FindFriendAdapter.class.getSimpleName();
+    private static final String TAG = FeedAdapter.class.getSimpleName();
+
     public FeedAdapter(Activity activity, List<Feed> feedList) {
         this.activity = activity;
         this.feedList = feedList;
@@ -80,7 +81,7 @@ public class FeedAdapter extends BaseAdapter {
 
         if (imageLoader == null)
             imageLoader = AppController.getInstance().getImageLoader();
-        db=new SQLiteHandler(activity);
+        db = new SQLiteHandler(activity);
         TextView name = (TextView) convertView.findViewById(R.id.name);
         TextView timestamp = (TextView) convertView
                 .findViewById(R.id.timestamp);
@@ -147,6 +148,10 @@ public class FeedAdapter extends BaseAdapter {
         } else {
             feedImageView.setVisibility(View.GONE);
         }
+        if (item.getLike_status() == 1) {
+            lblLike.setTextColor(activity.getResources().getColor(R.color.colorPrimary));
+            like_icon.setImageResource(R.drawable.ic_like_selected);
+        }
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,11 +159,15 @@ public class FeedAdapter extends BaseAdapter {
                     HashMap<String, String> user = db.getUserDetails();
                     String userId = user.get("uid");
                     String postId = Integer.toString(item.getPost_id());
-                    String status="1";
-                    likeOnPost(userId,postId,status);
+                    String status = "1";
+                    likeOnPost(userId, postId, status);
                     lblLike.setTextColor(activity.getResources().getColor(R.color.colorPrimary));
                     like_icon.setImageResource(R.drawable.ic_like_selected);
                 } else {
+                    HashMap<String, String> user = db.getUserDetails();
+                    String userId = user.get("uid");
+                    String postId = Integer.toString(item.getPost_id());
+                    removeLikeOnPost(userId,postId);
                     lblLike.setTextColor(Color.parseColor("#9197a3"));
                     like_icon.setImageResource(R.drawable.ic_like_unselect);
                 }
@@ -176,6 +185,51 @@ public class FeedAdapter extends BaseAdapter {
         return convertView;
     }
 
+    private void removeLikeOnPost(final String userId, final String postId) { String tag_string_req = "like_on_post";
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_LIKE_REMOVE_ON_POST, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "like Response: " + response.toString());
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("success");
+                    if (error) {
+
+                    } else {
+
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Registration Error: " + error.getMessage());
+                Toast.makeText(activity.getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to remove like url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("user_id", userId);
+                params.put("post_id", postId);
+
+                return params;
+            }
+
+        };
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
     private void likeOnPost(final String userId, final String postId, final String status) {
         String tag_string_req = "like_on_post";
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -184,7 +238,6 @@ public class FeedAdapter extends BaseAdapter {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "like Response: " + response.toString());
-                Log.d(TAG, "like userid,postid,status: " + userId+""+postId+""+status);
                 try {
                     JSONObject jObj = new JSONObject(response);
                     boolean error = jObj.getBoolean("success");
@@ -216,11 +269,11 @@ public class FeedAdapter extends BaseAdapter {
                 params.put("user_id", userId);
                 params.put("post_id", postId);
                 params.put("like_status", status);
-                Log.d(TAG,userId+postId+status);
+                Log.d(TAG, userId + postId + status);
                 return params;
             }
 
         };
-    AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 }

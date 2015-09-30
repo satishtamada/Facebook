@@ -81,9 +81,7 @@ public class ProfileFragment extends Fragment {
         // session manager
         session = new SessionManager(getActivity());
 
-        if (!session.isLoggedIn()) {
-            logoutUser();
-        }
+
         friendsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

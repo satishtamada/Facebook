@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -24,7 +25,10 @@ import com.satish.facebook.R;
 import com.satish.facebook.adapters.FeedAdapter;
 import com.satish.facebook.app.AppConfig;
 import com.satish.facebook.app.AppController;
+import com.satish.facebook.helper.PrefManager;
 import com.satish.facebook.helper.SQLiteHandler;
+import com.satish.facebook.helper.Utils;
+import com.satish.facebook.helper.VolleyNetwork;
 import com.satish.facebook.models.Feed;
 
 import org.json.JSONArray;
@@ -32,6 +36,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -47,11 +52,11 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private Button btnFindFriends;
     private SwipeRefreshLayout swipeRefreshLayout;
     private String feedUrl;
-
+    String date1; String date2;
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+        super.onCreate(null);
+    
     }
 
     @Override
@@ -66,6 +71,7 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         feedArrayList = new ArrayList<>();
         feedAdapter = new FeedAdapter(getActivity(), feedArrayList);
+
         //set adapter to listview
         listView.setAdapter(feedAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -97,8 +103,8 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         swipeRefreshLayout.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        swipeRefreshLayout.setRefreshing(true);
-                                        fetchFeed(feedUrl);
+                                        //swipeRefreshLayout.setRefreshing(true);
+                                        fetchFeed(feedUrl, false);
                                     }
                                 }
         );
@@ -106,8 +112,9 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         return view;
     }
 
-    private void fetchFeed(String finalUrl) {
-        swipeRefreshLayout.setRefreshing(true);
+    private void fetchFeed(String finalUrl, boolean isForceLoad) {
+
+        Log.d(TAG, "currentTime is" + date1);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 finalUrl, null,
                 new Response.Listener<JSONObject>() {
@@ -127,6 +134,7 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                     String postText = friendObj.getString("text");
                                     int postId = friendObj.getInt("post_id");
                                     int commentsCount = friendObj.getInt("comments_count");
+                                    int like_status = friendObj.getInt("like_status");
                                     String userName = toTitleCase(name);
                                     Feed feed = new Feed();
                                     feed.setName(userName);
@@ -135,11 +143,17 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                     feed.setStatus(postText);
                                     feed.setPost_id(postId);
                                     feed.setComments_count(commentsCount);
+                                    feed.setLike_status(like_status);
                                     if (friendObj.getString("image").length() != 0) {
                                         feed.setImage(post_image);
                                     }
                                     feedArrayList.add(feed);
                                 }
+
+
+                                PrefManager pref = new PrefManager(getActivity());
+                                pref.storeLastFeedRequestTime();
+
                             } else {
                                 swipeRefreshLayout.setRefreshing(false);
                                 listView.setVisibility(View.GONE);
@@ -156,6 +170,8 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             swipeRefreshLayout.setRefreshing(false);
                             noFeedLayout.setVisibility(View.GONE);
                             listView.setVisibility(View.VISIBLE);
+
+
                         } else {
                             swipeRefreshLayout.setRefreshing(false);
                             progressBar.setVisibility(View.GONE);
@@ -173,11 +189,23 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 swipeRefreshLayout.setRefreshing(false);
                 progressBar.setVisibility(View.GONE);
             }
-        });
+        }) {
 
-// Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq, tag);
+            /**
+             * Passing some request headers
+             * */
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Log.e(TAG, "Headers: " + VolleyNetwork.getHeaders());
+                return VolleyNetwork.getHeaders();
+            }
 
+        };
+
+        if(isForceLoad || Utils.isFeedRequestTimeout(getActivity())){
+            swipeRefreshLayout.setRefreshing(true);            // Adding request to request queue
+            AppController.getInstance().addToRequestQueue(jsonObjReq, tag);
+        }
     }
 
     private String toTitleCase(String name) {
@@ -200,6 +228,6 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-        fetchFeed(feedUrl);
+        fetchFeed(feedUrl, true);
     }
 }

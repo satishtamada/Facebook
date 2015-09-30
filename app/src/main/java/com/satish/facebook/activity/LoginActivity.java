@@ -19,6 +19,7 @@ import com.satish.facebook.app.AppConfig;
 import com.satish.facebook.app.AppController;
 import com.satish.facebook.helper.SQLiteHandler;
 import com.satish.facebook.helper.SessionManager;
+import com.satish.facebook.utils.AccountUtil;
 import com.satish.facebook.utils.ParseUtils;
 
 import org.json.JSONException;
@@ -41,11 +42,16 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // Check if user is already logged in or not
         session = new SessionManager(getApplicationContext());
-        if (session.isLoggedIn()) {
-            // User is already logged in. Take him to main activity
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
+        if (!AccountUtil.verifyGoogleAccounts(getApplicationContext())) {
+            Toast.makeText(getApplicationContext(), getString(R.string.error_no_google_account), Toast.LENGTH_LONG).show();
             finish();
+            return;
+        }
+
+        if (AccountUtil.hasAccount(getApplicationContext())) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return;
         }
         setContentView(R.layout.login_screen);
         txtInputEmail = (EditText) findViewById(R.id.txt_email);
@@ -105,7 +111,8 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject jObj = new JSONObject(response);
                     boolean error = jObj.getBoolean("success");
                     if (error) {
-                        session.setLogin(true);
+
+
                         // Fetching user details from sqlite
 
                         HashMap<String, String> userData = db.getUserDetails();
@@ -119,6 +126,8 @@ public class LoginActivity extends AppCompatActivity {
                             String id = user.getString("id");
                             String profileImageUrl = user.getString("profile_image");
                             db.addUser(id, name, email, uid, created_at, profileImageUrl);
+
+                            AccountUtil.createAccount(getApplicationContext(), uid);
 
                             //subscribe to parse with email
                             ParseUtils.subscribeWithEmail(email);

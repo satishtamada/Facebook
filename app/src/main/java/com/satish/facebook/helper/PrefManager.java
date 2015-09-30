@@ -15,6 +15,9 @@ public class PrefManager {
     private static final String IS_LOGIN = "IsLoggedIn";
     // Email address
     private static final String KEY_EMAIL = "email";
+
+    private static final String KEY_LAST_FEED_REQUEST = "last_feed_request";
+    private static final String TAG = PrefManager.class.getSimpleName();
     // Shared Preferences
     SharedPreferences pref;
     // Editor for Shared preferences
@@ -23,6 +26,8 @@ public class PrefManager {
     Context _context;
     // Shared pref mode
     int PRIVATE_MODE = 0;
+
+
 
     // Constructor
     public PrefManager(Context context) {
@@ -57,4 +62,16 @@ public class PrefManager {
         editor.clear();
         editor.commit();
     }
+
+
+    public void storeLastFeedRequestTime(){
+        editor.putString(KEY_LAST_FEED_REQUEST, Utils.getTimeStamp());
+        editor.commit();
+    }
+
+    public String getLastFeedRequestTime(){
+        return pref.getString(KEY_LAST_FEED_REQUEST, null);
+    }
+
+
 }

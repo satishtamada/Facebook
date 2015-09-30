@@ -3,6 +3,8 @@ package com.satish.facebook.helper;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Point;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -10,11 +12,15 @@ import android.widget.Toast;
 import com.satish.facebook.app.AppConfig;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 public class Utils {
 
+    private static final String TAG = Utils.class.getSimpleName();
     private Context _context;
 
     // constructor
@@ -102,5 +108,43 @@ public class Utils {
         }
         columnWidth = point.x;
         return columnWidth;
+    }
+
+    public static String getTimeStamp(){
+        String currrentTime; SimpleDateFormat sdf;
+        sdf = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
+        currrentTime = (DateFormat.format("yyyy-MM-dd HH:mm:ss", new java.util.Date()).toString());
+
+        Log.e(TAG, "currentTime: " + currrentTime);
+        return currrentTime.toString();
+    }
+
+    public static boolean isFeedRequestTimeout(Context context){
+        PrefManager pref = new PrefManager(context);
+        String lastRequestTime = pref.getLastFeedRequestTime();
+
+        if(lastRequestTime == null)
+            return true;
+
+        try {
+            String currentTime = getTimeStamp();
+
+            // check the time difference
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
+            Date firstParsedDate = dateFormat.parse(lastRequestTime);
+            Date secondParsedDate = dateFormat.parse(currentTime);
+            long diff = (secondParsedDate.getTime() - firstParsedDate.getTime()) / (60 * 1000) % 60;
+
+            Log.e(TAG, "Time diff: " + diff);
+
+            if(diff > AppConfig.FEED_REQUEST_TIMEOUT){
+                return true;
+            }
+            return false;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return true;
     }
 }

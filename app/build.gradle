@@ -41,5 +41,6 @@ dependencies {
     compile 'com.mcxiaoke.volley:library-aar:1.0.0'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.parse.bolts:bolts-android:1.+'
+    compile 'com.google.android.gms:play-services-base:7.0.0'
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
 }

@@ -20,6 +20,7 @@ import com.satish.facebook.app.AppConfig;
 import com.satish.facebook.app.AppController;
 import com.satish.facebook.helper.SQLiteHandler;
 import com.satish.facebook.helper.SessionManager;
+import com.satish.facebook.utils.AccountUtil;
 import com.satish.facebook.utils.ParseUtils;
 
 import org.json.JSONException;
@@ -54,15 +55,17 @@ public class RegisterActivity extends AppCompatActivity {
         db = new SQLiteHandler(getApplicationContext());
 
 
-        // Check if user is already logged in or not
-        if (session.isLoggedIn()) {
-            // User is already logged in. Take him to main activity
-            Intent intent = new Intent(RegisterActivity.this,
-                    MainActivity.class);
-            startActivity(intent);
+        if (!AccountUtil.verifyGoogleAccounts(getApplicationContext())) {
+            Toast.makeText(getApplicationContext(), getString(R.string.error_no_google_account), Toast.LENGTH_LONG).show();
             finish();
+            return;
         }
 
+        if (AccountUtil.hasAccount(getApplicationContext())) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return;
+        }
         // Register Button Click event
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -122,7 +125,6 @@ public class RegisterActivity extends AppCompatActivity {
                     boolean error = jObj.getBoolean("success");
 
                     if (error) {
-                        session.setLogin(true);
                         Toast.makeText(getApplicationContext(), "Register successfully", Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.GONE);
 
@@ -136,6 +138,8 @@ public class RegisterActivity extends AppCompatActivity {
                         String profileImageUrl = user.getString("profile_image");
                         Log.d("email and name is", name + "," + email + "," + apikey + "," + created_at + "," + id);
                         db.addUser(id, name, email, apikey, created_at, profileImageUrl);
+
+                        AccountUtil.createAccount(getApplicationContext(), user.getString("apikey"));
 
 
                         //subscribe to parse with email

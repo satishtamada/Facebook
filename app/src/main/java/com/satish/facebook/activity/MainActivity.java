@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.satish.facebook.R;
+import com.satish.facebook.app.AppController;
 import com.satish.facebook.helper.SessionManager;
 
 import java.util.ArrayList;
@@ -77,6 +78,13 @@ public class MainActivity extends AppCompatActivity {
         });
         setUpTabs();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        AppController.getInstance().verifySession();
     }
 
     @Override

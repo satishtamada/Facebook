@@ -30,8 +30,11 @@ public class AppConfig {
     public static final int FLAG_NEW_LIKE = 2;
     public static final int FLAG_NEW_FRIEND_REQUEST = 3;
 
+    // feed request timeout in minutes
+    public static final int FEED_REQUEST_TIMEOUT = 2;
 
-    public static String URL = "http://192.168.0.103:8080/facebook_rest/rest/";
+
+    public static String URL = "http://192.168.0.100:8080/facebook_rest/rest/";
     public static String URL_LOGIN = URL + "user/login";
     public static String URL_REGISTER = URL + "user/register";
     public static String URL_PROFILE_UPLOAD = URL + "user/profile_upload";
@@ -44,6 +47,7 @@ public class AppConfig {
     public static String URL_POST_COMMENTS = URL + "comment/create";
     public static String URL_NOTIFICATIONS = URL + "notification/notifications";
     public static String URL_LIKE_ON_POST=URL+"like/create";
+    public static String URL_LIKE_REMOVE_ON_POST=URL+"like/remove";
     public static String URL_REMOVE_FRIEND = URL + "friend/remove_friend";
     public static String URL_FRIEND_ADD = URL + "friend/add_friend";
     public static String URL_FRIEND_REQUESTS = URL + "friend/friend_requests";
