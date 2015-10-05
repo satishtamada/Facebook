@@ -10,7 +10,7 @@
     <!-- This is the line -->
     <item android:top="1dp">
         <shape>
-            <solid android:color="#eeeeee" />
+            <solid android:color="#ffffff" />
         </shape>
     </item>
 

@@ -219,9 +219,9 @@ public class CommentActivity extends AppCompatActivity {
                     boolean error = jObj.getBoolean("success");
                     if (error) {
                         progressBar.setVisibility(View.GONE);
-
+                        int comment_count=jObj.getInt("comments_count");
                         SQLiteHandler db = new SQLiteHandler(getApplicationContext());
-
+                        db.updateCommentCount(comment_count,Integer.parseInt(postId));
                         Profile profile = db.getUserProfile();
 
                         if (profile != null) {

@@ -140,7 +140,9 @@ public class ProfileFragment extends Fragment {
                                 lblUserName.setText(userName);
                                 Log.d("name is", userName);
                                 lblUserMailId.setText(jsonObject.getString("email"));
-                                lblUserJoined.setText(jsonObject.getString("created_at"));
+                                String date="";
+                                date=jsonObject.getString("created_at").substring(0,10);
+                                lblUserJoined.setText(date);
                                 lblFriendCount.setText(jsonObject.getString("friends_count"));
                                 lblPostCount.setText(jsonObject.getString("posts_count"));
                                 //set user pics to in images array

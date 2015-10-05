@@ -33,8 +33,7 @@ public class AppConfig {
     // feed request timeout in minutes
     public static final int FEED_REQUEST_TIMEOUT = 2;
 
-
-    public static String URL = "http://192.168.0.100:8080/facebook_rest/rest/";
+    public static String URL = "http://45.55.132.184:8080/facebook_rest/rest/";
     public static String URL_LOGIN = URL + "user/login";
     public static String URL_REGISTER = URL + "user/register";
     public static String URL_PROFILE_UPLOAD = URL + "user/profile_upload";

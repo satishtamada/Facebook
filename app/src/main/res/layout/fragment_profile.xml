@@ -8,6 +8,7 @@
         android:id="@+id/profile_parent_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:visibility="gone">
 
         <ProgressBar
@@ -146,7 +147,7 @@
                 <RelativeLayout
                     android:id="@+id/friendsLayout"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="wrap_content"  android:background="@color/white"
                     android:layout_below="@+id/lbl_favorites">
 
                     <ImageView

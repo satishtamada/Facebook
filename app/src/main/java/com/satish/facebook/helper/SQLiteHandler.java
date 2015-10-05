@@ -252,9 +252,11 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
         Log.d(TAG, "Deleted all user info from sqlite");
     }
+    public void updateCommentCount(int commetCount,int post_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+    }
 
-
-    public void getFeedDetails() {
+    public void getFeedDetiails() {
         HashMap<String, String> Feed = new HashMap<String, String>();
         String selectQuery = "SELECT  * FROM " + TABLE_FEED;
 

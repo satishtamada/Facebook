@@ -54,7 +54,6 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private SwipeRefreshLayout swipeRefreshLayout;
     private String feedUrl;
     String date1;
-    String date2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

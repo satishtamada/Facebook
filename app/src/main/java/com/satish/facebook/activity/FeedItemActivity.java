@@ -115,6 +115,7 @@ public class FeedItemActivity extends AppCompatActivity {
                                 userName = toTitleCase(response.getString("user_name"));
                                 lblName.setText(userName);
                                 lblTimestamp.setText(response.getString("created_at"));
+                                lblCommentsCount.setText(response.getString("comments_count"));
                                 // Check for empty status message
                                 if (!TextUtils.isEmpty(response.getString("text"))) {
                                     lblStatusMsg.setText(response.getString("text"));
@@ -182,6 +183,7 @@ public class FeedItemActivity extends AppCompatActivity {
                             setListViewHeightBasedOnChildren(listView);
                         } else {
                             progressBar.setVisibility(View.GONE);
+
                         }
                     }
                 }, new Response.ErrorListener() {
